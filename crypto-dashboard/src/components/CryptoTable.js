@@ -4,27 +4,41 @@ const CryptoTable = ({
   cryptos,
   sortConfig,
   onSort,
-  getCurrencySymbol,
+  currency,
   toggleAllCheckboxes,
   handleCheckboxChange,
+  rate,
 }) => {
+  const getCurrencySymbol = () => {
+    switch (currency) {
+      case "usd":
+        return "$";
+      case "euro":
+        return "€";
+      case "czech-republic-koruna":
+        return "Kč";
+      default:
+        return "";
+    }
+  };
+
   return (
     <table className="w-full lg:table hidden">
       <thead className="bg-gray-200 uppercase">
         <tr>
           <th
-            className="p-4 text-center font-bold cursor-pointer"
+            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
             onClick={() => onSort("rank")}
           >
             Rank{" "}
             {sortConfig.key === "rank" && (
-              <span className="text-blue-500 font-thin">
+              <span className="text-blue-500 font-thin ">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
           <th
-            className="p-4 text-left font-bold cursor-pointer"
+            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
             onClick={() => onSort("name")}
           >
             Name{" "}
@@ -35,7 +49,7 @@ const CryptoTable = ({
             )}
           </th>
           <th
-            className="p-4 text-left font-bold cursor-pointer"
+            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
             onClick={() => onSort("symbol")}
           >
             Symbol{" "}
@@ -46,7 +60,7 @@ const CryptoTable = ({
             )}
           </th>
           <th
-            className="p-4 text-right font-bold cursor-pointer"
+            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
             onClick={() => onSort("price")}
           >
             Price{" "}
@@ -57,7 +71,7 @@ const CryptoTable = ({
             )}
           </th>
           <th
-            className="p-4 text-right font-bold cursor-pointer"
+            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
             onClick={() => onSort("changePercent24Hr")}
           >
             Change (24hr){" "}
@@ -67,7 +81,7 @@ const CryptoTable = ({
               </span>
             )}
           </th>
-          <th className="p-4 text-right font-bold ">
+          <th className="p-4 text-center font-bold hover:bg-slate-300 transition-all">
             <input
               type="checkbox"
               className="form-checkbox text-rose-600"
@@ -90,7 +104,7 @@ const CryptoTable = ({
             </td>
             <td className="p-4">{crypto.symbol}</td>
             <td className="p-4 text-right">
-              {getCurrencySymbol()} {crypto.price.toFixed(2)}
+              {getCurrencySymbol()} {(crypto.price / rate).toFixed(2)}
             </td>
             <td className="p-4 text-right">
               {crypto.changePercent24Hr.toFixed(2)}%

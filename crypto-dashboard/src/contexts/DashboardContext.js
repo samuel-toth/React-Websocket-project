@@ -4,8 +4,9 @@ const DashboardContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
   const [currency, setCurrency] = useState("usd");
-  const [per_page, setPerPage] = useState(10);
+  const [per_page, setPerPage] = useState(20);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const LIMIT = 1000;
 
   const changeCurrency = (cur) => {
@@ -22,6 +23,10 @@ export const DashboardProvider = ({ children }) => {
     }
   };
 
+  const changeSearchTerm = (term) => {
+    setSearchTerm(term);
+  }
+
   return (
     <DashboardContext.Provider
       value={{
@@ -31,6 +36,8 @@ export const DashboardProvider = ({ children }) => {
         changePerPage,
         page,
         changePage,
+        searchTerm,
+        changeSearchTerm
       }}
     >
       {children}

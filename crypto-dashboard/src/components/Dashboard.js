@@ -11,8 +11,10 @@ const Dashboard = () => {
     key: "rank",
     direction: "ascending",
   });
-  const { per_page, page, currency, changePage, changePerPage } =
+  const [filteredCryptos, setFilteredCryptos] = useState([]);
+  const { per_page, page, currency, changePage, changePerPage, searchTerm } =
     useDashboard();
+
   const [websocket, setWebsocket] = useState(null);
 
   const fetchRateToUSD = useCallback(async () => {
@@ -109,7 +111,18 @@ const Dashboard = () => {
     fetchCryptos();
   }, [fetchCryptos]);
 
-  const handleCheckboxChange = (id) => {
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredCryptos(cryptos);
+    } else {
+      const filtered = cryptos.filter((crypto) =>
+        crypto.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredCryptos(filtered);
+    }
+  }, [cryptos, searchTerm]);
+
+  const toggleCryptoCheckbox = (id) => {
     const updatedCryptos = cryptos.map((crypto) => {
       if (crypto.id === id) {
         crypto.isSelected = !crypto.isSelected;
@@ -181,56 +194,53 @@ const Dashboard = () => {
 
   return (
     <div className="bg-gray-100 p-20 pt-10">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
-          <CryptoTable
-            cryptos={cryptos}
-            sortConfig={sortConfig}
-            onSort={sortCryptos}
-            getCurrencySymbol={getCurrencySymbol}
-            toggleAllCheckboxes={toggleAllCheckboxes}
-            handleCheckboxChange={handleCheckboxChange}
-          />
-          {cryptos.map((crypto) => (
-            <div
-              key={crypto.id}
-              className="bg-gray-200 rounded-lg p-4 shadow-lg lg:hidden m-2"
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h2 className="text-xl font-semibold">{crypto.name}</h2>
-                  <p className="text-gray-600">{crypto.symbol}</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">
-                    {getCurrencySymbol()} {(crypto.price / rate).toFixed(2)}
-                  </p>
-                  <p className="text-lg">
-                    {crypto.changePercent24Hr.toFixed(2)}%
-                  </p>
-                </div>
-                <div>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox text-rose-600"
-                      onChange={() => handleCheckboxChange(crypto.id)}
-                    />
-                  </label>
-                </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
+        <CryptoTable
+          cryptos={filteredCryptos}
+          sortConfig={sortConfig}
+          onSort={sortCryptos}
+          currency={currency}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          handleCheckboxChange={toggleCryptoCheckbox}
+          rate={rate}
+        />
+        {cryptos.map((crypto) => (
+          <div
+            key={crypto.id}
+            className="bg-gray-200 rounded-lg p-4 shadow-lg lg:hidden m-2"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-xl font-semibold">{crypto.name}</h2>
+                <p className="text-gray-600">{crypto.symbol}</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold">
+                  {getCurrencySymbol()} {(crypto.price / rate).toFixed(2)}
+                </p>
+                <p className="text-lg">
+                  {crypto.changePercent24Hr.toFixed(2)}%
+                </p>
+              </div>
+              <div>
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox text-rose-600"
+                    onChange={() => toggleCryptoCheckbox(crypto.id)}
+                  />
+                </label>
               </div>
             </div>
-          ))}
-        </div>
-      )}
-      <PaginationFooter 
-				page={page} 
-				per_page={per_page} 
-				handleItemsPerPageChange={handleItemsPerPageChange} 
-				handlePageChange={handlePageChange}
-			/>
+          </div>
+        ))}
+      </div>
+      <PaginationFooter
+        page={page}
+        per_page={per_page}
+        handleItemsPerPageChange={handleItemsPerPageChange}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 };
