@@ -5,7 +5,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
 
-  const { currency, changeCurrency } = useDashboard();
+  const { changeCurrency } = useDashboard();
 
   const handleCurrencyChange = (e) => {
     changeCurrency(e.target.id);
@@ -19,17 +19,17 @@ function Header() {
           Menu
         </button>
         {isMenuOpen && (
-          <div className="absolute right-0 w-48 py-2 mt-2 bg-white text-black rounded shadow-xl">
-            <button onClick={() => setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)} className="px-4 py-2 text-left w-full hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out">
+          <div className="absolute z-10 right-0 w-48 py-2 mt-2 bg-white text-black rounded shadow-xl">
+            <button onClick={() => setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)} className="px-4 py-2 text-left w-full  hover:font-black transition-colors duration-200 ease-in-out">
               Currency
             </button>
             {isCurrencyDropdownOpen && (
-              <div className="right-0 w-48 bg-gray-50 rounded">
+              <div className="right-0 z-20 w-48 bg-gray-50 rounded">
                 <button id="usd" className="px-4 py-2 text-left w-full hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out" 
                     onClick={handleCurrencyChange}
                 >USD $</button>
-                <button id="eur" className="px-4 py-2 text-left w-full hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out" onClick={handleCurrencyChange}>EUR €</button>
-                <button id="czk" className="px-4 py-2 hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out" onClick={handleCurrencyChange}>CZK Kč</button>
+                <button id="euro" className="px-4 py-2 text-left w-full hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out" onClick={handleCurrencyChange}>EUR €</button>
+                <button id="czech-republic-koruna" className="px-4 py-2 hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out" onClick={handleCurrencyChange}>CZK Kč</button>
               </div>
             )}
             <button className="px-4 py-2 text-left w-full hover:text-rose-600 hover:font-black transition-colors duration-200 ease-in-out">Theme</button>

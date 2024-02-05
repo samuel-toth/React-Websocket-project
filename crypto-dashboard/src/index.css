@@ -16,3 +16,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@layer utilities {
+  .animate-highlight {
+    @apply transition-colors ease-in-out duration-300;
+    animation-fill-mode: forwards;
+  }
+}

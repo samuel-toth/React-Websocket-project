@@ -1,23 +1,43 @@
 import React, { createContext, useContext, useState } from "react";
 
-
-const DashboardContext = React.createContext();
+const DashboardContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
-    const [currency, setCurrency] = useState(["EUR"]);
+  const [currency, setCurrency] = useState("usd");
+  const [per_page, setPerPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const LIMIT = 1000;
 
-    const changeCurrency = (currency) => {
-        setCurrency(currency);
-    };
+  const changeCurrency = (cur) => {
+    setCurrency(cur);
+  };
 
-    return (
-        <DashboardContext.Provider value={{ currency, changeCurrency }}>
-            {children}
-        </DashboardContext.Provider>
-    );
+  const changePerPage = (per_page) => {
+    setPerPage(per_page);
+  };
 
+  const changePage = (page) => {
+    if (page > 0 && page / per_page <= LIMIT) {
+      setPage(page);
+    }
+  };
+
+  return (
+    <DashboardContext.Provider
+      value={{
+        currency,
+        changeCurrency,
+        per_page,
+        changePerPage,
+        page,
+        changePage,
+      }}
+    >
+      {children}
+    </DashboardContext.Provider>
+  );
 };
 
 export const useDashboard = () => {
-    return useContext(DashboardContext);
-}
+  return useContext(DashboardContext);
+};
