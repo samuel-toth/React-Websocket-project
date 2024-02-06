@@ -23,6 +23,8 @@ const CryptoTable = ({
   };
 
   return (
+    <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
+
     <table className="w-full lg:table table-fixed hidden">
        <thead className="bg-slate-300">
         <tr>
@@ -127,6 +129,7 @@ const CryptoTable = ({
         ))}
       </tbody>
     </table>
+    </div>
   );
 };
 

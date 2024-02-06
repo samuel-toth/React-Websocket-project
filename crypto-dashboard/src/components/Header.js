@@ -24,7 +24,7 @@ function Header() {
         <input
           type="text"
           placeholder="Search for a cryptocurrency"
-          className="px-4 py-2 bg-slate-500 rounded placeholder:text-slate-300 focus:outline-none focus:ring w-72 transition-colors duration-200 ease-in-out"
+          className="px-4 py-2 bg-slate-500 rounded-lg placeholder:text-slate-300 focus:outline-none focus:ring w-72 transition-colors duration-200 ease-in-out"
           value={searchTerm}
           onChange={handleSearch}
         />

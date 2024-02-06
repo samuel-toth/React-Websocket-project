@@ -45,7 +45,7 @@ const Dashboard = () => {
       supply: parseFloat(asset.supply),
       marketCapUsd: parseFloat(asset.marketCapUsd),
       isSelected: false,
-      animationClass: "",
+      animationClass: " bg-gray-100 transition-colors duration-1000",
     }));
 
     setCryptos(assets);
@@ -89,7 +89,7 @@ const Dashboard = () => {
             : "";
 
           setTimeout(() => {
-            crypto.animationClass = "transition-colors duration-1000";
+            crypto.animationClass = "transition-colors duration-1000 bg-gray-100";
             setCryptos([...cryptos]);
           }, 300);
         }
@@ -186,8 +186,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="px-40 py-10">
-      <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
+    <div className="lg:px-40 md:px-20 sm:px-10 px-10 py-10">
         <CryptoTable
           cryptos={filteredCryptos}
           sortConfig={sortConfig}
@@ -197,7 +196,7 @@ const Dashboard = () => {
           handleCheckboxChange={toggleCryptoCheckbox}
           rate={rate}
         />
-        <CryptoGrid
+      <CryptoGrid
           cryptos={filteredCryptos}
           sortConfig={sortConfig}
           onSort={sortCryptos}
@@ -206,7 +205,6 @@ const Dashboard = () => {
           handleCheckboxChange={toggleCryptoCheckbox}
           rate={rate}
         />
-      </div>
       <PaginationFooter
         page={page}
         per_page={per_page}
