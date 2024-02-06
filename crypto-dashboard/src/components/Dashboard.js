@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import CryptoTable from "./CryptoTable";
 import PaginationFooter from "./PaginationFooter";
+import CryptoGrid from "./CryptoGrid";
 
 const Dashboard = () => {
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [websocket, setWebsocket] = useState(null);
   const [rate, setRate] = useState(1);
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
@@ -15,7 +17,6 @@ const Dashboard = () => {
   const { per_page, page, currency, changePage, changePerPage, searchTerm } =
     useDashboard();
 
-  const [websocket, setWebsocket] = useState(null);
 
   const fetchRateToUSD = useCallback(async () => {
     if (currency !== "usd") {
@@ -149,14 +150,6 @@ const Dashboard = () => {
     }
   };
 
-  const handlePageChange = (newPage) => {
-    changePage(newPage);
-  };
-
-  const handleItemsPerPageChange = (newItemsPerPage) => {
-    changePerPage(newItemsPerPage);
-  };
-
   const getCurrencySymbol = () => {
     switch (currency) {
       case "usd":
@@ -193,8 +186,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-gray-100 p-20 pt-10">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
+    <div className="px-40 py-10">
+      <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
         <CryptoTable
           cryptos={filteredCryptos}
           sortConfig={sortConfig}
@@ -204,42 +197,21 @@ const Dashboard = () => {
           handleCheckboxChange={toggleCryptoCheckbox}
           rate={rate}
         />
-        {cryptos.map((crypto) => (
-          <div
-            key={crypto.id}
-            className="bg-gray-200 rounded-lg p-4 shadow-lg lg:hidden m-2"
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-xl font-semibold">{crypto.name}</h2>
-                <p className="text-gray-600">{crypto.symbol}</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {getCurrencySymbol()} {(crypto.price / rate).toFixed(2)}
-                </p>
-                <p className="text-lg">
-                  {crypto.changePercent24Hr.toFixed(2)}%
-                </p>
-              </div>
-              <div>
-                <label className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox text-rose-600"
-                    onChange={() => toggleCryptoCheckbox(crypto.id)}
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-        ))}
+        <CryptoGrid
+          cryptos={filteredCryptos}
+          sortConfig={sortConfig}
+          onSort={sortCryptos}
+          currency={currency}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          handleCheckboxChange={toggleCryptoCheckbox}
+          rate={rate}
+        />
       </div>
       <PaginationFooter
         page={page}
         per_page={per_page}
-        handleItemsPerPageChange={handleItemsPerPageChange}
-        handlePageChange={handlePageChange}
+        handleItemsPerPageChange={changePerPage}
+        handlePageChange={changePage}
       />
     </div>
   );

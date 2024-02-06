@@ -23,68 +23,70 @@ const CryptoTable = ({
   };
 
   return (
-    <table className="w-full lg:table hidden">
-      <thead className="bg-gray-200 uppercase">
+    <table className="w-full lg:table table-fixed hidden">
+       <thead className="bg-slate-300">
         <tr>
           <th
-            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
+            className="p-4 text-center font-bold cursor-pointer hover:text-indigo-500 transition-all w-1/12"
             onClick={() => onSort("rank")}
           >
-            Rank{" "}
+            <span className={sortConfig.key === "rank" ? "underline" : ""}>Rank</span>
             {sortConfig.key === "rank" && (
-              <span className="text-blue-500 font-thin ">
+              <span className="text-slate-400">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
           <th
-            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
+            className="p-4 text-left cursor-pointer hover:text-indigo-500 transition-all"
             onClick={() => onSort("name")}
           >
-            Name{" "}
+            <span className={sortConfig.key === "name" ? "underline" : ""}>Name</span>
             {sortConfig.key === "name" && (
-              <span className="text-blue-500 font-thin">
+              <span className="text-slate-400">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
           <th
-            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
+            className="p-4 text-left cursor-pointer hover:text-indigo-500 transition-all w-1/12"
             onClick={() => onSort("symbol")}
           >
-            Symbol{" "}
+            <span className={sortConfig.key === "symbol" ? "underline" : ""}>Symbol</span>
             {sortConfig.key === "symbol" && (
-              <span className="text-blue-500 font-thin">
+              <span className="text-slate-400">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
           <th
-            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
+            className="p-4 text-right cursor-pointer hover:text-indigo-500 transition-all"
             onClick={() => onSort("price")}
           >
-            Price{" "}
+            <span className={sortConfig.key === "price" ? "underline" : ""}>
+              Price - {getCurrencySymbol()}
+            </span>
             {sortConfig.key === "price" && (
-              <span className="text-blue-500 font-thin">
+              <span className="text-slate-400">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
           <th
-            className="p-4 text-center font-bold cursor-pointer hover:bg-slate-300 transition-all"
+            className="p-4 text-right cursor-pointer hover:text-indigo-500 transition-all w-1/12"
             onClick={() => onSort("changePercent24Hr")}
           >
-            Change (24hr){" "}
+            <span className={sortConfig.key === "changePercent24Hr" ? "underline" : ""}>Δ24h</span>
             {sortConfig.key === "changePercent24Hr" && (
-              <span className="text-blue-500 font-thin">
+              <span className="text-slate-400">
                 {sortConfig.direction === "ascending" ? "↑" : "↓"}
               </span>
             )}
           </th>
-          <th className="p-4 text-center font-bold hover:bg-slate-300 transition-all">
+          <th className="p-4 text-center transition-all w-1/12">
             <input
               type="checkbox"
-              className="form-checkbox text-rose-600"
+              className="h-8 w-8 accent-indigo-500"
               onChange={toggleAllCheckboxes}
               checked={cryptos.every((crypto) => crypto.isSelected)}
             />
@@ -94,30 +96,32 @@ const CryptoTable = ({
       <tbody>
         {cryptos.map((crypto) => (
           <tr key={crypto.id} className={`${crypto.animationClass}`}>
-            <td className="p-4 text-center">{crypto.rank}.</td>
+            <td className="p-4 text-center text-indigo-500 text-xl font-light">
+              {crypto.rank}.
+            </td>
             <td
               className={`p-4 ${
-                crypto.isSelected ? "text-blue-700 font-bold" : ""
+                crypto.isSelected
+                  ? "text-indigo-500 font-bold underline text-lg"
+                  : ""
               }`}
             >
               {crypto.name}
             </td>
             <td className="p-4">{crypto.symbol}</td>
             <td className="p-4 text-right">
-              {getCurrencySymbol()} {(crypto.price / rate).toFixed(2)}
+              {(crypto.price / rate).toFixed(2)}
             </td>
             <td className="p-4 text-right">
               {crypto.changePercent24Hr.toFixed(2)}%
             </td>
-            <td className="p-4 text-right">
-              <label className="inline-flex items-center">
+            <td className="p-4 text-center">
                 <input
                   type="checkbox"
-                  className="form-checkbox text-rose-600"
+                  className=" h-8 w-8 accent-indigo-500 rounded-full hover:accent-indigo-200"
                   onChange={() => handleCheckboxChange(crypto.id)}
                   checked={crypto.isSelected}
                 />
-              </label>
             </td>
           </tr>
         ))}

@@ -19,7 +19,7 @@ const PaginationFooter = ({ page, per_page, handleItemsPerPageChange, handlePage
         </div>
         <div className="flex space-x-2">
           <button
-            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 font-black"
+            className="bg-indigo-500 text-white px-4 py-1 rounded hover:bg-indigo-600 font-black"
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
           >
@@ -29,7 +29,7 @@ const PaginationFooter = ({ page, per_page, handleItemsPerPageChange, handlePage
             Page {page} of {Math.ceil(1000 / per_page)}
           </span>
           <button
-            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 font-black"
+            className="bg-indigo-500 text-white px-4 py-1 rounded hover:bg-indigo-600 font-black"
             onClick={() => handlePageChange(page + 1)}
             disabled={page === 1000 / per_page}
           >
