@@ -23,7 +23,7 @@ const CryptoGrid = ({
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 grid-cols-2 mb-5">
+    <div className="grid gap-4 md:grid-cols-3 grid-cols-2 mb-5 lg:hidden">
       <div className="flex items-center grid-cols-2 grid-rows-1 md:col-span-3 col-span-2 justify-between">
         <div className="flex items-center">
         <select
@@ -36,7 +36,7 @@ const CryptoGrid = ({
           <option value="price">Price</option>
         </select>
         <button
-          className="ml-2 bg-transparent text-white py-1 rounded font-black hover:scale-150 transition"
+          className="ml-2 bg-transparent text-white py-1 rounded font-black"
           onClick={() => onSort(sortConfig.key)}
         >
           <span className="text-slate-400">
@@ -48,7 +48,7 @@ const CryptoGrid = ({
           All:
           <input
             type="checkbox"
-            className="h-8 w-8 ml-2 accent-indigo-500 hover:scale-150 transition"
+            className="h-8 w-8 ml-2 accent-indigo-500"
             onChange={toggleAllCheckboxes}
             checked={cryptos.every((crypto) => crypto.isSelected)}
           />
@@ -58,7 +58,7 @@ const CryptoGrid = ({
       {cryptos.map((crypto) => (
         <div
           key={crypto.id}
-          className={`${crypto.animationClass} rounded-lg px-3 pt-1 pb-4 shadow-lg lg:hidden grid grid-cols-2 grid-rows-3 items-center`}
+          className={`${crypto.animationClass} rounded-lg px-3 pt-1 pb-4 shadow-lg grid grid-cols-2 grid-rows-3 items-center`}
         >
           <div className="col-span-2 row-span-1 flex justify-end">
             <input

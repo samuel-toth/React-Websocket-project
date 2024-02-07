@@ -24,3 +24,105 @@ code {
     animation-fill-mode: forwards;
   }
 }
+
+@keyframes slideUp {
+  from {
+    transform: translateY(97%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(3%);
+  }
+}
+
+@keyframes rotateIcon {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-animation {
+  animation: rotateIcon 1s linear;
+}
+
+.crypto-chart-container {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.crypto-table-container {
+  animation: slideDown 0.5s ease-out forwards;
+}
+
+
+@keyframes fadeAndSpin {
+  0% {
+    transform: rotate(-360deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+
+
+.fade-and-spin {
+  animation: fadeAndSpin 2s linear forwards;
+}
+
+@keyframes drawChartLine {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawChartLineReverse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 100;
+  }
+}
+
+
+
+.show-chart-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawChartLine 1s ease forwards;
+}
+
+.hide-chart-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  animation: drawChartLineReverse 0.3s  ease forwards;
+}
+
+@keyframes fadeAndShrink {
+  0% {
+    stroke-opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    stroke-opacity: 0;
+    transform: translate(10px, -10px) rotate(45deg);
+  }
+}
