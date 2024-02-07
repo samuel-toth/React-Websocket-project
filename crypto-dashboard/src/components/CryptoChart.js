@@ -7,7 +7,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  CartesianAxis,
 } from "recharts";
 import { useDashboard } from "../contexts/DashboardContext";
 
@@ -29,14 +28,16 @@ const intervalMap = {
 
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
-  return `${date.toLocaleDateString("sk-SK")} ${date.toLocaleTimeString("sk-SK")}`;
+  return `${date.toLocaleDateString("sk-SK")} ${date.toLocaleTimeString(
+    "sk-SK"
+  )}`;
 };
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip" style={{ backgroundColor: "#fff", padding: "5px", border: "1px solid #ccc" }}>
-        <p className="label">{`Time: ${formatDate(label)}`}</p>
+        <p className="label">{formatDate(label)}</p>
         {payload.map((crypto) => (
           <p key={crypto.dataKey} className="label" style={{ color: crypto.color }}>
             {`${crypto.name}: ${crypto.value}%`}
@@ -49,22 +50,14 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const capitalizeWords = (str) =>
-  str
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
 
-const getRandomColor = () =>
-  "#" + Math.floor(Math.random() * 16777215).toString(16);
 
 const CryptoChart = () => {
-  const { chartData } = useDashboard();
+  const { chartData, cryptos } = useDashboard();
   const [formattedData, setFormattedData] = useState([]);
-  const [timeRange, setTimeRange] = useState("1m"); // Default time range is 1 minute
-  const [initialTime] = useState(Date.now()); // Initial time is the time when the component is mounted
+  const [timeRange, setTimeRange] = useState("1m");
+  const [initialTime] = useState(Date.now());
   const [xAxisTicks, setXAxisTicks] = useState([]);
-  const [colors, setColors] = useState({});
 
   useEffect(() => {
     const interval = intervalMap[timeRange];
@@ -79,30 +72,29 @@ const CryptoChart = () => {
   }, [timeRange]);
 
   useEffect(() => {
-    const newColors = { ...colors };
-    const tempData = chartData.map(({ id, date, percentageChange }) => {
-      if (!newColors[id]) {
-        newColors[id] = getRandomColor();
-      }
-      return { id, date: new Date(date).getTime(), percentageChange };
-    });
+    const tempData = chartData.map(({ id, date, percentageChange, name }) => ({
+      id,
+      date: new Date(date).getTime(),
+      percentageChange,
+      name,
+    }));
 
-    const groupedData = tempData.reduce((acc, { id, date, percentageChange }) => {
+    const groupedData = tempData.reduce((acc, { id, date, percentageChange, name }) => {
       if (!acc[id]) {
         acc[id] = [];
       }
-      acc[id].push({ date, percentageChange });
+      acc[id].push({ date, percentageChange, name });
       return acc;
     }, {});
 
     const newData = Object.keys(groupedData).map((cryptoId) => ({
-      id: capitalizeWords(cryptoId),
+      id: cryptoId,
       data: groupedData[cryptoId],
+      title: cryptos.find((crypto) => crypto.id === cryptoId).name,
     }));
 
-    setColors(newColors);
     setFormattedData(newData);
-  }, [chartData, colors]);
+  }, [chartData]);
 
   const handleTimeRangeChange = (range) => {
     setTimeRange(range);
@@ -117,7 +109,7 @@ const CryptoChart = () => {
   };
 
   return (
-    <div style={{ width: "100%", height: 400, zInde: 5 }}>
+    <div style={{ width: "100%", height: 400, zIndex: 5 }}>
       <ResponsiveContainer>
         <LineChart
           width={500}
@@ -138,9 +130,13 @@ const CryptoChart = () => {
             scale="time"
             ticks={xAxisTicks}
           />
-          <CartesianAxis scale="log" /> {/* Logarithmic scale for Y axis */}
-
-          <YAxis label={{ value: "Percentage Change", angle: -90, position: 'insideLeft' }} /> {/* Added label for Y axis */}
+          <YAxis
+            label={{
+              value: "Percentage Change",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
           {formattedData.map((series, idx) => (
@@ -149,20 +145,22 @@ const CryptoChart = () => {
               type="linear"
               dataKey="percentageChange"
               data={series.data}
-              name={series.id}
-              stroke={colors[series.id.toLowerCase()] || '#8884d8'}
+              name={series.title}
+              stroke={
+                cryptos.find((crypto) => crypto.id === series.id)?.color ||
+                "#8884d8"
+              }
               strokeWidth={2}
               dot={false}
-              isAnimationActive={true}
+              isAnimationActive={false}
             />
           ))}
         </LineChart>
-        <div>
+        <div className="text-red-200">
           {Object.keys(timeRanges).map((range) => (
             <button
               key={range}
               onClick={() => handleTimeRangeChange(range)}
-              style={{ margin: "0 5px" }}
             >
               {range.toUpperCase()}
             </button>

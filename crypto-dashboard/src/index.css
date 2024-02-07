@@ -25,24 +25,6 @@ code {
   }
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(97%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(3%);
-  }
-}
-
 @keyframes rotateIcon {
   from {
     transform: rotate(0deg);
@@ -56,13 +38,6 @@ code {
   animation: rotateIcon 1s linear;
 }
 
-.crypto-chart-container {
-  animation: slideUp 0.5s ease-out forwards;
-}
-
-.crypto-table-container {
-  animation: slideDown 0.5s ease-out forwards;
-}
 
 
 @keyframes fadeAndSpin {
@@ -103,7 +78,6 @@ code {
 }
 
 
-
 .show-chart-line {
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
@@ -125,4 +99,35 @@ code {
     stroke-opacity: 0;
     transform: translate(10px, -10px) rotate(45deg);
   }
+}
+
+
+.slide-down {
+  transition: transform 0.3s ease;
+}
+
+.hidden-chart {
+  transform: translateY(-100%);
+}
+
+.visible-chart {
+  transform: translateY(0%);
+}
+
+.chart-container {
+  transition: max-height 0.3s linear;
+  overflow: hidden;
+  max-height: 0;
+}
+
+.chart-visible {
+  max-height: 450px;
+}
+
+.table-container {
+  transition: transform 0.3s linear;
+}
+
+.table-lowered {
+  transform: translateY(0%);
 }

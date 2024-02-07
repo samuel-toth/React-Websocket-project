@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import {
   FaChevronRight,
@@ -21,6 +21,14 @@ function Header() {
     showChart,
     setShowChart,
   } = useDashboard();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   const handleCurrencyChange = (currency) => {
     changeCurrency(currency);
@@ -138,9 +146,17 @@ function Header() {
                   className="text-indigo-500"
                   strokeWidth="4"
                 />
-
                 <path
-                  d="M7,23 L14,14 L17,18 L26,4"
+                  d="M8,22 L14,14 L17,18 L26,4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  className="text-slate-300"
+                  strokeWidth="3"
+                />
+                <path
+                  d="M7,22 L14,14 L17,18 L26,4"
                   fill="none"
                   stroke="currentColor"
                   strokeLinejoin="round"
@@ -163,7 +179,7 @@ function Header() {
                 }`}
               />
               <FaMoon
-                className={`text-sky-600 transition-all duration-500 ${
+                className={`text-slate-400 transition-all duration-500 ${
                   !darkMode ? "opacity-0 -rotate-180" : "opacity-100"
                 }`}
               />

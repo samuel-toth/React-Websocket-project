@@ -6,27 +6,26 @@ import CryptoGrid from "./CryptoGrid";
 import CryptoChart from "./CryptoChart";
 
 const Dashboard = () => {
-  const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [websocket, setWebsocket] = useState(null);
-  const [rate, setRate] = useState(1);
   let [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
   });
   const [filteredCryptos, setFilteredCryptos] = useState([]);
   const {
-    per_page,
+    cryptos,
+    setCryptos,
+    rate,
+    setRateToUSD,
     page,
-    currency,
     changePage,
+    per_page,
     changePerPage,
     searchTerm,
-    chartedCryptos,
-    changeChartedCryptos,
     changeChartData,
-    chartData,
     showChart,
+    currency,
   } = useDashboard();
 
   const fetchRateToUSD = useCallback(async () => {
@@ -35,9 +34,9 @@ const Dashboard = () => {
         `https://api.coincap.io/v2/rates/${currency}`
       );
       const data = await response.json();
-      setRate(data.data["rateUsd"]);
+      setRateToUSD(data.data["rateUsd"]);
     } else {
-      setRate(1);
+      setRateToUSD(1);
     }
   }, [currency]);
 
@@ -56,8 +55,9 @@ const Dashboard = () => {
       supply: parseFloat(asset.supply),
       marketCapUsd: parseFloat(asset.marketCapUsd),
       isSelected: false,
-      isCharted: chartedCryptos.includes(asset.id),
-      animationClass: " bg-gray-100 transition-colors duration-1000",
+      animationClass:
+        " bg-slate-100/30 backdrop-blur-md transition-colors duration-1000",
+      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     }));
 
     setCryptos(assets);
@@ -73,17 +73,12 @@ const Dashboard = () => {
       websocket.close();
     }
 
-    const uniqueIds = [
-      ...new Set(
+    const ws = new WebSocket(
+      "wss://ws.coincap.io/prices?assets=" +
         cryptos
           .filter((crypto) => crypto.isSelected)
           .map((crypto) => crypto.id)
-          .concat(chartedCryptos)
-      ),
-    ];
-
-    const ws = new WebSocket(
-      "wss://ws.coincap.io/prices?assets=" + uniqueIds.join(",")
+          .join(",")
     );
 
     ws.onopen = () => {
@@ -98,9 +93,10 @@ const Dashboard = () => {
           const priceIncreased = newPrice > oldPrice;
           const priceDecreased = newPrice < oldPrice;
 
-          if (crypto.isCharted) {
+          if (crypto.isSelected) {
             const newChartData = {
               id: crypto.id,
+              name: crypto.name,
               date: Date.now(),
               percentageChange: ((newPrice - oldPrice) / oldPrice) * 100,
             };
@@ -116,7 +112,7 @@ const Dashboard = () => {
 
           setTimeout(() => {
             crypto.animationClass =
-              "transition-colors duration-1000 bg-gray-100";
+              "transition-colors duration-1000 bg-slate-100/30 backdrop-blur-md";
             setCryptos([...cryptos]);
           }, 300);
         }
@@ -129,7 +125,7 @@ const Dashboard = () => {
     return () => {
       ws.close();
     };
-  }, [changeChartData, chartedCryptos, cryptos]);
+  }, [changeChartData, cryptos]);
 
   useEffect(() => {
     fetchRateToUSD();
@@ -199,52 +195,39 @@ const Dashboard = () => {
     });
   };
 
-  const toggleCryptoCharting = (id) => {
-    const updatedCryptos = cryptos.map((crypto) => {
-      if (crypto.id === id) {
-        crypto.isCharted = !crypto.isCharted;
-        changeChartedCryptos(crypto.id);
-      }
-      return crypto;
-    });
-    setCryptos(updatedCryptos);
-  };
-
   return (
     <div className="lg:px-40 md:px-20 sm:px-10 px-10 py-10">
-      {showChart > 0 && (
-        <div className="crypto-chart-container z-10">
-          <CryptoChart />
-        </div>
-      )}
-      <div className={showChart ? "crypto-table-container" : ""}>
-      <CryptoTable
-        cryptos={filteredCryptos}
-        sortConfig={sortConfig}
-        onSort={sortCryptos}
-        currency={currency}
-        toggleAllCheckboxes={toggleAllCheckboxes}
-        handleRefreshCheckbox={toggleCryptoRefresh}
-        handleChartCheckbox={toggleCryptoCharting}
-        rate={rate}
-      />
+      <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
+        <CryptoChart />
       </div>
-      <CryptoGrid
-        cryptos={filteredCryptos}
-        sortConfig={sortConfig}
-        onSort={sortCryptos}
-        currency={currency}
-        toggleAllCheckboxes={toggleAllCheckboxes}
-        handleRefreshCheckbox={toggleCryptoRefresh}
-        handleChartCheckbox={toggleCryptoCharting}
-        rate={rate}
-      />
-      <PaginationFooter
-        page={page}
-        per_page={per_page}
-        handleItemsPerPageChange={changePerPage}
-        handlePageChange={changePage}
-      />
+
+      <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
+        <CryptoTable
+          cryptos={filteredCryptos}
+          sortConfig={sortConfig}
+          onSort={sortCryptos}
+          currency={currency}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          handleRefreshCheckbox={toggleCryptoRefresh}
+          rate={rate}
+        />
+
+        <CryptoGrid
+          cryptos={filteredCryptos}
+          sortConfig={sortConfig}
+          onSort={sortCryptos}
+          currency={currency}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          handleRefreshCheckbox={toggleCryptoRefresh}
+          rate={rate}
+        />
+        <PaginationFooter
+          page={page}
+          per_page={per_page}
+          handleItemsPerPageChange={changePerPage}
+          handlePageChange={changePage}
+        />
+      </div>
     </div>
   );
 };
