@@ -4,10 +4,10 @@ import { DashboardProvider } from "./contexts/DashboardContext";
 
 function App() {
   return (
-      <DashboardProvider>
-        <Header />
-        <Dashboard />
-      </DashboardProvider>
+    <DashboardProvider>
+      <Header />
+      <Dashboard />
+    </DashboardProvider>
   );
 }
 

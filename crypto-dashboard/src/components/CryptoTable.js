@@ -1,35 +1,26 @@
 import React from "react";
+import { getCurrencySymbol } from "../utils/helper";
+import { useDashboard } from "../contexts/DashboardContext";
 
-const CryptoTable = ({
-  cryptos,
-  sortConfig,
-  onSort,
-  currency,
-  toggleAllCheckboxes,
-  handleRefreshCheckbox,
-  rate,
-}) => {
-  const getCurrencySymbol = () => {
-    switch (currency) {
-      case "usd":
-        return "$";
-      case "euro":
-        return "€";
-      case "czech-republic-koruna":
-        return "Kč";
-      default:
-        return "";
-    }
-  };
+const CryptoTable = () => {
+  const {
+    displayedCryptos,
+    currency,
+    rate,
+    sortConfig,
+    changeSortConfig,
+    toggleAllCheckboxes,
+    toggleCryptoIsSelected,
+  } = useDashboard();
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
-      <table className="w-full lg:table table-fixed hidden z-30">
+      <table className="w-full lg:table table-fixed hidden">
         <thead className="bg-slate-300 dark:bg-slate-600 transition-colors text-slate-700 dark:text-slate-400 duration-200">
           <tr>
             <th
               className="p-4 text-center font-bold cursor-pointer hover:text-indigo-500 transition-all w-1/12"
-              onClick={() => onSort("rank")}
+              onClick={() => changeSortConfig("rank")}
             >
               <span className={sortConfig.key === "rank" ? "underline" : ""}>
                 Rank
@@ -42,7 +33,7 @@ const CryptoTable = ({
             </th>
             <th
               className="p-4 text-left cursor-pointer hover:text-indigo-500 transition-all"
-              onClick={() => onSort("name")}
+              onClick={() => changeSortConfig("name")}
             >
               <span className={sortConfig.key === "name" ? "underline" : ""}>
                 Name
@@ -55,7 +46,7 @@ const CryptoTable = ({
             </th>
             <th
               className="p-4 text-left cursor-pointer hover:text-indigo-500 transition-all w-1/12"
-              onClick={() => onSort("symbol")}
+              onClick={() => changeSortConfig("symbol")}
             >
               <span className={sortConfig.key === "symbol" ? "underline" : ""}>
                 Symbol
@@ -68,10 +59,10 @@ const CryptoTable = ({
             </th>
             <th
               className="p-4 text-right cursor-pointer hover:text-indigo-500 transition-all"
-              onClick={() => onSort("price")}
+              onClick={() => changeSortConfig("price")}
             >
               <span className={sortConfig.key === "price" ? "underline" : ""}>
-                Price - {getCurrencySymbol()}
+                Price - {getCurrencySymbol(currency)}
               </span>
               {sortConfig.key === "price" && (
                 <span className="text-slate-400 dark:text-slate-500">
@@ -81,7 +72,7 @@ const CryptoTable = ({
             </th>
             <th
               className="p-4 text-right cursor-pointer hover:text-indigo-500 transition-all w-1/12"
-              onClick={() => onSort("changePercent24Hr")}
+              onClick={() => changeSortConfig("changePercent24Hr")}
             >
               <span
                 className={
@@ -101,13 +92,13 @@ const CryptoTable = ({
                 type="checkbox"
                 className="h-8 w-8 accent-indigo-500"
                 onChange={toggleAllCheckboxes}
-                checked={cryptos.every((crypto) => crypto.isSelected)}
+                checked={displayedCryptos.every((crypto) => crypto.isSelected)}
               />
             </th>
           </tr>
         </thead>
         <tbody>
-          {cryptos.map((crypto) => (
+          {displayedCryptos.map((crypto) => (
             <tr key={crypto.id} className={`${crypto.animationClass}`}>
               <td className="p-4 text-center text-slate-500 dark:text-slate-400">
                 {crypto.rank}.
@@ -136,7 +127,7 @@ const CryptoTable = ({
                 <input
                   type="checkbox"
                   className=" h-8 w-8 accent-indigo-500 rounded-full hover:accent-indigo-200"
-                  onChange={() => handleRefreshCheckbox(crypto.id)}
+                  onChange={() => toggleCryptoIsSelected(crypto.id)}
                   checked={crypto.isSelected}
                 />
               </td>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import CryptoTable from "./CryptoTable";
 import PaginationFooter from "./PaginationFooter";
@@ -7,58 +7,9 @@ import CryptoChart from "./CryptoChart";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
-  let [sortConfig, setSortConfig] = useState({
-    key: "rank",
-    direction: "ascending",
-  });
-  const [filteredCryptos, setFilteredCryptos] = useState([]);
-  const {
-    cryptos,
-    setCryptos,
-    rate,
-    setRate,
-    page,
-    perPage,
-    searchTerm,
-    addToChartData,
-    showChart,
-    currency,
-  } = useDashboard();
 
-  const fetchRateToUSD = useCallback(async () => {
-    if (currency !== "usd") {
-      const response = await fetch(
-        `https://api.coincap.io/v2/rates/${currency}`
-      );
-      const data = await response.json();
-      setRate(data.data["rateUsd"]);
-    } else {
-      setRate(1);
-    }
-  }, [currency]);
-
-  const fetchCryptos = useCallback(async () => {
-    const response = await fetch(
-      `https://api.coincap.io/v2/assets?limit=${perPage}&offset=${
-        (page - 1) * perPage
-      }`
-    );
-    const data = await response.json();
-    const assets = data.data.map((asset) => ({
-      ...asset,
-      rank: parseInt(asset.rank),
-      price: parseFloat(asset.priceUsd),
-      changePercent24Hr: parseFloat(asset.changePercent24Hr),
-      supply: parseFloat(asset.supply),
-      marketCapUsd: parseFloat(asset.marketCapUsd),
-      isSelected: false,
-      animationClass:
-        " bg-slate-100/30 backdrop-blur-md transition-colors duration-1000",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-    }));
-
-    setCryptos(assets);
-  }, [page, perPage]);
+  const { cryptos, setCryptos, rate, addToChartData, showChart, currency } =
+    useDashboard();
 
   useEffect(() => {
     if (!cryptos.some((crypto) => crypto.isSelected)) {
@@ -123,99 +74,15 @@ const Dashboard = () => {
     };
   }, [cryptos]);
 
-  useEffect(() => {
-    fetchRateToUSD();
-  }, [fetchRateToUSD]);
-
-  useEffect(() => {
-    fetchCryptos();
-  }, [fetchCryptos]);
-
-  useEffect(() => {
-    if (searchTerm === "") {
-      setFilteredCryptos(cryptos);
-    } else {
-      const filtered = cryptos.filter((crypto) =>
-        crypto.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredCryptos(filtered);
-    }
-  }, [cryptos, searchTerm]);
-
-  const toggleCryptoRefresh = (id) => {
-    const updatedCryptos = cryptos.map((crypto) => {
-      if (crypto.id === id) {
-        crypto.isSelected = !crypto.isSelected;
-      }
-      return crypto;
-    });
-    setCryptos(updatedCryptos);
-  };
-
-  const toggleAllCheckboxes = () => {
-    if (cryptos.every((crypto) => crypto.isSelected)) {
-      const updatedCryptos = cryptos.map((crypto) => {
-        crypto.isSelected = false;
-        return crypto;
-      });
-      setCryptos(updatedCryptos);
-    } else {
-      const updatedCryptos = cryptos.map((crypto) => {
-        crypto.isSelected = true;
-        return crypto;
-      });
-
-      setCryptos(updatedCryptos);
-    }
-  };
-
-  const sortCryptos = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-
-    setCryptos((prevCryptos) => {
-      let sortedCryptos = [...prevCryptos];
-      sortedCryptos.sort((a, b) => {
-        if (a[key] < b[key]) {
-          return direction === "ascending" ? -1 : 1;
-        }
-        if (a[key] > b[key]) {
-          return direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-      return sortedCryptos;
-    });
-  };
-
   return (
-    <div className="lg:px-40 md:px-20 sm:px-10 px-10 py-10">
+    <div className="lg:px-60 md:px-20 sm:px-10 px-24 pt-48 pb-10">
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
-          <CryptoChart />
+        <CryptoChart />
       </div>
       <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
-        <CryptoTable
-          cryptos={filteredCryptos}
-          sortConfig={sortConfig}
-          onSort={sortCryptos}
-          currency={currency}
-          toggleAllCheckboxes={toggleAllCheckboxes}
-          handleRefreshCheckbox={toggleCryptoRefresh}
-          rate={rate}
-        />
-        <CryptoGrid
-          cryptos={filteredCryptos}
-          sortConfig={sortConfig}
-          onSort={sortCryptos}
-          currency={currency}
-          toggleAllCheckboxes={toggleAllCheckboxes}
-          handleRefreshCheckbox={toggleCryptoRefresh}
-          rate={rate}
-        />
-        <PaginationFooter/>
+        <CryptoTable currency={currency} rate={rate} />
+        <CryptoGrid currency={currency} rate={rate} />
+        <PaginationFooter />
       </div>
     </div>
   );

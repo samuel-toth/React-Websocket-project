@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -17,7 +16,6 @@ code {
     monospace;
 }
 
-
 @layer utilities {
   .animate-highlight {
     @apply transition-colors ease-in-out duration-300;
@@ -29,6 +27,7 @@ code {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -38,22 +37,21 @@ code {
   animation: rotateIcon 1s linear;
 }
 
-
-
 @keyframes fadeAndSpin {
   0% {
     transform: rotate(-360deg);
     opacity: 0;
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     transform: rotate(0deg);
     opacity: 1;
   }
 }
-
 
 .fade-and-spin {
   animation: fadeAndSpin 2s linear forwards;
@@ -63,6 +61,7 @@ code {
   from {
     stroke-dashoffset: 100;
   }
+
   to {
     stroke-dashoffset: 0;
   }
@@ -72,11 +71,11 @@ code {
   from {
     stroke-dashoffset: 0;
   }
+
   to {
     stroke-dashoffset: 100;
   }
 }
-
 
 .show-chart-line {
   stroke-dasharray: 100;
@@ -87,7 +86,7 @@ code {
 .hide-chart-line {
   stroke-dasharray: 100;
   stroke-dashoffset: 0;
-  animation: drawChartLineReverse 0.3s  ease forwards;
+  animation: drawChartLineReverse 0.3s ease forwards;
 }
 
 @keyframes fadeAndShrink {
@@ -95,12 +94,12 @@ code {
     stroke-opacity: 1;
     transform: translate(0, 0) rotate(0deg);
   }
+
   100% {
     stroke-opacity: 0;
     transform: translate(10px, -10px) rotate(45deg);
   }
 }
-
 
 .slide-down {
   transition: transform 0.3s ease;
