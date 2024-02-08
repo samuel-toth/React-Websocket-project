@@ -10,8 +10,10 @@ import { perPageOptions } from "../utils/helper";
 
 const PaginationFooter = () => {
   const { page, changeCurrentPage, setPerPage } = useDashboard();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedPerPage, setSelectedPerPage] = useState("20");
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -40,8 +42,10 @@ const PaginationFooter = () => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {selectedPerPage}
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-400 flex flex-col 
-            items-center space-y-[-0.45rem] transition-transform duration-300 transform hover:scale-125">
+            <div
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-400 flex flex-col 
+            items-center space-y-[-0.45rem] transition-transform duration-300 transform hover:scale-125"
+            >
               <FaChevronUp />
               <FaChevronDown />
             </div>

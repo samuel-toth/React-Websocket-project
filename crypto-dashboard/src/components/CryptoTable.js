@@ -1,17 +1,17 @@
 import React from "react";
 import { getCurrencySymbol } from "../utils/helper";
 import { useDashboard } from "../contexts/DashboardContext";
+import { useCryptoData } from "../contexts/CryptoDataContext";
 
 const CryptoTable = () => {
+  const { currency, sortConfig, changeSortConfig } = useDashboard();
+
   const {
     displayedCryptos,
-    currency,
     rate,
-    sortConfig,
-    changeSortConfig,
     toggleAllCheckboxes,
     toggleCryptoIsSelected,
-  } = useDashboard();
+  } = useCryptoData();
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">

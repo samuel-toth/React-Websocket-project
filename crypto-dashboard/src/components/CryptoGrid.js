@@ -1,13 +1,15 @@
 import React from "react";
 import { getCurrencySymbol } from "../utils/helper";
 import { useDashboard } from "../contexts/DashboardContext";
+import { useCryptoData } from "../contexts/CryptoDataContext";
 import { FaCheck } from "react-icons/fa6";
 
 import GridHeader from "./GridHeader";
 
 const CryptoGrid = () => {
-  const { toggleCryptoIsSelected, displayedCryptos, currency, rate } =
-    useDashboard();
+  const { currency } = useDashboard();
+
+  const { displayedCryptos, toggleCryptoIsSelected, rate } = useCryptoData();
 
   return (
     <div className="grid gap-4 md:grid-cols-3 grid-cols-2 mb-5 lg:hidden">

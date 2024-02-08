@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
+import { useCryptoData } from "../contexts/CryptoDataContext";
+
 import CryptoTable from "./CryptoTable";
 import PaginationFooter from "./PaginationFooter";
 import CryptoGrid from "./CryptoGrid";
@@ -8,8 +10,9 @@ import CryptoChart from "./CryptoChart";
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
 
-  const { cryptos, setCryptos, rate, addToChartData, showChart, currency } =
-    useDashboard();
+  const { showChart, currency } = useDashboard();
+
+  const { cryptos, setCryptos, rate, addToChartData } = useCryptoData();
 
   useEffect(() => {
     if (!cryptos.some((crypto) => crypto.isSelected)) {

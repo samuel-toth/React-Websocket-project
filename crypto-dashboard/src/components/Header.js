@@ -11,10 +11,6 @@ import {
 import { currencies } from "../utils/helper";
 
 function Header() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
-  const [rotateReload, setRotateReload] = useState(false);
-
   const {
     setCurrency,
     setSearchTerm,
@@ -24,6 +20,10 @@ function Header() {
     darkMode,
     setDarkMode,
   } = useDashboard();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+  const [rotateReload, setRotateReload] = useState(false);
 
   const sidebarRef = useRef(null);
 
@@ -72,7 +72,7 @@ function Header() {
       }`}
     >
       {/* Pull tab */}
-      
+
       <div
         className="w-25 h-full bg-slate-300/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
         items-center cursor-pointer"

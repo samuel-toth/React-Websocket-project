@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useDashboard } from "../contexts/DashboardContext";
+import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   formatDate,
   formatXAxisTick,
@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const CryptoChart = () => {
-  const { chartData, cryptos } = useDashboard();
+  const { chartData, cryptos } = useCryptoData();
   const [formattedData, setFormattedData] = useState([]);
   const [timeRange, setTimeRange] = useState("1m");
   const [initialTime] = useState(Date.now());

@@ -1,13 +1,13 @@
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
-import { DashboardProvider } from "./contexts/DashboardContext";
+import { AppContextProvider } from "./contexts/AppContextProvider";
 
 function App() {
   return (
-    <DashboardProvider>
+    <AppContextProvider>
       <Header />
       <Dashboard />
-    </DashboardProvider>
+    </AppContextProvider>
   );
 }
 
