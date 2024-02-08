@@ -6,7 +6,6 @@ import CryptoGrid from "./CryptoGrid";
 import CryptoChart from "./CryptoChart";
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
   const [websocket, setWebsocket] = useState(null);
   let [sortConfig, setSortConfig] = useState({
     key: "rank",
@@ -17,13 +16,11 @@ const Dashboard = () => {
     cryptos,
     setCryptos,
     rate,
-    setRateToUSD,
+    setRate,
     page,
-    changePage,
-    per_page,
-    changePerPage,
+    perPage,
     searchTerm,
-    changeChartData,
+    addToChartData,
     showChart,
     currency,
   } = useDashboard();
@@ -34,16 +31,16 @@ const Dashboard = () => {
         `https://api.coincap.io/v2/rates/${currency}`
       );
       const data = await response.json();
-      setRateToUSD(data.data["rateUsd"]);
+      setRate(data.data["rateUsd"]);
     } else {
-      setRateToUSD(1);
+      setRate(1);
     }
   }, [currency]);
 
   const fetchCryptos = useCallback(async () => {
     const response = await fetch(
-      `https://api.coincap.io/v2/assets?limit=${per_page}&offset=${
-        (page - 1) * per_page
+      `https://api.coincap.io/v2/assets?limit=${perPage}&offset=${
+        (page - 1) * perPage
       }`
     );
     const data = await response.json();
@@ -61,8 +58,7 @@ const Dashboard = () => {
     }));
 
     setCryptos(assets);
-    setLoading(false);
-  }, [page, per_page]);
+  }, [page, perPage]);
 
   useEffect(() => {
     if (!cryptos.some((crypto) => crypto.isSelected)) {
@@ -100,7 +96,7 @@ const Dashboard = () => {
               date: Date.now(),
               percentageChange: ((newPrice - oldPrice) / oldPrice) * 100,
             };
-            changeChartData(newChartData);
+            addToChartData(newChartData);
           }
 
           crypto.price = newPrice;
@@ -125,7 +121,7 @@ const Dashboard = () => {
     return () => {
       ws.close();
     };
-  }, [changeChartData, cryptos]);
+  }, [cryptos]);
 
   useEffect(() => {
     fetchRateToUSD();
@@ -198,9 +194,8 @@ const Dashboard = () => {
   return (
     <div className="lg:px-40 md:px-20 sm:px-10 px-10 py-10">
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
-        <CryptoChart />
+          <CryptoChart />
       </div>
-
       <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
         <CryptoTable
           cryptos={filteredCryptos}
@@ -211,7 +206,6 @@ const Dashboard = () => {
           handleRefreshCheckbox={toggleCryptoRefresh}
           rate={rate}
         />
-
         <CryptoGrid
           cryptos={filteredCryptos}
           sortConfig={sortConfig}
@@ -221,12 +215,7 @@ const Dashboard = () => {
           handleRefreshCheckbox={toggleCryptoRefresh}
           rate={rate}
         />
-        <PaginationFooter
-          page={page}
-          per_page={per_page}
-          handleItemsPerPageChange={changePerPage}
-          handlePageChange={changePage}
-        />
+        <PaginationFooter/>
       </div>
     </div>
   );
