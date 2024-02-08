@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
+import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   FaMoon,
   FaSun,
@@ -20,6 +21,9 @@ function Header() {
     darkMode,
     setDarkMode,
   } = useDashboard();
+
+  const { refreshData } = useCryptoData();
+
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
@@ -46,6 +50,7 @@ function Header() {
   };
 
   const handleReload = () => {
+    refreshData();
     setRotateReload(true);
     setTimeout(() => setRotateReload(false), 1000);
   };
@@ -65,14 +70,13 @@ function Header() {
   return (
     <div
       ref={sidebarRef}
-      className={`fixed top-0 right-0 z-40 mt-20 flex transition-transform duration-500 linear select-none ${
+      className={`fixed top-0 right-0 mt-20 flex transition-transform duration-500 linear select-none ${
         isSidebarOpen
-          ? "translate-x-0 mr-10"
-          : "translate-x-[calc(100%-3rem)] mr-8"
+          ? "translate-x-0 mr-10 z-50"
+          : "translate-x-[calc(100%-3rem)] mr-8 z-10"
       }`}
     >
       {/* Pull tab */}
-
       <div
         className="w-25 h-full bg-slate-300/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
         items-center cursor-pointer"
@@ -93,7 +97,7 @@ function Header() {
       </div>
 
       {/* Sidebar content */}
-      <div className="w-80 bg-slate-300/30 backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
+      <div className="w-80 bg-slate-300/30 z-50 backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
         <div className="mt-8">
           <div className="flex items-center bg-slate-500 rounded-lg overflow-hidden">
             <FaMagnifyingGlass className="text-xl text-indigo-300 ml-3" />

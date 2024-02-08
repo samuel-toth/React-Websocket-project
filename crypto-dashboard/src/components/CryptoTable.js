@@ -2,6 +2,7 @@ import React from "react";
 import { getCurrencySymbol } from "../utils/helper";
 import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
+import { FaListCheck, FaCheck } from "react-icons/fa6";
 
 const CryptoTable = () => {
   const { currency, sortConfig, changeSortConfig } = useDashboard();
@@ -14,9 +15,9 @@ const CryptoTable = () => {
   } = useCryptoData();
 
   return (
-    <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-1 lg:rounded-lg lg:shadow-lg overflow-hidden lg:my-5">
-      <table className="w-full lg:table table-fixed hidden">
-        <thead className="bg-slate-300 dark:bg-slate-600 transition-colors text-slate-700 dark:text-slate-400 duration-200">
+    <div className="rounded-lg shadow-lg overflow-hidden">
+      <table className="w-full lg:table md:table hidden">
+        <thead className="bg-slate-300 dark:bg-slate-600 select-none transition-colors text-slate-700 dark:text-slate-400 duration-200">
           <tr>
             <th
               className="p-4 text-center font-bold cursor-pointer hover:text-indigo-500 transition-all w-1/12"
@@ -88,11 +89,13 @@ const CryptoTable = () => {
               )}
             </th>
             <th className="p-4 text-center transition-all w-1/12">
-              <input
-                type="checkbox"
-                className="h-8 w-8 accent-indigo-500"
-                onChange={toggleAllCheckboxes}
-                checked={displayedCryptos.every((crypto) => crypto.isSelected)}
+              <FaListCheck
+                className={`text-indigo-500 text-2xl ${
+                  displayedCryptos.every((crypto) => crypto.isSelected)
+                    ? "text-indigo-500"
+                    : "text-slate-400"
+                } `}
+                onClick={toggleAllCheckboxes}
               />
             </th>
           </tr>
@@ -105,7 +108,7 @@ const CryptoTable = () => {
               </td>
               <td
                 className={`p-4 ${
-                  crypto.isSelected ? "text-indigo-500 font-bold text-xl" : ""
+                  crypto.isSelected ? "text-indigo-500 font-bold" : ""
                 }`}
               >
                 {crypto.name}
@@ -124,11 +127,11 @@ const CryptoTable = () => {
                 {crypto.changePercent24Hr.toFixed(2)}%
               </td>
               <td className="p-4 text-center">
-                <input
-                  type="checkbox"
-                  className=" h-8 w-8 accent-indigo-500 rounded-full hover:accent-indigo-200"
-                  onChange={() => toggleCryptoIsSelected(crypto.id)}
-                  checked={crypto.isSelected}
+                <FaCheck
+                  className={`text-indigo-500 text-xl ${
+                    crypto.isSelected ? "text-indigo-500" : "text-slate-400"
+                  } `}
+                  onClick={() => toggleCryptoIsSelected(crypto.id)}
                 />
               </td>
             </tr>

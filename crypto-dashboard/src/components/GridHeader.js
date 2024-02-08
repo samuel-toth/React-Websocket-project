@@ -6,17 +6,19 @@ import { sortOptions } from "../utils/helper";
 
 const GridHeader = () => {
   const { sortConfig, changeSortConfig, flipSortDirection } = useDashboard();
+
   const { cryptos, toggleAllCheckboxes } = useCryptoData();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   return (
-    <div className="flex z-50 items-center grid-cols-2 grid-rows-1 md:col-span-3 col-span-2 justify-between">
-      <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-xl shadow-lg p-2 flex items-center">
+    <div className="flex z-30 md:col-span-3 sm:col-span-3 col-span-2 sm:text-xl text-lg justify-between mx-5 select-none">
+      {/* Sorting button */}
+      <div className=" bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg lg:p-2 sm:p-2 p-1">
         <div className="relative" ref={dropdownRef}>
           <div
-            className="bg-transparent text-slate-500 pl-2 pr-9 cursor-pointer select-none flex 
+            className="bg-transparent text-slate-500 dark:text-slate-400 pl-2 pr-9 cursor-pointer select-none 
             justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
@@ -52,9 +54,10 @@ const GridHeader = () => {
           )}
         </div>
       </div>
-      <div className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center p-2">
+      {/* Select all button */}
+      <div className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center sm:p-2 p-1">
         <FaListCheck
-          className={`text-indigo-500 text-2xl ${
+          className={`text-indigo-500 sm:text-xl text-lg mx-1 ${
             cryptos.every((crypto) => crypto.isSelected)
               ? "text-indigo-500"
               : "text-slate-400"

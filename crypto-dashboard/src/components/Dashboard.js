@@ -78,7 +78,7 @@ const Dashboard = () => {
   }, [cryptos]);
 
   return (
-    <div className="lg:px-60 md:px-20 sm:px-10 px-24 pt-48 pb-10">
+    <div>
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
         <CryptoChart />
       </div>

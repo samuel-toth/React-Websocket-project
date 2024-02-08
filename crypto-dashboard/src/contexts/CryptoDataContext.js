@@ -67,11 +67,17 @@ export const CryptoDataProvider = ({ children }) => {
     setCryptos(assets);
   }, [page, perPage]);
 
+  const refreshData = () => {
+    fetchCryptos();
+    fetchRateToUSD();
+  };
+
   const addToChartData = (data) => {
     setChartData((prevChartData) => [...prevChartData, data]);
   };
 
   const toggleAllCheckboxes = () => {
+    console.log("ss")
     setCryptos((prevCryptos) =>
       prevCryptos.map((crypto) => ({
         ...crypto,
@@ -133,6 +139,7 @@ export const CryptoDataProvider = ({ children }) => {
         toggleAllCheckboxes,
         toggleCryptoIsSelected,
         addToChartData,
+        refreshData,
       }}
     >
       {children}

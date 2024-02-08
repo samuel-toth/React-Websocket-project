@@ -12,35 +12,42 @@ const CryptoGrid = () => {
   const { displayedCryptos, toggleCryptoIsSelected, rate } = useCryptoData();
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 grid-cols-2 mb-5 lg:hidden">
+    <div className="grid sm:gap-6 gap-3 gap-y-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 lg:hidden md:hidden">
       <GridHeader />
-
       {displayedCryptos.map((crypto) => (
         <div
           key={crypto.id}
-          className={`${crypto.animationClass} rounded-lg px-3 pt-1 pb-4 shadow-lg grid grid-cols-2 grid-rows-3 items-center z-0`}
+          className={`${crypto.animationClass} rounded-xl p-3 shadow-lg grid grid-cols-2 select-none`}
         >
-          <div className="col-span-2 row-span-1 flex justify-end">
+          <div className="col-span-2 flex justify-end">
             <FaCheck
-              className={`text-indigo-500 text-2xl ${
+              className={`text-indigo-500 text-lg ${
                 crypto.isSelected ? "text-indigo-500" : "text-slate-400"
               } `}
               onClick={() => toggleCryptoIsSelected(crypto.id)}
             />
           </div>
-          <div className="col-span-2 row-span-1 flex flex-col justify-center min-w-0">
-            <h2 className="text-2xl font-bold text-indigo-500 truncate">
+          <div className="col-span-2 flex-col justify-center">
+            <h2 className="text-xl font-bold text-indigo-500 truncate">
               {crypto.name}
             </h2>
           </div>
-          <div className="col-span-2 row-span-1 flex justify-between min-w-0 items-start">
-            <p className="text-gray-600 text-sm truncate">{crypto.symbol}</p>
-            <p className="text-2xl font-bold truncate ml-2">
+          <div className="col-span-2 flex justify-end">
+            <p className="text-xl font-bold truncate ml-2 ">
               {getCurrencySymbol(currency)} {(crypto.price / rate).toFixed(2)}
             </p>
           </div>
-          <div className="col-span-2 row-span-2 text-gray-500 flex justify-end">
-            {crypto.changePercent24Hr.toFixed(2)}%
+          <div className="col-span-2 flex justify-between">
+            <p>{crypto.symbol}</p>
+            <p
+              className={`${
+                crypto.changePercent24Hr >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {crypto.changePercent24Hr.toFixed(2)}%
+            </p>
           </div>
         </div>
       ))}
