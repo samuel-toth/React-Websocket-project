@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 
@@ -9,41 +9,35 @@ import CryptoChart from "./CryptoChart";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
-
-  const { showChart, currency } = useDashboard();
-
-  const { cryptos, setCryptos, rate, addToChartData } = useCryptoData();
+  const { showChart, currency, page, changeCurrentPage, setPerPage } = useDashboard();
+  const { watchedCryptos, displayedCryptos, setWatchedCryptos, rate, addToChartData } = useCryptoData();
+  const websocketRef = useRef(null);
 
   useEffect(() => {
-    if (!cryptos.some((crypto) => crypto.isSelected)) {
-      return;
+    if (!watchedCryptos.length) return;
+
+    const url = "wss://ws.coincap.io/prices?assets=" + watchedCryptos.map((crypto) => crypto.id).join(",");
+
+    if (websocketRef.current) {
+      websocketRef.current.close();
     }
 
-    if (websocket) {
-      websocket.close();
-    }
-
-    const ws = new WebSocket(
-      "wss://ws.coincap.io/prices?assets=" +
-        cryptos
-          .filter((crypto) => crypto.isSelected)
-          .map((crypto) => crypto.id)
-          .join(",")
-    );
+    const ws = new WebSocket(url);
 
     ws.onopen = () => {
       setWebsocket(ws);
     };
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const updatedCryptos = cryptos.map((crypto) => {
-        if (data[crypto.id]) {
-          const newPrice = parseFloat(data[crypto.id]);
-          const oldPrice = crypto.price;
-          const priceIncreased = newPrice > oldPrice;
-          const priceDecreased = newPrice < oldPrice;
 
-          if (crypto.isSelected) {
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        const updatedCryptos = watchedCryptos.map((crypto) => {
+          if (data[crypto.id]) {
+            const newPrice = parseFloat(data[crypto.id]);
+            const oldPrice = crypto.price;
+            const priceIncreased = newPrice > oldPrice;
+            const priceDecreased = newPrice < oldPrice;
+
             const newChartData = {
               id: crypto.id,
               name: crypto.name,
@@ -51,31 +45,42 @@ const Dashboard = () => {
               percentageChange: ((newPrice - oldPrice) / oldPrice) * 100,
             };
             addToChartData(newChartData);
+
+            crypto.price = newPrice;
+            crypto.animationClass = priceIncreased
+              ? "bg-green-200 animate-highlight"
+              : priceDecreased
+              ? "bg-red-200 animate-highlight"
+              : "";
+
+            setTimeout(() => {
+              crypto.animationClass =
+                "transition-colors duration-1000 bg-slate-100/30 backdrop-blur-md";
+              setWatchedCryptos([...watchedCryptos]);
+            }, 300);
           }
+          return crypto;
+        });
 
-          crypto.price = newPrice;
-          crypto.animationClass = priceIncreased
-            ? "bg-green-200 animate-highlight"
-            : priceDecreased
-            ? "bg-red-200 animate-highlight"
-            : "";
-
-          setTimeout(() => {
-            crypto.animationClass =
-              "transition-colors duration-1000 bg-slate-100/30 backdrop-blur-md";
-            setCryptos([...cryptos]);
-          }, 300);
-        }
-        return crypto;
-      });
-
-      setCryptos(updatedCryptos);
+        setWatchedCryptos(updatedCryptos);
+      } catch (error) {
+        console.error("Error: ", error);
+      }
     };
+
+    ws.onclose = () => {
+      setWebsocket(null);
+    };
+
+    websocketRef.current = ws;
 
     return () => {
-      ws.close();
+      if (websocketRef.current) {
+        websocketRef.current.close();
+        websocketRef.current = null;
+      }
     };
-  }, [cryptos]);
+  }, [watchedCryptos]);
 
   return (
     <div>
@@ -83,12 +88,14 @@ const Dashboard = () => {
         <CryptoChart />
       </div>
       <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
-        <CryptoTable currency={currency} rate={rate} />
+        <CryptoTable displayedCryptos={watchedCryptos} currency={currency} rate={rate} />
+        <CryptoTable displayedCryptos={displayedCryptos} currency={currency} rate={rate} />
         <CryptoGrid currency={currency} rate={rate} />
-        <PaginationFooter />
+        <PaginationFooter page={page} changeCurrentPage={changeCurrentPage} setPerPage={setPerPage} />
       </div>
     </div>
   );
 };
+
 
 export default Dashboard;

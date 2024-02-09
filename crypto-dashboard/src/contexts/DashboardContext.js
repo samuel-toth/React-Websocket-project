@@ -32,21 +32,20 @@ export const DashboardProvider = ({ children }) => {
     }
   };
 
-  const changeSortConfig = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+  const changeSortConfig = (key, title) => {
+    if (sortConfig.key === key) {
+      setSortConfig({
+        ...sortConfig,
+        direction: sortConfig.direction === "ascending" ? "descending" : "ascending",
+      });
+    } else {
+      setSortConfig({
+        key,
+        direction: "ascending",
+        title: title,
+      });
     }
-    setSortConfig({ key, direction });
-  };
-
-  const flipSortDirection = () => {
-    setSortConfig({
-      ...sortConfig,
-      direction:
-        sortConfig.direction === "ascending" ? "descending" : "ascending",
-    });
-  };
+  }
 
   return (
     <DashboardContext.Provider
@@ -65,7 +64,6 @@ export const DashboardProvider = ({ children }) => {
         setDarkMode,
         sortConfig,
         changeSortConfig,
-        flipSortDirection,
       }}
     >
       {children}

@@ -14,6 +14,7 @@ export const CryptoDataProvider = ({ children }) => {
 
   const [cryptos, setCryptos] = useState([]);
   const [displayedCryptos, setDisplayedCryptos] = useState([]);
+  const [watchedCryptos, setWatchedCryptos] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [rate, setRate] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -76,39 +77,57 @@ export const CryptoDataProvider = ({ children }) => {
     setChartData((prevChartData) => [...prevChartData, data]);
   };
 
-  const toggleAllCheckboxes = () => {
-    console.log("ss")
-    setCryptos((prevCryptos) =>
-      prevCryptos.map((crypto) => ({
-        ...crypto,
-        isSelected: !prevCryptos.every((c) => c.isSelected),
-      }))
-    );
+  const addToWatchedCryptos = (crypto) => {
+    const newCrypto = {
+      id: crypto.id,
+      name: crypto.name,
+      price: crypto.price,
+      rank: crypto.rank,
+      isSelected: true,
+      animationClass:
+        "bg-slate-100/30 backdrop-blur-md transition-colors duration-1000",
+      color: crypto.color,
+      changePercent24Hr: crypto.changePercent24Hr,
+    };
+
+    setWatchedCryptos((prevWatchedCryptos) => [...prevWatchedCryptos, newCrypto]);
   };
 
-  const toggleCryptoIsSelected = (id) => {
+  const toggleAllCheckboxes = (state) => {
     const updatedCryptos = cryptos.map((crypto) => {
-      if (crypto.id === id) {
-        crypto.isSelected = !crypto.isSelected;
+      crypto.isSelected = state;
+      if (state) {
+        setWatchedCryptos(cryptos);
+      } else {
+        setWatchedCryptos([]);
       }
       return crypto;
     });
     setCryptos(updatedCryptos);
   };
+
+  const toggleCryptoIsSelected = (id) => {
+    const updatedCryptos = cryptos.map((crypto) => {
+      if (crypto.id === id) {
+        const updatedCrypto = { ...crypto }; // Vytvoríme kópiu kryptomeny s rovnakými hodnotami
+        updatedCrypto.isSelected = !updatedCrypto.isSelected;
+        if (updatedCrypto.isSelected) {
+          addToWatchedCryptos(updatedCrypto);
+        } else {
+          setWatchedCryptos((prevWatchedCryptos) =>
+            prevWatchedCryptos.filter((crypto) => crypto.id !== id)
+          );
+        }
+        return updatedCrypto;
+      }
+      return crypto;
+    });
+    setCryptos(updatedCryptos);
+  };
+
   useEffect(() => {
     sortCryptos();
   }, [sortConfig]);
-
-  useEffect(() => {
-    if (searchTerm === "") {
-      setDisplayedCryptos(cryptos);
-    } else {
-      const filtered = cryptos.filter((crypto) =>
-        crypto.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setDisplayedCryptos(filtered);
-    }
-  }, [cryptos, searchTerm]);
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -140,6 +159,8 @@ export const CryptoDataProvider = ({ children }) => {
         toggleCryptoIsSelected,
         addToChartData,
         refreshData,
+        watchedCryptos,
+        setWatchedCryptos,
       }}
     >
       {children}

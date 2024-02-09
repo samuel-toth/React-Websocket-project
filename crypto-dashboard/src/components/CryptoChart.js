@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const CryptoChart = () => {
-  const { chartData, cryptos } = useCryptoData();
+  const { chartData, watchedCryptos } = useCryptoData();
   const [formattedData, setFormattedData] = useState([]);
   const [timeRange, setTimeRange] = useState("1m");
   const [initialTime] = useState(Date.now());
@@ -85,7 +85,7 @@ const CryptoChart = () => {
     const newData = Object.keys(groupedData).map((cryptoId) => ({
       id: cryptoId,
       data: groupedData[cryptoId],
-      title: cryptos.find((crypto) => crypto.id === cryptoId).name,
+      title: watchedCryptos.find((crypto) => crypto.id === cryptoId).name,
     }));
 
     setFormattedData(newData);
@@ -134,7 +134,7 @@ const CryptoChart = () => {
               data={series.data}
               name={series.title}
               stroke={
-                cryptos.find((crypto) => crypto.id === series.id)?.color ||
+                watchedCryptos.find((crypto) => crypto.id === series.id)?.color ||
                 "#8884d8"
               }
               strokeWidth={2}
