@@ -2,9 +2,12 @@ import React, { useState, useRef } from "react";
 import { FaChevronDown, FaChevronUp, FaListCheck } from "react-icons/fa6";
 import { sortOptions } from "../utils/helper";
 
-const GridHeader = ({sortConfig, changeSortConfig, toggleAllCheckboxes, allSelected}) => {
-
-
+const GridHeader = ({
+  sortConfig,
+  changeSortConfig,
+  toggleAllCheckboxes,
+  allSelected,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -53,11 +56,7 @@ const GridHeader = ({sortConfig, changeSortConfig, toggleAllCheckboxes, allSelec
       {/* Select all button */}
       <div className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center sm:p-2 p-1">
         <FaListCheck
-          className={` sm:text-xl text-lg mx-1 ${
-            allSelected
-              ? ""
-              : ""
-          } `}
+          className={` sm:text-xl text-lg mx-1 ${allSelected ? "" : ""} `}
           onClick={toggleAllCheckboxes}
         />
       </div>

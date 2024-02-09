@@ -90,7 +90,10 @@ export const CryptoDataProvider = ({ children }) => {
       changePercent24Hr: crypto.changePercent24Hr,
     };
 
-    setWatchedCryptos((prevWatchedCryptos) => [...prevWatchedCryptos, newCrypto]);
+    setWatchedCryptos((prevWatchedCryptos) => [
+      ...prevWatchedCryptos,
+      newCrypto,
+    ]);
   };
 
   const toggleAllCheckboxes = (state) => {
@@ -109,7 +112,7 @@ export const CryptoDataProvider = ({ children }) => {
   const toggleCryptoIsSelected = (id) => {
     const updatedCryptos = cryptos.map((crypto) => {
       if (crypto.id === id) {
-        const updatedCrypto = { ...crypto }; // Vytvoríme kópiu kryptomeny s rovnakými hodnotami
+        const updatedCrypto = { ...crypto };
         updatedCrypto.isSelected = !updatedCrypto.isSelected;
         if (updatedCrypto.isSelected) {
           addToWatchedCryptos(updatedCrypto);

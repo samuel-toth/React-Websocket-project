@@ -4,14 +4,9 @@ import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import { FaListCheck, FaCheck } from "react-icons/fa6";
 
-const CryptoTable = ({displayedCryptos}) => {
-  const {  currency, sortConfig, changeSortConfig } = useDashboard();
-
-  const {
-    rate,
-    toggleAllCheckboxes,
-    toggleCryptoIsSelected,
-  } = useCryptoData();
+const CryptoTable = ({ displayedCryptos }) => {
+  const { currency, sortConfig, changeSortConfig } = useDashboard();
+  const { rate, toggleAllCheckboxes, toggleCryptoIsSelected } = useCryptoData();
 
   return (
     <div className="rounded-lg shadow-lg overflow-hidden">
@@ -102,14 +97,8 @@ const CryptoTable = ({displayedCryptos}) => {
         <tbody>
           {displayedCryptos.map((crypto) => (
             <tr key={crypto.id} className={`${crypto.animationClass}`}>
-              <td className="p-4 text-center ">
-                {crypto.rank}.
-              </td>
-              <td
-                className={`p-4 ${
-                  crypto.isSelected ? "font-bold" : ""
-                }`}
-              >
+              <td className="p-4 text-center ">{crypto.rank}.</td>
+              <td className={`p-4 ${crypto.isSelected ? "font-bold" : ""}`}>
                 {crypto.name}
               </td>
               <td className="p-4">{crypto.symbol}</td>

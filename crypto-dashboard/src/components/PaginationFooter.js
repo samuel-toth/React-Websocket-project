@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDashboard } from "../contexts/DashboardContext";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -8,8 +7,7 @@ import {
 } from "react-icons/fa6";
 import { perPageOptions } from "../utils/helper";
 
-const PaginationFooter = ({page, changeCurrentPage, setPerPage}) => {
-
+const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedPerPage, setSelectedPerPage] = useState("20");
 

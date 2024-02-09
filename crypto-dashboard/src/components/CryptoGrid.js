@@ -3,12 +3,10 @@ import { getCurrencySymbol } from "../utils/helper";
 import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import { FaCheck } from "react-icons/fa6";
-
 import GridHeader from "./GridHeader";
 
 const CryptoGrid = () => {
-  const { currency, sortConfig, changeSortConfig } =
-    useDashboard();
+  const { currency, sortConfig, changeSortConfig } = useDashboard();
 
   const {
     displayedCryptos,

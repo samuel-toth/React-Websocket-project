@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
-
 import CryptoTable from "./CryptoTable";
 import PaginationFooter from "./PaginationFooter";
 import CryptoGrid from "./CryptoGrid";
@@ -9,18 +8,25 @@ import CryptoChart from "./CryptoChart";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
-  const { showChart, currency, page, changeCurrentPage, setPerPage } = useDashboard();
-  const { watchedCryptos, displayedCryptos, setWatchedCryptos, rate, addToChartData } = useCryptoData();
+  const { showChart, currency, page, changeCurrentPage, setPerPage } =
+    useDashboard();
+  const {
+    watchedCryptos,
+    displayedCryptos,
+    setWatchedCryptos,
+    rate,
+    addToChartData,
+  } = useCryptoData();
   const websocketRef = useRef(null);
 
   useEffect(() => {
     if (!watchedCryptos.length) return;
 
-    const url = "wss://ws.coincap.io/prices?assets=" + watchedCryptos.map((crypto) => crypto.id).join(",");
+    const url =
+      "wss://ws.coincap.io/prices?assets=" +
+      watchedCryptos.map((crypto) => crypto.id).join(",");
 
-    if (websocketRef.current) {
-      websocketRef.current.close();
-    }
+    if (websocketRef.current) websocketRef.current.close();
 
     const ws = new WebSocket(url);
 
@@ -88,14 +94,25 @@ const Dashboard = () => {
         <CryptoChart />
       </div>
       <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
-        <CryptoTable displayedCryptos={watchedCryptos} currency={currency} rate={rate} />
-        <CryptoTable displayedCryptos={displayedCryptos} currency={currency} rate={rate} />
+        <CryptoTable
+          displayedCryptos={watchedCryptos}
+          currency={currency}
+          rate={rate}
+        />
+        <CryptoTable
+          displayedCryptos={displayedCryptos}
+          currency={currency}
+          rate={rate}
+        />
         <CryptoGrid currency={currency} rate={rate} />
-        <PaginationFooter page={page} changeCurrentPage={changeCurrentPage} setPerPage={setPerPage} />
+        <PaginationFooter
+          page={page}
+          changeCurrentPage={changeCurrentPage}
+          setPerPage={setPerPage}
+        />
       </div>
     </div>
   );
 };
-
 
 export default Dashboard;

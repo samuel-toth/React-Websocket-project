@@ -134,8 +134,8 @@ const CryptoChart = () => {
               data={series.data}
               name={series.title}
               stroke={
-                watchedCryptos.find((crypto) => crypto.id === series.id)?.color ||
-                "#8884d8"
+                watchedCryptos.find((crypto) => crypto.id === series.id)
+                  ?.color || "#8884d8"
               }
               strokeWidth={2}
               dot={false}

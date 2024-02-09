@@ -21,9 +21,7 @@ function Header() {
     darkMode,
     setDarkMode,
   } = useDashboard();
-
   const { refreshData } = useCryptoData();
-
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
