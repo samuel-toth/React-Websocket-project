@@ -11,13 +11,6 @@ export const DashboardProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showChart, setShowChart] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [sortConfig, setSortConfig] = useState({
-    key: "rank",
-    direction: "ascending",
-    title: "Rank",
-  });
-
-
 
   useEffect(() => {
     if (darkMode) {
@@ -31,30 +24,6 @@ export const DashboardProvider = ({ children }) => {
     if (page > 0 && page / perPage <= LIMIT) {
       setPage(page);
     }
-  };
-
-  const changeSortConfig = (key, title) => {
-    if (sortConfig.key === key) {
-      setSortConfig({
-        ...sortConfig,
-        direction:
-          sortConfig.direction === "ascending" ? "descending" : "ascending",
-      });
-    } else {
-      setSortConfig({
-        key,
-        direction: "ascending",
-        title: title,
-      });
-    }
-  };
-
-  const toggleDirection = () => {
-    setSortConfig({
-      ...sortConfig,
-      direction:
-        sortConfig.direction === "ascending" ? "descending" : "ascending",
-    });
   };
 
   const toggleDarkMode = () => {
@@ -76,9 +45,6 @@ export const DashboardProvider = ({ children }) => {
         setShowChart,
         darkMode,
         toggleDarkMode,
-        sortConfig,
-        changeSortConfig,
-        toggleDirection,
       }}
     >
       {children}

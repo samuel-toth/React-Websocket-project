@@ -103,16 +103,22 @@ const Dashboard = () => {
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
         <CryptoChart />
       </div>
-      <h2 className="md:text-4xl text-2xl mt-10 px-10 font-extralight drop-shadow-lg">
+      <h2 className="sm:text-4xl text-2xl sm:mt-10 mt-8 px-2 sm:px-8  font-extralight drop-shadow-lg">
         Your Watchlist
       </h2>
-      <CryptoTable
-        displayedCryptos={watchedCryptos}
-        currency={currency}
-        rate={rate}
-        isShowingWatchedCryptos={true}
-      />
-      <h2 className="md:text-4xl text-2xl mt-10 px-10 font-extralight drop-shadow-lg flex justify-between">
+      {watchedCryptos.length === 0 ? (
+        <p className="text-lg px-2 sm:px-8 font-extralight drop-shadow-lg">
+          Nothing here, please add any cryptocurrency to watchlist.
+        </p>
+      ) : (
+        <CryptoTable
+          displayedCryptos={watchedCryptos}
+          currency={currency}
+          rate={rate}
+          isShowingWatchedCryptos={true}
+        />
+      )}
+      <h2 className="sm:text-4xl text-2xl mt-16 px-2 sm:px-8 font-extralight drop-shadow-lg flex justify-between">
         Browse Cryptocurrencies
         <button
           onClick={toggleTableVisibility}
@@ -120,7 +126,7 @@ const Dashboard = () => {
           aria-label="Show or hide cryptocurrencies table"
           title="Show/Hide cryptocurrencies"
         >
-          {isTableVisible ? <FaChevronUp /> : <FaChevronDown />}
+          {isTableVisible ? <FaChevronUp className="text-2xl"/> : <FaChevronDown className="text-2xl"/>}
         </button>
       </h2>
       <div

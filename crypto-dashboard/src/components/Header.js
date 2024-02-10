@@ -66,18 +66,21 @@ function Header() {
       ref={sidebarRef}
       className={`fixed top-0 right-0 mt-20 flex transition-transform duration-500 linear select-none ${
         isSidebarOpen
-          ? "translate-x-0 mr-10 z-50"
+          ? "translate-x-0 sm:mr-10 z-50"
           : "translate-x-[calc(100%-3rem)] mr-8 z-10"
       }`}
     >
       {/* Pull tab */}
       <div
         className="w-25 h-full bg-slate-300/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
-        items-center cursor-pointer"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        title="Open/Close Sidebar"
+        items-center "
       >
-        <button className="m-3 mr-4 rounded-full text-white" title="Open/Close sidebar" aria-label="Open or close sidebar">
+        <button
+          className="m-3 mr-4 rounded-full text-white cursor-pointer"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          title="Open/Close sidebar"
+          aria-label="Open or close sidebar"
+        >
           <img
             src="/logo.svg"
             alt="Crypta Logo"
@@ -113,8 +116,12 @@ function Header() {
             aria-label="Open or close preferred currency dropdown"
             title="Open/Close dropdown"
           >
-            Currency {" "}
-            {isCurrencyDropdownOpen ? <FaChevronUp className="text-slate-400 ml-2"/> : <FaChevronDown className="text-slate-400 ml-2"/>}
+            Currency{" "}
+            {isCurrencyDropdownOpen ? (
+              <FaChevronUp className="text-slate-400 ml-2" />
+            ) : (
+              <FaChevronDown className="text-slate-400 ml-2" />
+            )}
           </button>
           <div
             className={`transition-all duration-200 ease-in-out ${
@@ -197,7 +204,7 @@ function Header() {
                     : ""
                 }`}
                 title="Refresh Data"
-                aria-label="Refresh browsed cryptocurrencies"
+                aria-label="Refresh cryptocurrency data"
               >
                 <FaArrowsRotate />
               </button>
@@ -205,8 +212,8 @@ function Header() {
             <button
               onClick={toggleDarkMode}
               className="text-3xl relative hover:scale-105"
-              title="Toggle Dark/Light Mode"
-              aria-label="Toggle dark or light mode of the dashboard"
+              title="Toggle color mode"
+              aria-label={`Switch to ${darkMode ? "light" : "dark"} mode`}
             >
               <FaSun
                 className={`text-orange-400 absolute transition-all duration-500 ${
