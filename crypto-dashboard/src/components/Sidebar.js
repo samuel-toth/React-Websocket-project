@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDashboard } from "../contexts/DashboardContext";
-import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   FaMoon,
   FaSun,
@@ -9,24 +7,32 @@ import {
   FaChevronUp,
   FaArrowsRotate,
 } from "react-icons/fa6";
-import { currencies } from "../utils/helper";
+import { currencyOptions } from "../utils/helper";
 
-function Header() {
-  const {
-    setCurrency,
-    setSearchTerm,
-    searchTerm,
-    showChart,
-    setShowChart,
-    darkMode,
-    toggleDarkMode,
-  } = useDashboard();
-  const { refreshData } = useCryptoData();
-
+/**
+ * Sidebar component for the crypto dashboard with searchbar, dropdown for currency selection,
+ * and buttons for toggling dark mode and refreshing data.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.setCurrency - Function to set the selected currency.
+ * @param {string} props.searchTerm - The current search term for filtering cryptocurrencies.
+ * @param {Function} props.setSearchTerm - Function to set the search term.
+ * @param {boolean} props.darkMode - Flag indicating whether dark mode is enabled.
+ * @param {Function} props.toggleDarkMode - Function to toggle dark mode.
+ * @param {Function} props.refreshData - Function to refresh the cryptocurrency data.
+ * @returns {JSX.Element} The rendered Sidebar component.
+ */
+const Sidebar = ({
+  setCurrency,
+  searchTerm,
+  setSearchTerm,
+  darkMode,
+  toggleDarkMode,
+  refreshData,
+}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [rotateReload, setRotateReload] = useState(false);
-
   const sidebarRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +49,7 @@ function Header() {
   }, []);
 
   const handleCurrencyChange = (currency) => {
-    setCurrency(currency);
+    setCurrency(currencyOptions.find((c) => c.id === currency));
     setIsSidebarOpen(false);
   };
 
@@ -57,17 +63,13 @@ function Header() {
     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen);
   };
 
-  const toggleShowChart = () => {
-    setShowChart(!showChart);
-  };
-
   return (
     <div
       ref={sidebarRef}
-      className={`fixed top-0 right-0 mt-20 flex transition-transform duration-500 linear select-none ${
+      className={`fixed top-0 right-0 sm:mt-20 mt-5 z-20 flex transition-transform duration-500 linear select-none ${
         isSidebarOpen
           ? "translate-x-0 sm:mr-10 z-50"
-          : "translate-x-[calc(100%-3rem)] mr-8 z-10"
+          : "translate-x-[calc(100%-3rem)] mr-8"
       }`}
     >
       {/* Pull tab */}
@@ -94,7 +96,7 @@ function Header() {
       </div>
 
       {/* Sidebar content */}
-      <div className="w-80 bg-slate-300/30 z-50 backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
+      <div className="w-80 bg-slate-300/30 backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
         <div className="mt-8">
           <div className="flex items-center bg-slate-500 rounded-lg overflow-hidden">
             <FaMagnifyingGlass className="text-xl text-indigo-300 ml-3" />
@@ -128,7 +130,7 @@ function Header() {
               isCurrencyDropdownOpen ? "max-h-96" : "max-h-0"
             } overflow-hidden`}
           >
-            {currencies.map((currency) => (
+            {currencyOptions.map((currency) => (
               <button
                 key={currency.name}
                 className="px-4 py-2 block text-left w-full hover:text-indigo-500"
@@ -143,7 +145,6 @@ function Header() {
           <div className="mt-8 flex justify-between items-center">
             <div>
               <button
-                onClick={toggleShowChart}
                 className=" text-3xl hover:scale-110 transition-all duration-200"
                 title="Show/Hide Chart"
                 aria-label="Show or Hide Chart with data for watched cryptocurrencies"
@@ -190,7 +191,7 @@ function Header() {
                     strokeLinejoin="round"
                     strokeLinecap="round"
                     className={`text-indigo-800 dark:text-indigo-300 ${
-                      showChart ? "show-chart-line" : "hide-chart-line"
+                      true ? "show-chart-line" : "hide-chart-line"
                     }`}
                     strokeWidth="3"
                   />
@@ -231,6 +232,6 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
-export default Header;
+export default Sidebar;

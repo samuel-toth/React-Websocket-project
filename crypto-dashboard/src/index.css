@@ -59,9 +59,19 @@ code {
     transform: translate(10px, -10px) rotate(45deg);
   }
 }
+.chart-container {
+  transition: max-height 0.3s linear;
+  overflow: hidden;
+  max-height: 0;
+}
+
+.chart-visible {
+  max-height: 450px;
+}
 
 .table-container {
   transition: opacity 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .table-visible {

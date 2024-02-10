@@ -2,11 +2,20 @@ import React, { useState, useRef } from "react";
 import { FaCaretDown, FaCaretUp, FaListCheck } from "react-icons/fa6";
 import { sortOptions } from "../utils/helper";
 
-const GridHeader = ({
+/**
+ * Grid header component with sorting options and button to add
+ * all shown cryptocurrencies to watchlist.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.sortConfig - The current sorting configuration.
+ * @param {Function} props.changeSortConfig - The function to change the sorting configuration.
+ * @param {Function} props.toggleAllCheckboxes - The function to toggle all checkboxes.
+ * @returns {JSX.Element} The rendered CryptoGridHeader component.
+ */
+const CryptoGridHeader = ({
   sortConfig,
   changeSortConfig,
   toggleAllCheckboxes,
-  allSelected,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -60,10 +69,11 @@ const GridHeader = ({
           )}
         </div>
       </div>
+
       {/* Select all button */}
       <button className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center p-2">
         <FaListCheck
-          className={`text-md sm:text-lg mx-1 ${allSelected ? "" : ""} `}
+          className="text-md sm:text-lg mx-1"
           onClick={toggleAllCheckboxes}
           title="Add/Remove all cryptocurrencies from watchlist"
           aria-label="Button to add or remove all cryptocurrencies from watchlist"
@@ -73,4 +83,4 @@ const GridHeader = ({
   );
 };
 
-export default GridHeader;
+export default CryptoGridHeader;

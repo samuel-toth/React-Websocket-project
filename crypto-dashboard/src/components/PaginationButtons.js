@@ -7,10 +7,20 @@ import {
 } from "react-icons/fa6";
 import { perPageOptions } from "../utils/helper";
 
-const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
+/**
+ * Pagination component with dropdown for selecting items per page
+ * and buttons for changing current page.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {number} props.page - The current page number.
+ * @param {Function} props.changeCurrentPage - The function to change the current page.
+ * @param {Function} props.setPerPage - The function to set the number of items per page.
+ * @returns {JSX.Element} The rendered PaginationButtons component.
+ */
+const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedPerPage, setSelectedPerPage] = useState("20");
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -19,7 +29,6 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -31,7 +40,7 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
 
   return (
     <div className="flex justify-between items-center md:mt-8 m-6">
-      {/* Per page dropdown button*/}
+      {/* Per page dropdown */}
       <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md shadow-lg p-2 flex items-center">
         <div className="relative" ref={dropdownRef}>
           <button
@@ -104,4 +113,4 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
   );
 };
 
-export default PaginationFooter;
+export default PaginationButtons;
