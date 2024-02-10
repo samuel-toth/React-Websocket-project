@@ -7,12 +7,33 @@ export const currencies = [
 ];
 
 export const sortOptions = [
-  { name: "Rank", key: "rank", columnalign: "center"},
-  { name: "Name", key: "name", columnalign: "left"},
-  { name: "Symbol", key: "symbol", columnalign: "left"},
-  { name: "Price", key: "price", columnalign: "right"},
-  { name: "Change", key: "changePercent24Hr", columnalign: "right"},
+  { name: "Rank", key: "rank"},
+  { name: "Name", key: "name"},
+  { name: "Symbol", key: "symbol"},
+  { name: "Price", key: "price"},
+  { name: "Change", key: "changePercent24Hr"},
 ];
+
+export const intervalOptions = [
+  { id: "1m", name: "1m", millsecs: 60 * 1000},
+  { id: "5m", name: "5m", milsecs: 5 * 60 * 1000},
+  { id: "15m", name: "15m", millsecs: 15 * 60 * 1000},
+  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000},
+  { id: "60m", name: "60m", millsecs: 60 * 60 * 1000},
+];
+
+export const sortCryptos = (cryptos, sortConfig) => {
+  const sortedCryptos = [...cryptos].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === "ascending" ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
+  return sortedCryptos;
+};
 
 export const getCurrencySymbol = (currency) => {
   switch (currency) {
@@ -27,21 +48,6 @@ export const getCurrencySymbol = (currency) => {
   }
 };
 
-export const timeRanges = {
-  "1m": 60 * 1000,
-  "5m": 5 * 60 * 1000,
-  "15m": 15 * 60 * 1000,
-  "30m": 30 * 60 * 1000,
-  "60m": 60 * 60 * 1000,
-};
-
-export const intervalMap = {
-  "1m": 15 * 1000, // Every 15 seconds for 1 minute
-  "5m": 30 * 1000, // Every 30 seconds for 5 minutes
-  "15m": 1 * 60 * 1000, // Every 1 minute for 15 minutes
-  "30m": 2 * 60 * 1000, // Every 2 minutes for 30 minutes
-  "60m": 5 * 60 * 1000, // Every 5 minutes for 60 minutes
-};
 
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -60,8 +66,8 @@ export const formatXAxisTick = (tick) => {
 
 export const formatYAxisTick = (tick) => {
   if (tick >= 1 || tick <= -1 || tick === 0) {
-    return Math.round(tick);
+    return Math.round(tick) + "%";
   } else {
-    return tick.toFixed(3);
+    return tick.toFixed(3) + "%";
   }
 };

@@ -7,7 +7,12 @@ module.exports = {
       rotate: {
         full: "360deg",
       },
-
+      height: {
+        25: "25%",
+        300: "300px",
+        400: "400px",
+        100: "28rem",
+      },
     },
   },
   variants: {
