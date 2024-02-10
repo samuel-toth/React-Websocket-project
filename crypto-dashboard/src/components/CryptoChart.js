@@ -8,23 +8,26 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   formatXAxisTick,
   intervalOptions,
   formatYAxisTick,
 } from "../utils/helper";
-import ChartTooltip from "./ChartTooltip";
-import ChartFooter from "./ChartFooter";
+import ChartTooltip from "./CryptoChartTooltip";
+import CryptoChartButtons from "./CryptoChartButtons";
 
-const CryptoChart = () => {
-  const { chartData, watchedCryptos } = useCryptoData();
+/**
+ * Chart component displaying watchlisted cryptocurrencies data over time.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.watchedCryptos - The list of cryptocurrencies being watched.
+ * @returns {JSX.Element} The rendered CryptoChart component.
+ */
+const CryptoChart = ({ watchedCryptos }) => {
   const [formattedData, setFormattedData] = useState([]);
-  const [initialTime, setInitialTime] = useState(Date.now());
   const [xAxisTicks, setXAxisTicks] = useState([]);
   const [yAxisDomain, setYAxisDomain] = useState([0, 100]);
   const [yAxisTicks, setYAxisTicks] = useState([]);
-
   const [interval, setInterval] = useState("1m");
   const [intervalOffset, setIntervalOffset] = useState(0);
 
@@ -39,7 +42,7 @@ const CryptoChart = () => {
     const nTicks = 5;
     const totalDuration = selectedOption.millsecs * nTicks;
     const endTime =
-      initialTime + totalDuration + intervalOffset * selectedOption.millsecs;
+      Date.now() + totalDuration + intervalOffset * selectedOption.millsecs;
     const startTime = endTime - totalDuration;
 
     const newTicks = [];
@@ -48,51 +51,40 @@ const CryptoChart = () => {
     }
 
     setXAxisTicks(newTicks);
-  }, [initialTime, interval, intervalOffset]);
+  }, [interval, intervalOffset]);
 
   useEffect(() => {
-    const tempData = chartData.map(({ id, date, percentageChange, name }) => ({
-      id,
-      date: new Date(date).getTime(),
-      percentageChange,
-      name,
-    }));
+    const newData = watchedCryptos.reduce((acc, crypto) => {
+      crypto.data.forEach((dataPoint) => {
+        const existingEntry = acc.find(
+          (entry) => entry.date === dataPoint.date
+        );
+        if (existingEntry) {
+          existingEntry[crypto.name] = dataPoint.percentageChange;
+        } else {
+          acc.push({
+            date: dataPoint.date,
+            [crypto.name]: dataPoint.percentageChange,
+          });
+        }
+      });
+      return acc;
+    }, []);
 
-    const groupedData = tempData.reduce(
-      (acc, { id, date, percentageChange, name }) => {
-        if (!acc[id]) acc[id] = [];
-        acc[id].push({ date, percentageChange, name });
-        return acc;
-      },
-      {}
-    );
-
-    const newData = Object.keys(groupedData).map((cryptoId) => ({
-      id: cryptoId,
-      data: groupedData[cryptoId],
-      title: watchedCryptos.find((crypto) => crypto.id === cryptoId)?.name,
-    }));
-
-    const filteredData = newData.filter(
-      (crypto) => watchedCryptos.find(({ id }) => id === crypto.id)?.isCharted
-    );
-
-    setFormattedData(filteredData);
-  }, [chartData, watchedCryptos]);
+    setFormattedData(newData);
+  }, [watchedCryptos]);
 
   useEffect(() => {
-    if (
-      !formattedData.length ||
-      (formattedData.length === 1 && formattedData[0].data.length === 1)
-    ) {
+    if (!formattedData.length || formattedData.length === 1) {
       setYAxisDomain([0, 100]);
       setYAxisTicks([0, 25, 50, 75, 100]);
       return;
     }
 
-    const allPercentageChanges = formattedData.flatMap((series) =>
-      series.data.map((entry) => entry.percentageChange)
+    const allPercentageChanges = watchedCryptos.flatMap((crypto) =>
+      crypto.data.map((dataPoint) => dataPoint.percentageChange)
     );
+
     const minY = Math.min(...allPercentageChanges);
     const maxY = Math.max(...allPercentageChanges);
     const domain = minY === maxY ? [minY - 5, maxY + 5] : [minY, maxY];
@@ -116,10 +108,10 @@ const CryptoChart = () => {
   };
 
   return (
-    <>
+    <div>
       <div
-        className="select-none bg-slate-300/30 sm:pt-4 sm:pb-8 pr-8 pb-4
-      rounded-xl sm:text-md text-xs backdrop-blur-lg shadow-lg sm:h-80 h-72
+        className="select-none bg-slate-300/30 mt-4 sm:pt-4 sm:pb-8 pr-8 pb-4
+      rounded-xl sm:text-md text-xs backdrop-blur-lg shadow-lg sm:h-96 h-72
        text-slate-500 dark:text-slate-300"
       >
         <ResponsiveContainer
@@ -145,36 +137,30 @@ const CryptoChart = () => {
               stroke="currentColor"
               strokeWidth={2}
             />
-
-            {watchedCryptos.some((crypto) => crypto.isCharted) &&
-              chartData.length > 0 && <Tooltip content={<ChartTooltip />} />}
-
+            <Tooltip content={<ChartTooltip />} />
             <Legend />
-            {formattedData.map((series) => (
-              <Line
-                key={series.id}
-                type="linear"
-                dataKey="percentageChange"
-                data={series.data}
-                name={series.title}
-                stroke={
-                  watchedCryptos.find((crypto) => crypto.id === series.id)
-                    ?.color || "#8884d8"
-                }
-                strokeWidth={3}
-                dot={false}
-                isAnimationActive={false}
-              />
-            ))}
+            {watchedCryptos
+              .filter((crypto) => crypto.isCharted)
+              .map((crypto) => (
+                <Line
+                  key={crypto.id}
+                  type="linear"
+                  dataKey={crypto.name}
+                  stroke={crypto.color || "#8884d8"}
+                  strokeWidth={2}
+                  dot={false}
+                  isAnimationActive={false}
+                />
+              ))}
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <ChartFooter
+      <CryptoChartButtons
         setInterval={handleIntervalChange}
         setIntervalOffset={handleMoveByOffset}
         interval={interval}
       />
-    </>
+    </div>
   );
 };
 
