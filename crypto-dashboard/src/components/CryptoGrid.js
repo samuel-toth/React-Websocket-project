@@ -26,19 +26,18 @@ const CryptoGrid = ({ displayedCryptos }) => {
             key={crypto.id}
             className={`${crypto.animationClass} rounded-xl p-3 shadow-lg grid grid-cols-2 select-none`}
           >
-            <div className="col-span-2 flex justify-end">
+            <button
+              className="col-span-2 flex justify-end"
+              aria-label="Add cryptocurrency to watchlist"
+              title="Add to watchlist"
+              onClick={() => toggleCryptoIsSelected(crypto.id)}
+            >
               {crypto.isSelected ? (
-                <FaBookmark
-                  className="text-lg text-indigo-400"
-                  onClick={() => toggleCryptoIsSelected(crypto.id)}
-                />
+                <FaBookmark className="text-lg text-indigo-400" />
               ) : (
-                <FaRegBookmark
-                  className="text-lg text-slate-400"
-                  onClick={() => toggleCryptoIsSelected(crypto.id)}
-                />
+                <FaRegBookmark className="text-lg text-slate-400" />
               )}
-            </div>
+            </button>
             <div className="col-span-2 flex-col justify-center">
               <h2 className="text-xl font-bold  truncate">{crypto.name}</h2>
             </div>

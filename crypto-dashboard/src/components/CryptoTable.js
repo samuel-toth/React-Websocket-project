@@ -27,7 +27,7 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
   };
 
   return (
-    <div className="rounded-lg m-2 flex-grow shadow-lg overflow-hidden">
+    <div className="rounded-lg m-4 flex-grow shadow-lg overflow-hidden">
       <table className="w-full table">
         <thead
           className="bg-slate-300 dark:bg-slate-600 lg:text-lg 
@@ -37,6 +37,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
             <th
               className="text-left lg:p-4 sm:p-3 p-2 cursor-pointer w-1/12"
               onClick={() => changeSortConfig("rank")}
+              aria-label="Sort by rank"
+              title="Sort by rank"
             >
               <div className="flex justify-center items-center">
                 <span className={sortConfig.key === "rank" ? "underline" : ""}>
@@ -56,6 +58,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
             <th
               className="text-left cursor-pointer w-4/12"
               onClick={() => changeSortConfig("name")}
+              aria-label="Sort by name"
+              title="Sort by name"
             >
               <div className="flex justify-start items-center">
                 <span className={sortConfig.key === "name" ? "underline" : ""}>
@@ -75,6 +79,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
             <th
               className="text-left cursor-pointer w-2/12 hidden sm:table-cell"
               onClick={() => changeSortConfig("symbol")}
+              aria-label="Sort by symbol"
+              title="Sort by symbol"
             >
               <div className="flex justify-start items-center">
                 <span
@@ -96,6 +102,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
             <th
               className="text-right cursor-pointer w-2/12"
               onClick={() => changeSortConfig("price")}
+              aria-label="Sort by price"
+              title="Sort by price"
             >
               <div className="flex justify-end items-center">
                 {sortConfig.key === "price" && (
@@ -115,6 +123,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
             <th
               className="text-right cursor-pointer w-2/12"
               onClick={() => changeSortConfig("changePercent24Hr")}
+              aria-label="Sort by 24h change"
+              title="Sort by 24h change"
             >
               <div className="flex justify-end items-center">
                 {sortConfig.key === "changePercent24Hr" && (
@@ -136,7 +146,7 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
               </div>
             </th>
             <th className="text-right w-1/12">
-              {!isShowingWatchedCryptos ?? (
+              {!isShowingWatchedCryptos ? (
                 <FaListCheck
                   className={`${
                     displayedCryptos.every((crypto) => crypto.isSelected)
@@ -144,7 +154,11 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
                       : "text-slate-400"
                   } `}
                   onClick={toggleAllCheckboxes}
+                  aria-label="Add all shown cryptocurrencies to watchlist table"
+                  title="Add all shown cryptocurrencies to watchlist"
                 />
+              ) : (
+                ""
               )}
             </th>
           </tr>
@@ -176,11 +190,13 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
                   <FaBookmark
                     className="text-indigo-400"
                     onClick={() => toggleCryptoIsSelected(crypto.id)}
+                    title={`Remove ${crypto.name} from watchlist`}
                   />
                 ) : (
                   <FaRegBookmark
                     className="text-slate-400"
                     onClick={() => toggleCryptoIsSelected(crypto.id)}
+                    title={`Add ${crypto.name} to watchlist`}
                   />
                 )}
                 {isShowingWatchedCryptos && (
@@ -192,6 +208,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
                       onClick={() => {
                         toggleWatchedCryptoIsCharted(crypto.id);
                       }}
+                      title={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
+                      aria-label={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
                     />
                   </div>
                 )}

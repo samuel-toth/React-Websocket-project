@@ -103,8 +103,8 @@ const Dashboard = () => {
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
         <CryptoChart />
       </div>
-      <h2 className="md:text-4xl text-2xl font-extralight drop-shadow-lg flex justify-between">
-        Watched cryptocurrencies
+      <h2 className="md:text-4xl text-2xl mt-10 px-10 font-extralight drop-shadow-lg">
+        Your Watchlist
       </h2>
       <CryptoTable
         displayedCryptos={watchedCryptos}
@@ -113,14 +113,21 @@ const Dashboard = () => {
         isShowingWatchedCryptos={true}
       />
       <h2 className="md:text-4xl text-2xl mt-10 px-10 font-extralight drop-shadow-lg flex justify-between">
-        Browse cryptocurrencies
-        <span onClick={toggleTableVisibility} className="cursor-pointer">
-          {isTableVisible ? <FaChevronUp className="drop-shadow-lg"/> : <FaChevronDown className="drop-shadow-lg"/>}
-        </span>
+        Browse Cryptocurrencies
+        <button
+          onClick={toggleTableVisibility}
+          className="cursor-pointer drop-shadow-lg"
+          aria-label="Show or hide cryptocurrencies table"
+          title="Show/Hide cryptocurrencies"
+        >
+          {isTableVisible ? <FaChevronUp /> : <FaChevronDown />}
+        </button>
       </h2>
-      <div className={`table-container ${
+      <div
+        className={`table-container ${
           isTableVisible ? "table-visible" : "table-hidden"
-        }`}>
+        }`}
+      >
         <div className="hidden lg:visible md:visible md:flex sm:hidden">
           <CryptoTable
             displayedCryptos={displayedCryptos}

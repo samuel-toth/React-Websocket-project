@@ -34,10 +34,12 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
       {/* Per page dropdown button*/}
       <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md shadow-lg p-2 flex items-center">
         <div className="relative" ref={dropdownRef}>
-          <div
+          <button
             className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
             justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            aria-label="Show or hide dropdown menu to select number of items in one page"
+            title="Show/Hide dropdown to select no. items per page"
           >
             {selectedPerPage}
             <div
@@ -47,22 +49,24 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
               <FaChevronUp />
               <FaChevronDown />
             </div>
-          </div>
+          </button>
           {isDropdownOpen && (
             <div
               className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
               shadow-lg z-10 w-16 transform transition-all duration-500`}
             >
               {perPageOptions.map((option) => (
-                <div
+                <button
                   key={option}
                   className={`px-4 py-2  ${
                     selectedPerPage === option ? "font-bold" : ""
                   } cursor-pointer`}
                   onClick={() => handleSelect(option)}
+                  aria-label={`Select ${option} items per page`}
+                  title={`Select ${option} per page`}
                 >
                   {option}
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -79,6 +83,8 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
             className=" px-2 hover:scale-125"
             onClick={() => changeCurrentPage(page - 1)}
             disabled={page === 1}
+            aria-label="Go to previous page"
+            title="Go to previous page"
           >
             <FaChevronLeft />
           </button>
@@ -87,6 +93,8 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
             className="px-2  sm:hover:scale-125 hover:scale-110"
             onClick={() => changeCurrentPage(page + 1)}
             disabled={page === Math.ceil(1000 / Number(selectedPerPage))}
+            aria-label="Go to next page"
+            title="Go to next page"
           >
             <FaChevronRight />
           </button>

@@ -77,10 +77,10 @@ function Header() {
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         title="Open/Close Sidebar"
       >
-        <button className="m-3 mr-4 rounded-full text-white">
+        <button className="m-3 mr-4 rounded-full text-white" title="Open/Close sidebar" aria-label="Open or close sidebar">
           <img
             src="/logo.svg"
-            alt="Logo"
+            alt="Crypta Logo"
             className="h-16 w-16 p-1"
             style={{
               transform: `rotate(${isSidebarOpen ? "-180" : "0"}deg)`,
@@ -98,22 +98,24 @@ function Header() {
             <input
               type="text"
               placeholder="Search for a cryptocurrency"
-              className="px-4 py-2 bg-transparent caret-indigo-200 rounded-lg 
-              placeholder:text-slate-300 focus:outline-none w-full focus:text-indigo-100 
-              transition-colors duration-200 ease-in-out"
+              aria-label="Searchbar for filtering cryptocurrencies by name"
+              className="px-4 py-2 bg-transparent caret-indigo-200 rounded-lg text-slate-200
+              placeholder:text-slate-300 focus:outline-none w-full focus:text-slate-200"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
         <div className="mt-8">
-          <div
+          <button
             className="font-semibold mb-2 flex justify-between items-center cursor-pointer"
             onClick={toggleCurrencyDropdown}
+            aria-label="Open or close preferred currency dropdown"
+            title="Open/Close dropdown"
           >
-            Currency{" "}
-            {isCurrencyDropdownOpen ? <FaChevronUp /> : <FaChevronDown />}
-          </div>
+            Currency {" "}
+            {isCurrencyDropdownOpen ? <FaChevronUp className="text-slate-400 ml-2"/> : <FaChevronDown className="text-slate-400 ml-2"/>}
+          </button>
           <div
             className={`transition-all duration-200 ease-in-out ${
               isCurrencyDropdownOpen ? "max-h-96" : "max-h-0"
@@ -125,6 +127,7 @@ function Header() {
                 className="px-4 py-2 block text-left w-full hover:text-indigo-500"
                 onClick={() => handleCurrencyChange(currency.id)}
                 title={`Show in ${currency.name}`}
+                aria-label={`Show cryptocurrency prices in ${currency.name}`}
               >
                 {currency.name} {currency.symbol}
               </button>
@@ -135,7 +138,8 @@ function Header() {
               <button
                 onClick={toggleShowChart}
                 className=" text-3xl hover:scale-110 transition-all duration-200"
-                title="Toggle Show/Hide Chart"
+                title="Show/Hide Chart"
+                aria-label="Show or Hide Chart with data for watched cryptocurrencies"
               >
                 <svg
                   width="30"
@@ -192,7 +196,8 @@ function Header() {
                     ? " transform rotate-full transition-all duration-1000"
                     : ""
                 }`}
-                title="Reload Data"
+                title="Refresh Data"
+                aria-label="Refresh browsed cryptocurrencies"
               >
                 <FaArrowsRotate />
               </button>
@@ -201,6 +206,7 @@ function Header() {
               onClick={toggleDarkMode}
               className="text-3xl relative hover:scale-105"
               title="Toggle Dark/Light Mode"
+              aria-label="Toggle dark or light mode of the dashboard"
             >
               <FaSun
                 className={`text-orange-400 absolute transition-all duration-500 ${

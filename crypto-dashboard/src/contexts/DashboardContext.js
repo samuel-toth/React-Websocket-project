@@ -17,20 +17,9 @@ export const DashboardProvider = ({ children }) => {
     title: "Rank",
   });
 
-  useEffect(() => {
-    const storedDarkMode = localStorage.getItem("darkMode");
-    const isDarkMode = storedDarkMode === "true"; // Konvertovat na boolean
-    setDarkMode(isDarkMode);
-    if (isDarkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, []);
+
 
   useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
-
     if (darkMode) {
       document.body.classList.add("dark");
     } else {
