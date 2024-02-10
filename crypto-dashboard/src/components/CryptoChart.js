@@ -10,46 +10,21 @@ import {
 } from "recharts";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
-  formatDate,
   formatXAxisTick,
   intervalMap,
   timeRanges,
+  formatYAxisTick,
 } from "../utils/helper";
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div
-        className="custom-tooltip"
-        style={{
-          backgroundColor: "#fff",
-          padding: "5px",
-          border: "1px solid #ccc",
-        }}
-      >
-        <p className="label">{formatDate(label)}</p>
-        {payload.map((crypto) => (
-          <p
-            key={crypto.dataKey}
-            className="label"
-            style={{ color: crypto.color }}
-          >
-            {`${crypto.name}: ${crypto.value}%`}
-          </p>
-        ))}
-      </div>
-    );
-  }
-
-  return null;
-};
+import ChartTooltip from "./ChartTooltip";
 
 const CryptoChart = () => {
   const { chartData, watchedCryptos } = useCryptoData();
   const [formattedData, setFormattedData] = useState([]);
   const [timeRange, setTimeRange] = useState("1m");
-  const [initialTime] = useState(Date.now());
+  const [initialTime, setInitialTime] = useState(Date.now());
   const [xAxisTicks, setXAxisTicks] = useState([]);
+  const [yAxisDomain, setYAxisDomain] = useState([0, 100]);
+  const [yAxisTicks, setYAxisTicks] = useState([]);
 
   useEffect(() => {
     const interval = intervalMap[timeRange];
@@ -88,70 +63,85 @@ const CryptoChart = () => {
       title: watchedCryptos.find((crypto) => crypto.id === cryptoId).name,
     }));
 
-    setFormattedData(newData);
+    const filteredData = newData.filter(
+      (crypto) => watchedCryptos.find(({ id }) => id === crypto.id)?.isCharted
+    );
+
+    setFormattedData(filteredData);
+
+    const allPercentageChanges = formattedData.flatMap((series) =>
+      series.data.map((entry) => entry.percentageChange)
+    );
+    const minY = Math.min(...allPercentageChanges);
+    const maxY = Math.max(...allPercentageChanges);
+
+    if (minY !== Infinity && maxY !== -Infinity) setYAxisDomain([minY, maxY]);
   }, [chartData]);
 
   const handleTimeRangeChange = (range) => {
     setTimeRange(range);
+    setInitialTime(Date.now());
+  };
+
+  const handleScrollForward = () => {
+    setInitialTime(initialTime + timeRanges[timeRange]);
+  };
+
+  const handleScrollBackward = () => {
+    setInitialTime(initialTime - timeRanges[timeRange]);
   };
 
   return (
-    <div style={{ width: "100%", height: 400, zIndex: 5 }}>
-      <ResponsiveContainer className="w-full h-96">
-        <LineChart
-          width={500}
-          height={300}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-          data={formattedData}
-        >
-          <XAxis
-            dataKey="date"
-            domain={["dataMin", "dataMax"]}
-            type="number"
-            tickFormatter={formatXAxisTick}
-            scale="time"
-            ticks={xAxisTicks}
-          />
-          <YAxis
-            label={{
-              value: "Percentage Change",
-              angle: -90,
-              position: "insideLeft",
-            }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          {formattedData.map((series, idx) => (
-            <Line
-              key={idx}
-              type="linear"
-              dataKey="percentageChange"
-              data={series.data}
-              name={series.title}
-              stroke={
-                watchedCryptos.find((crypto) => crypto.id === series.id)
-                  ?.color || "#8884d8"
-              }
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={false}
+    <>
+      <div className="select-none bg-slate-300/30 p-4 pt-6 m-6 rounded-xl backdrop-blur-lg shadow-lg">
+        <ResponsiveContainer width="100%" height={350}>
+          <LineChart
+            margin={{ left: 20, right: 20, top: 5 }}
+            data={formattedData}
+          >
+            <XAxis
+              dataKey="date"
+              domain={["dataMin", "dataMax"]}
+              type="number"
+              tickFormatter={formatXAxisTick}
+              scale="time"
+              ticks={xAxisTicks}
             />
-          ))}
-        </LineChart>
-        <div className="text-red-200">
-          {Object.keys(timeRanges).map((range) => (
-            <button key={range} onClick={() => handleTimeRangeChange(range)}>
-              {range.toUpperCase()}
-            </button>
-          ))}
-        </div>
-      </ResponsiveContainer>
-    </div>
+            <YAxis
+              label={{
+                value: "Percentage Change",
+                angle: -90,
+                dx: -40,
+              }}
+              domain={yAxisDomain}
+              ticks={yAxisTicks}
+              tickFormatter={formatYAxisTick}
+            />
+
+            {watchedCryptos.some((crypto) => crypto.isCharted) &&
+              chartData.length > 0 && <Tooltip content={<ChartTooltip />} />}
+
+            <Legend />
+            {formattedData.map((series) => (
+              <Line
+                key={series.id}
+                type="linear"
+                dataKey="percentageChange"
+                data={series.data}
+                name={series.title}
+                stroke={
+                  watchedCryptos.find((crypto) => crypto.id === series.id)
+                    ?.color || "#8884d8"
+                }
+                strokeWidth={3}
+                dot={false}
+                isAnimationActive={false}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </>
   );
 };
 

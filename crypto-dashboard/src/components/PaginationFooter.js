@@ -30,12 +30,12 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
   };
 
   return (
-    <div className="flex justify-between items-center mx-2 lg:mt-8 md:mt-8 mt-6">
-      {/* Per page dropdown */}
-      <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg lg:p-2 md:p-2 p-1 flex items-center">
+    <div className="flex justify-between items-center md:mt-8 m-6">
+      {/* Per page dropdown button*/}
+      <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md shadow-lg p-2 flex items-center">
         <div className="relative" ref={dropdownRef}>
           <div
-            className="bg-transparent lg:text-xl md:text-xl text-lg pl-2 pr-9 cursor-pointer select-none flex 
+            className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
             justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
@@ -50,7 +50,7 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
           </div>
           {isDropdownOpen && (
             <div
-              className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-sm rounded-lg 
+              className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
               shadow-lg z-10 w-16 transform transition-all duration-500`}
             >
               {perPageOptions.map((option) => (
@@ -70,11 +70,11 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
       </div>
 
       {/* Pagination buttons */}
-      <div className="flex items-center space-x-2 lg:text-xl md:text-xl text-lg">
+      <div className="flex items-center space-x-2 text-sm sm:text-md ">
         <span className="">
           {page} of {Math.ceil(1000 / Number(selectedPerPage))}
         </span>
-        <div className="bg-slate-300/30 backdrop-blur-md rounded-xl shadow-lg lg:p-2 md:p-2 p-1 flex items-center">
+        <div className="bg-slate-300/30 backdrop-blur-md rounded-xl shadow-lg p-2 flex items-center">
           <button
             className=" px-2 hover:scale-125"
             onClick={() => changeCurrentPage(page - 1)}
@@ -82,7 +82,7 @@ const PaginationFooter = ({ page, changeCurrentPage, setPerPage }) => {
           >
             <FaChevronLeft />
           </button>
-          <div className="h-7 border-r-2 border-slate-400 mx-2" />
+          <div className="h-5 border-r-2 border-slate-400 mx-2" />
           <button
             className="px-2  sm:hover:scale-125 hover:scale-110"
             onClick={() => changeCurrentPage(page + 1)}

@@ -7,7 +7,7 @@ import {
   FaMagnifyingGlass,
   FaChevronDown,
   FaChevronUp,
-  FaArrowRotateLeft,
+  FaArrowsRotate,
 } from "react-icons/fa6";
 import { currencies } from "../utils/helper";
 
@@ -19,7 +19,7 @@ function Header() {
     showChart,
     setShowChart,
     darkMode,
-    setDarkMode,
+    toggleDarkMode,
   } = useDashboard();
   const { refreshData } = useCryptoData();
 
@@ -55,10 +55,6 @@ function Header() {
 
   const toggleCurrencyDropdown = () => {
     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen);
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
   };
 
   const toggleShowChart = () => {
@@ -193,12 +189,12 @@ function Header() {
                 onClick={handleReload}
                 className={`text-3xl mx-3 text-indigo-500 transform hover:scale-110 ${
                   rotateReload
-                    ? " transform -rotate-full transition-all duration-1000"
+                    ? " transform rotate-full transition-all duration-1000"
                     : ""
                 }`}
                 title="Reload Data"
               >
-                <FaArrowRotateLeft />
+                <FaArrowsRotate />
               </button>
             </div>
             <button

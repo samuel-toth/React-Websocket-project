@@ -7,17 +7,18 @@ const GridHeader = ({
   changeSortConfig,
   toggleAllCheckboxes,
   allSelected,
+  toggleDirection,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   return (
-    <div className="flex z-30 md:col-span-3 sm:col-span-3 col-span-2 sm:text-xl text-lg justify-between mx-5 select-none">
+    <div className="flex md:col-span-3 sm:col-span-3 col-span-2 sm:text-xl text-lg justify-between mx-5 select-none">
       {/* Sorting button */}
-      <div className=" bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg lg:p-2 sm:p-2 p-1">
+      <div className=" bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md w-24 shadow-lg p-2">
         <div className="relative" ref={dropdownRef}>
           <div
-            className="bg-transparent pl-2 pr-9 cursor-pointer select-none 
+            className="bg-transparent pl-1 pr-8 cursor-pointer select-none 
             justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
@@ -28,23 +29,23 @@ const GridHeader = ({
             items-center space-y-[-0.45rem] transition-transform duration-300 transform hover:scale-125"
           >
             {sortConfig.direction === "ascending" ? (
-              <FaChevronUp onClick={changeSortConfig} />
+              <FaChevronUp onClick={toggleDirection} />
             ) : (
-              <FaChevronDown onClick={changeSortConfig} />
+              <FaChevronDown onClick={toggleDirection} />
             )}
           </div>
           {isDropdownOpen && (
             <div
-              className={`absolute top-full mt-4 bg-slate-300/30 backdrop-blur-md rounded-lg shadow-lg 
+              className={`absolute top-full mt-4 bg-slate-300/40 backdrop-blur-md rounded-lg shadow-lg 
                 z-10 w-28 transform transition-all duration-500`}
             >
               {sortOptions.map((option) => (
                 <div
-                  key={option}
+                  key={option.key}
                   className={`px-4 py-2 ${
                     sortConfig.key === option.key ? "font-bold" : ""
                   } cursor-pointer`}
-                  onClick={() => changeSortConfig(option.key)}
+                  onClick={() => changeSortConfig(option.key, option.title)}
                 >
                   {option.name}
                 </div>
@@ -54,9 +55,9 @@ const GridHeader = ({
         </div>
       </div>
       {/* Select all button */}
-      <div className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center sm:p-2 p-1">
+      <div className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center p-2">
         <FaListCheck
-          className={` sm:text-xl text-lg mx-1 ${allSelected ? "" : ""} `}
+          className={`text-md sm:text-lg mx-1 ${allSelected ? "" : ""} `}
           onClick={toggleAllCheckboxes}
         />
       </div>

@@ -7,11 +7,11 @@ export const currencies = [
 ];
 
 export const sortOptions = [
-  { name: "Rank", key: "rank" },
-  { name: "Name", key: "name" },
-  { name: "Price", key: "price" },
-  { name: "Symbol", key: "symbol"},
-  { name: "Change", key: "changePercent24Hr" },
+  { name: "Rank", key: "rank", columnalign: "center"},
+  { name: "Name", key: "name", columnalign: "left"},
+  { name: "Symbol", key: "symbol", columnalign: "left"},
+  { name: "Price", key: "price", columnalign: "right"},
+  { name: "Change", key: "changePercent24Hr", columnalign: "right"},
 ];
 
 export const getCurrencySymbol = (currency) => {
@@ -56,4 +56,12 @@ export const formatXAxisTick = (tick) => {
     minute: "2-digit",
     second: "2-digit",
   });
+};
+
+export const formatYAxisTick = (tick) => {
+  if (tick >= 1 || tick <= -1 || tick === 0) {
+    return Math.round(tick);
+  } else {
+    return tick.toFixed(3);
+  }
 };

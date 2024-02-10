@@ -5,6 +5,7 @@ import CryptoTable from "./CryptoTable";
 import PaginationFooter from "./PaginationFooter";
 import CryptoGrid from "./CryptoGrid";
 import CryptoChart from "./CryptoChart";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
@@ -18,6 +19,7 @@ const Dashboard = () => {
     addToChartData,
   } = useCryptoData();
   const websocketRef = useRef(null);
+  const [isTableVisible, setIsTableVisible] = useState(true);
 
   useEffect(() => {
     if (!watchedCryptos.length) return;
@@ -42,7 +44,6 @@ const Dashboard = () => {
             const newPrice = parseFloat(data[crypto.id]);
             const oldPrice = crypto.price;
             const priceIncreased = newPrice > oldPrice;
-            const priceDecreased = newPrice < oldPrice;
 
             const newChartData = {
               id: crypto.id,
@@ -53,17 +54,7 @@ const Dashboard = () => {
             addToChartData(newChartData);
 
             crypto.price = newPrice;
-            crypto.animationClass = priceIncreased
-              ? "bg-green-200 animate-highlight"
-              : priceDecreased
-              ? "bg-red-200 animate-highlight"
-              : "";
-
-            setTimeout(() => {
-              crypto.animationClass =
-                "transition-colors duration-1000 bg-slate-100/30 backdrop-blur-md";
-              setWatchedCryptos([...watchedCryptos]);
-            }, 300);
+            changeRowColor(crypto, priceIncreased);
           }
           return crypto;
         });
@@ -88,23 +79,62 @@ const Dashboard = () => {
     };
   }, [watchedCryptos]);
 
+  const changeRowColor = (crypto, priceIncreased) => {
+    const rowElement = document.getElementById(crypto.id + "w");
+    rowElement.classList.add(priceIncreased ? "bg-green-200" : "bg-red-200");
+    rowElement.classList.remove("bg-slate-100/30");
+
+    setTimeout(() => {
+      rowElement.classList.remove(
+        "bg-green-200",
+        "bg-red-200",
+        "animate-highlight"
+      );
+      rowElement.classList.add("bg-slate-100/30");
+    }, 500);
+  };
+
+  const toggleTableVisibility = () => {
+    setIsTableVisible(!isTableVisible);
+  };
+
   return (
     <div>
       <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
         <CryptoChart />
       </div>
-      <div className={`table-container ${showChart ? "table-lowered" : ""}`}>
-        <CryptoTable
-          displayedCryptos={watchedCryptos}
-          currency={currency}
-          rate={rate}
-        />
-        <CryptoTable
-          displayedCryptos={displayedCryptos}
-          currency={currency}
-          rate={rate}
-        />
-        <CryptoGrid currency={currency} rate={rate} />
+      <h2 className="md:text-4xl text-2xl font-extralight drop-shadow-lg flex justify-between">
+        Watched cryptocurrencies
+      </h2>
+      <CryptoTable
+        displayedCryptos={watchedCryptos}
+        currency={currency}
+        rate={rate}
+        isShowingWatchedCryptos={true}
+      />
+      <h2 className="md:text-4xl text-2xl mt-10 px-10 font-extralight drop-shadow-lg flex justify-between">
+        Browse cryptocurrencies
+        <span onClick={toggleTableVisibility} className="cursor-pointer">
+          {isTableVisible ? <FaChevronUp className="drop-shadow-lg"/> : <FaChevronDown className="drop-shadow-lg"/>}
+        </span>
+      </h2>
+      <div className={`table-container ${
+          isTableVisible ? "table-visible" : "table-hidden"
+        }`}>
+        <div className="hidden lg:visible md:visible md:flex sm:hidden">
+          <CryptoTable
+            displayedCryptos={displayedCryptos}
+            currency={currency}
+            rate={rate}
+          />
+        </div>
+        <div className="lg:hidden md:hidden">
+          <CryptoGrid
+            currency={currency}
+            rate={rate}
+            displayedCryptos={displayedCryptos}
+          />
+        </div>
         <PaginationFooter
           page={page}
           changeCurrentPage={changeCurrentPage}

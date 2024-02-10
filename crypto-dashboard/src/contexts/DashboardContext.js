@@ -18,7 +18,19 @@ export const DashboardProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    const storedDarkMode = localStorage.getItem("darkMode");
+    const isDarkMode = storedDarkMode === "true"; // Konvertovat na boolean
+    setDarkMode(isDarkMode);
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("darkMode", darkMode);
+
     if (darkMode) {
       document.body.classList.add("dark");
     } else {
@@ -36,7 +48,8 @@ export const DashboardProvider = ({ children }) => {
     if (sortConfig.key === key) {
       setSortConfig({
         ...sortConfig,
-        direction: sortConfig.direction === "ascending" ? "descending" : "ascending",
+        direction:
+          sortConfig.direction === "ascending" ? "descending" : "ascending",
       });
     } else {
       setSortConfig({
@@ -45,7 +58,19 @@ export const DashboardProvider = ({ children }) => {
         title: title,
       });
     }
-  }
+  };
+
+  const toggleDirection = () => {
+    setSortConfig({
+      ...sortConfig,
+      direction:
+        sortConfig.direction === "ascending" ? "descending" : "ascending",
+    });
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   return (
     <DashboardContext.Provider
@@ -61,9 +86,10 @@ export const DashboardProvider = ({ children }) => {
         showChart,
         setShowChart,
         darkMode,
-        setDarkMode,
+        toggleDarkMode,
         sortConfig,
         changeSortConfig,
+        toggleDirection,
       }}
     >
       {children}

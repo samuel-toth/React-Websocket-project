@@ -20,19 +20,6 @@ export const CryptoDataProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sortCryptos = () => {
-    const sortedCryptos = [...cryptos].sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? 1 : -1;
-      }
-      return 0;
-    });
-    setCryptos(sortedCryptos);
-  };
-
   const fetchRateToUSD = useCallback(async () => {
     if (currency !== "usd") {
       const response = await fetch(
@@ -59,14 +46,17 @@ export const CryptoDataProvider = ({ children }) => {
       changePercent24Hr: parseFloat(asset.changePercent24Hr),
       supply: parseFloat(asset.supply),
       marketCapUsd: parseFloat(asset.marketCapUsd),
-      isSelected: false,
-      animationClass:
-        " bg-slate-100/30 backdrop-blur-md transition-colors duration-1000",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+      isSelected: watchedCryptos.some((crypto) => crypto.id === asset.id),
+      color: generateRandomColor(),
     }));
 
     setCryptos(assets);
   }, [page, perPage]);
+
+  const generateRandomColor = () => {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return `#${"0".repeat(6 - randomColor.length)}${randomColor}`;
+  };
 
   const refreshData = () => {
     fetchCryptos();
@@ -77,15 +67,15 @@ export const CryptoDataProvider = ({ children }) => {
     setChartData((prevChartData) => [...prevChartData, data]);
   };
 
-  const addToWatchedCryptos = (crypto) => {
+  const addCryptoToWatchlist = (crypto) => {
     const newCrypto = {
       id: crypto.id,
       name: crypto.name,
       price: crypto.price,
       rank: crypto.rank,
+      symbol: crypto.symbol,
       isSelected: true,
-      animationClass:
-        "bg-slate-100/30 backdrop-blur-md transition-colors duration-1000",
+      isCharted: false,
       color: crypto.color,
       changePercent24Hr: crypto.changePercent24Hr,
     };
@@ -94,6 +84,25 @@ export const CryptoDataProvider = ({ children }) => {
       ...prevWatchedCryptos,
       newCrypto,
     ]);
+  };
+
+  const removeCryptoFromWatchlist = (id) => {
+    setWatchedCryptos((prevWatchedCryptos) =>
+      prevWatchedCryptos.filter((crypto) => crypto.id !== id)
+    );
+
+    setCryptos((prevCryptos) =>
+      prevCryptos.map((crypto) => {
+        if (crypto.id === id) {
+          return { ...crypto, isSelected: false };
+        }
+        return crypto;
+      })
+    );
+
+    setChartData((prevChartData) =>
+      prevChartData.filter((crypto) => crypto.id !== id)
+    );
   };
 
   const toggleAllCheckboxes = (state) => {
@@ -115,17 +124,40 @@ export const CryptoDataProvider = ({ children }) => {
         const updatedCrypto = { ...crypto };
         updatedCrypto.isSelected = !updatedCrypto.isSelected;
         if (updatedCrypto.isSelected) {
-          addToWatchedCryptos(updatedCrypto);
+          addCryptoToWatchlist(updatedCrypto);
         } else {
-          setWatchedCryptos((prevWatchedCryptos) =>
-            prevWatchedCryptos.filter((crypto) => crypto.id !== id)
-          );
+          removeCryptoFromWatchlist(id);
         }
         return updatedCrypto;
       }
       return crypto;
     });
     setCryptos(updatedCryptos);
+  };
+
+  const toggleWatchedCryptoIsCharted = (id) => {
+    const updatedWatchedCryptos = watchedCryptos.map((crypto) => {
+      if (crypto.id === id) {
+        const updatedCrypto = { ...crypto };
+        updatedCrypto.isCharted = !updatedCrypto.isCharted;
+        return updatedCrypto;
+      }
+      return crypto;
+    });
+    setWatchedCryptos(updatedWatchedCryptos);
+  };
+
+  const sortCryptos = () => {
+    const sortedCryptos = [...cryptos].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    });
+    setCryptos(sortedCryptos);
   };
 
   useEffect(() => {
@@ -164,6 +196,7 @@ export const CryptoDataProvider = ({ children }) => {
         refreshData,
         watchedCryptos,
         setWatchedCryptos,
+        toggleWatchedCryptoIsCharted,
       }}
     >
       {children}

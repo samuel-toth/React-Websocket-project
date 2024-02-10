@@ -16,47 +16,6 @@ code {
     monospace;
 }
 
-@layer utilities {
-  .animate-highlight {
-    @apply transition-colors ease-in-out duration-300;
-    animation-fill-mode: forwards;
-  }
-}
-
-@keyframes rotateIcon {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.icon-animation {
-  animation: rotateIcon 1s linear;
-}
-
-@keyframes fadeAndSpin {
-  0% {
-    transform: rotate(-360deg);
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0;
-  }
-
-  100% {
-    transform: rotate(0deg);
-    opacity: 1;
-  }
-}
-
-.fade-and-spin {
-  animation: fadeAndSpin 2s linear forwards;
-}
-
 @keyframes drawChartLine {
   from {
     stroke-dashoffset: 100;
@@ -100,19 +59,6 @@ code {
     transform: translate(10px, -10px) rotate(45deg);
   }
 }
-
-.slide-down {
-  transition: transform 0.3s ease;
-}
-
-.hidden-chart {
-  transform: translateY(-100%);
-}
-
-.visible-chart {
-  transform: translateY(0%);
-}
-
 .chart-container {
   transition: max-height 0.3s linear;
   overflow: hidden;
@@ -124,9 +70,14 @@ code {
 }
 
 .table-container {
-  transition: transform 0.3s linear;
+  transition: opacity 0.3s ease-in-out;
+  overflow: hidden;
 }
 
-.table-lowered {
-  transform: translateY(0%);
+.table-visible {
+  opacity: 1;
+}
+
+.table-hidden {
+  opacity: 0;
 }
