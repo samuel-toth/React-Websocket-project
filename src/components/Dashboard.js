@@ -44,7 +44,7 @@ const Dashboard = () => {
       {/* Watchlist section with collapsible table view */}
       <CollapsibleView title="Your Watchlist">
         {watchedCryptos.length === 0 ? (
-          <p className="text-lg px-2 sm:px-8 font-extralight drop-shadow-lg">
+          <p className="text-lg px-2 sm:px-8 font-light drop-shadow-lg">
             Nothing here, please add any cryptocurrency to watchlist.
           </p>
         ) : (
