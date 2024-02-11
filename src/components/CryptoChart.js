@@ -138,7 +138,13 @@ const CryptoChart = ({ cryptos }) => {
               stroke="currentColor"
               strokeWidth={2}
             />
-            <Tooltip content={<ChartTooltip />} />
+            <Tooltip
+              content={<ChartTooltip />}
+              active={cryptos.some(
+                (crypto) =>
+                  crypto.isCharted && crypto.data && crypto.data.length > 0
+              )}
+            />
             <Legend />
             {cryptos
               .filter((crypto) => crypto.isCharted)
