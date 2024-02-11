@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import { useDashboard } from "./contexts/DashboardContext";
 import { useCryptoData } from "./contexts/CryptoDataContext";
 import { Toaster } from "react-hot-toast";
+import { TW_CLASSES } from "./utils/constants";
 
 const App = () => {
   const { setCurrency, searchTerm, setSearchTerm, darkMode, toggleDarkMode } =
@@ -28,8 +29,8 @@ const App = () => {
         duration={4000}
         toastOptions={{
           style: {
-            background: darkMode ? "#64748b" : "#94a3b8", // Colors slate-500 and slate-400
-            color: darkMode ? "#94a3b8" : "#f1f5f9", // Colors slate-400 and slate-100
+            background: darkMode ? TW_CLASSES.SLATE_500_HEX : TW_CLASSES.SLATE_400_HEX,
+            color: darkMode ? TW_CLASSES.SLATE_400_HEX : TW_CLASSES.SLATE_100_HEX,
             fontSize: "0.9rem",
           },
         }}

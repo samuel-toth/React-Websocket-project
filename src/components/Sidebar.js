@@ -39,16 +39,16 @@ const Sidebar = ({
   const sidebarRef = useRef(null);
 
   useEffect(() => {
-    const handleOutsideClick = (event) => {
+    const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsSidebarOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    // Clean up the event listener on component unmount
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleCurrencyChange = (currency) => {

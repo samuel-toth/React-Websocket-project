@@ -21,7 +21,6 @@ import { PER_PAGE_OPTIONS } from "../utils/constants";
  * @param {Function} props.setPerPage Function to set the number of items displayed per page.
  * @returns {JSX.Element} The PaginationButtons component, comprising a dropdown for items per page selection
  * and navigation buttons for paging.
- *
  */
 const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

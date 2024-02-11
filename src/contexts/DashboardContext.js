@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { CURRENCY_OPTIONS, TW_CLASSES } from "../utils/constants";
+import {
+  CURRENCY_OPTIONS,
+  TW_CLASSES,
+  COINCAP_LIMIT,
+} from "../utils/constants";
 
 /**
  * Context for the dashboard settings and state.
@@ -15,11 +19,9 @@ const DashboardContext = createContext();
  * @returns {React.ReactElement} The provider component.
  */
 export const DashboardProvider = ({ children }) => {
-  // Defines the limit for pagination.
-  const LIMIT = 1000;
-
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
+  // State for storing the selected currency, default is USD.
   const [currency, setCurrency] = useState(CURRENCY_OPTIONS[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
@@ -33,7 +35,7 @@ export const DashboardProvider = ({ children }) => {
   }, [darkMode]);
 
   const changeCurrentPage = (page) => {
-    if (page > 0 && page / perPage <= LIMIT) {
+    if (page > 0 && page * perPage <= COINCAP_LIMIT) {
       setPage(page);
     }
   };

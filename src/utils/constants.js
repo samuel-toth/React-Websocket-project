@@ -34,4 +34,9 @@ export const TW_CLASSES = Object.freeze({
   TRANSITION: "transition-all",
   DURATION_500: "duration-500",
   DARK_MODE: "dark",
+  SLATE_500_HEX: "#64748b",
+  SLATE_400_HEX: "#94a3b8",
+  SLATE_100_HEX: "#f1f5f9",
 });
+
+export const COINCAP_LIMIT = 1000;
