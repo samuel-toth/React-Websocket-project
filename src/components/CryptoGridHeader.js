@@ -72,9 +72,9 @@ const CryptoGridHeader = ({
             aria-label="Toggle sorting direction"
           >
             {sortConfig.direction === "ascending" ? (
-              <FaCaretUp />
+              <FaCaretUp className="text-indigo-500 dark:text-indigo-400" />
             ) : (
-              <FaCaretDown />
+              <FaCaretDown className="text-indigo-500 dark:text-indigo-400" />
             )}
           </button>
           {isDropdownOpen && (

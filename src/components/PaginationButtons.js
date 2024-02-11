@@ -48,7 +48,10 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   return (
     <div className="flex justify-between items-center md:mt-8 m-6">
       {/* Per page dropdown */}
-      <div className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md shadow-lg p-2 flex items-center">
+      <div
+        className="relative bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md 
+      shadow-lg p-2 flex items-center text-slate-500 dark:text-slate-400"
+      >
         <div className="relative" ref={dropdownRef}>
           <button
             className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
@@ -90,7 +93,7 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
       </div>
 
       {/* Pagination buttons */}
-      <div className="flex items-center space-x-2 text-sm sm:text-md ">
+      <div className="flex items-center space-x-2 text-sm sm:text-md text-slate-500 dark:text-slate-400">
         <span className="">
           {page} of {Math.ceil(1000 / Number(selectedPerPage))}
         </span>

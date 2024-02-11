@@ -29,8 +29,12 @@ const App = () => {
         duration={4000}
         toastOptions={{
           style: {
-            background: darkMode ? TW_CLASSES.SLATE_500_HEX : TW_CLASSES.SLATE_400_HEX,
-            color: darkMode ? TW_CLASSES.SLATE_400_HEX : TW_CLASSES.SLATE_100_HEX,
+            background: darkMode
+              ? TW_CLASSES.SLATE_500_HEX
+              : TW_CLASSES.SLATE_400_HEX,
+            color: darkMode
+              ? TW_CLASSES.SLATE_400_HEX
+              : TW_CLASSES.SLATE_100_HEX,
             fontSize: "0.9rem",
           },
         }}

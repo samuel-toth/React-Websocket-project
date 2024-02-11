@@ -60,9 +60,9 @@ const CryptoTable = ({ cryptos, config }) => {
                 {sortConfig.key === "rank" ? (
                   <span>
                     {sortConfig.direction === "ascending" ? (
-                      <FaCaretUp className="flex" />
+                      <FaCaretUp className="flex text-indigo-500 dark:text-indigo-400" />
                     ) : (
-                      <FaCaretDown className="flex" />
+                      <FaCaretDown className="flex text-indigo-500 dark:text-indigo-400" />
                     )}
                   </span>
                 ) : (
@@ -84,9 +84,9 @@ const CryptoTable = ({ cryptos, config }) => {
                 {sortConfig.key === "name" ? (
                   <span>
                     {sortConfig.direction === "ascending" ? (
-                      <FaCaretUp className="flex" />
+                      <FaCaretUp className="flex text-indigo-500 dark:text-indigo-400" />
                     ) : (
-                      <FaCaretDown className="flex" />
+                      <FaCaretDown className="flex text-indigo-500 dark:text-indigo-400" />
                     )}
                   </span>
                 ) : (
@@ -110,9 +110,9 @@ const CryptoTable = ({ cryptos, config }) => {
                 {sortConfig.key === "symbol" ? (
                   <span>
                     {sortConfig.direction === "ascending" ? (
-                      <FaCaretUp className="flex" />
+                      <FaCaretUp className="flex text-indigo-500 dark:text-indigo-400" />
                     ) : (
-                      <FaCaretDown className="flex" />
+                      <FaCaretDown className="flex text-indigo-500 dark:text-indigo-400" />
                     )}
                   </span>
                 ) : (
@@ -131,9 +131,9 @@ const CryptoTable = ({ cryptos, config }) => {
                 {sortConfig.key === "price" ? (
                   <span>
                     {sortConfig.direction === "ascending" ? (
-                      <FaCaretUp className="flex" />
+                      <FaCaretUp className="flex text-indigo-500 dark:text-indigo-400" />
                     ) : (
-                      <FaCaretDown className="flex" />
+                      <FaCaretDown className="flex text-indigo-500 dark:text-indigo-400" />
                     )}
                   </span>
                 ) : (
@@ -155,9 +155,9 @@ const CryptoTable = ({ cryptos, config }) => {
                 {sortConfig.key === "changePercent24Hr" ? (
                   <span>
                     {sortConfig.direction === "ascending" ? (
-                      <FaCaretUp className="flex" />
+                      <FaCaretUp className="flex text-indigo-500 dark:text-indigo-400" />
                     ) : (
-                      <FaCaretDown className="flex" />
+                      <FaCaretDown className="flex text-indigo-500 dark:text-indigo-400" />
                     )}
                   </span>
                 ) : (

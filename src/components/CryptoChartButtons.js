@@ -38,7 +38,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
   };
 
   return (
-    <div className="flex justify-end items-center md:mt-8 m-6">
+    <div className="flex justify-end items-center md:mt-8 m-6 text-slate-500 dark:text-slate-400">
       {/* Interval buttons */}
       <div className="flex items-center space-x-2 text-sm sm:text-md ">
         <div className="bg-slate-300/30 backdrop-blur-md rounded-xl shadow-lg p-2 flex items-center">
@@ -53,7 +53,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
           <div className="h-5 border-r-2 border-indigo-400 mx-2" />
           <div className="relative" ref={dropdownRef}>
             <button
-              className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
+              className="bg-transparent pl-2 pr-8 cursor-pointer select-none flex 
             justify-between items-center"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               aria-label="Show or hide dropdown menu to select number of items in one page"
@@ -93,8 +93,8 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
           <button
             className="px-2 sm:hover:scale-125 hover:scale-110"
             onClick={() => setIntervalOffset(1)}
-            aria-label={`Move chart ${interval} forward`}
-            title={`Move chart ${interval} forward`}
+            aria-label={`Move chart ${interval.name} forward`}
+            title={`Move chart ${interval.name} forward`}
           >
             <FaChevronRight />
           </button>
