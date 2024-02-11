@@ -6,11 +6,11 @@ import { sortOptions } from "../utils/helper";
  * Grid header component with sorting options and button to add or remove
  * all cryptocurrencies from the watchlist.
  *
- * @param {Object} props - The component props.
- * @param {Object} props.sortConfig - The current sorting configuration.
- * @param {Function} props.changeSortConfig - The function to change the sorting configuration.
- * @param {Function} props.toggleAllCheckboxes - The function to toggle all checkboxes.
- * @returns {JSX.Element} The rendered CryptoGridHeader component.
+ * @param {Object} props The component props.
+ * @param {Object} props.sortConfig The current sorting configuration.
+ * @param {Function} props.changeSortConfig The function to change the sorting configuration.
+ * @param {Function} props.toggleAllCheckboxes The function to toggle all checkboxes.
+ * @returns {JSX.Element} CryptoGridHeader component.
  */
 const CryptoGridHeader = ({
   sortConfig,

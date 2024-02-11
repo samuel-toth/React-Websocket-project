@@ -10,23 +10,31 @@ import { useDashboard } from "./DashboardContext";
 import { generateRandomColor, formatPrice } from "../utils/helper";
 import toast from "react-hot-toast";
 
+/**
+ * Context for managing cryptocurrency data.
+ * @type {React.Context}
+ */
 const CryptoDataContext = createContext();
 
 /**
- * CryptoDataProvider provides a context for managing cryptocurrency data and watchlist.
+ * Provider component that manages cryptocurrency data and user interactions.
  *
- * @component
- * @param {Object} props - The component props.
- * @param {ReactNode} props.children - The child components.
- * @returns {ReactNode} The rendered component.
+ * @param {object} props The component props.
+ * @param {React.ReactNode} props.children Child components that consume the context.
+ * @returns {React.ReactElement} The provider component.
  */
 export const CryptoDataProvider = ({ children }) => {
   const { currency, searchTerm, page, perPage } = useDashboard();
 
+  // State for storing raw crypto data from API.
   const [cryptos, setCryptos] = useState([]);
+  // State for storing crypto data filtered by search term.
   const [displayedCryptos, setDisplayedCryptos] = useState([]);
+  // State for storing user's watchlist of cryptos.
   const [watchedCryptos, setWatchedCryptos] = useState([]);
+  // Conversion rate from selected currency to USD.
   const [rate, setRate] = useState(1);
+  // WebSocket connection for real-time price updates.
   const [websocket, setWebsocket] = useState(null);
   const websocketRef = useRef(null);
 
@@ -303,6 +311,11 @@ export const CryptoDataProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to consume CryptoDataContext.
+ *
+ * @returns {object} The context value managing cryptocurrency data.
+ */
 export const useCryptoData = () => {
   return useContext(CryptoDataContext);
 };

@@ -1,38 +1,37 @@
 import React, { useState } from "react";
-import { sortCryptos } from "../utils/helper";
+import { sortCryptos, changeOrToggleSortConfig } from "../utils/helper";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import GridHeader from "./CryptoGridHeader";
 
 /**
- * Grid component for displaying cryptocurrency data. It allows adding and removing
- * cryptocurrencies from the watchlist.
+ * Displays a grid of cryptocurrency data with functionality to sort and
+ * manage a watchlist. It includes a header for sorting and individual tiles
+ * for each cryptocurrency that can be added to or removed from the watchlist.
  *
- * @param {Object} props - The component props.
- * @param {Array} props.cryptos - The array of displayed cryptocurrencies.
- * @param {Object} props.config - The configuration object for the grid.
- * @returns {JSX.Element} The rendered CryptoGrid component.
+ * @component
+ * @param {Object} props The component props.
+ * @param {Array} props.cryptos Array of cryptocurrency objects to be displayed.
+ * @param {Object} props.config Configuration options for the grid, including methods to toggle selection and format price data.
+ * @returns {JSX.Element} CryptoGrid component.
  */
 const CryptoGrid = ({ cryptos, config }) => {
+  // State for managing sort configuration with default set to rank in ascending order.
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
     title: "Rank",
   });
 
+  /**
+   * Updates the sort configuration state based on user interaction. It either toggles the
+   * direction of the current sort key or changes the sort key and resets the direction.
+   *
+   *
+   * @param {string} key The key to sort by (e.g., "rank", "price").
+   * @param {string} title The title of the sort key for display purposes.
+   */
   const changeSortConfig = (key, title) => {
-    if (sortConfig.key === key) {
-      setSortConfig({
-        ...sortConfig,
-        direction:
-          sortConfig.direction === "ascending" ? "descending" : "ascending",
-      });
-    } else {
-      setSortConfig({
-        key,
-        direction: "ascending",
-        title: title,
-      });
-    }
+    setSortConfig(changeOrToggleSortConfig(sortConfig, key, title));
   };
 
   return (

@@ -8,15 +8,20 @@ import {
 import { perPageOptions } from "../utils/helper";
 
 /**
- * Pagination component with dropdown for selecting items per page
- * and buttons for changing current page.
- *
+ * A component for managing pagination, including a dropdown to select the number of items per page
+ * and buttons to navigate between pages.
+ * 
+ * Utilizes an external utility `perPageOptions` for dropdown options, allowing the user to select
+ * how many items should be displayed per page. It also includes previous and next page buttons.
+ * 
  * @component
- * @param {Object} props - The component props.
- * @param {number} props.page - The current page number.
- * @param {Function} props.changeCurrentPage - The function to change the current page.
- * @param {Function} props.setPerPage - The function to set the number of items per page.
- * @returns {JSX.Element} The rendered PaginationButtons component.
+ * @param {Object} props The component props.
+ * @param {number} props.page The current page number.
+ * @param {Function} props.changeCurrentPage Function to update the current page.
+ * @param {Function} props.setPerPage Function to set the number of items displayed per page.
+ * @returns {JSX.Element} The PaginationButtons component, comprising a dropdown for items per page selection
+ * and navigation buttons for paging.
+ * 
  */
 const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,7 +34,10 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
         setIsDropdownOpen(false);
       }
     };
+    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
+    // Clean up the event listener on component unmount
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSelect = (value) => {

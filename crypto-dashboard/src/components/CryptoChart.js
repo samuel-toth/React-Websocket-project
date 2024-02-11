@@ -20,9 +20,9 @@ import CryptoChartButtons from "./CryptoChartButtons";
 /**
  * Chart component displaying watchlisted cryptocurrencies data over time.
  *
- * @param {Object} props - The component props.
- * @param {Array} props.cryptos - The list of cryptocurrencies being watched.
- * @returns {JSX.Element} The rendered CryptoChart component.
+ * @param {Object} props The component props.
+ * @param {Array} props.cryptos The list of cryptocurrencies with data to be displayed.
+ * @returns {JSX.Element} CryptoChart component.
  */
 const CryptoChart = ({ cryptos }) => {
   const [formattedData, setFormattedData] = useState([]);

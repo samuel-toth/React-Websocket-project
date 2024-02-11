@@ -13,14 +13,14 @@ import { currencyOptions } from "../utils/helper";
  * Sidebar component for the crypto dashboard with searchbar, dropdown for currency selection,
  * and buttons for toggling dark mode and refreshing data.
  *
- * @param {Object} props - The component props.
- * @param {Function} props.setCurrency - Function to set the selected currency.
- * @param {string} props.searchTerm - The current search term for filtering cryptocurrencies.
- * @param {Function} props.setSearchTerm - Function to set the search term.
- * @param {boolean} props.darkMode - Flag indicating whether dark mode is enabled.
- * @param {Function} props.toggleDarkMode - Function to toggle dark mode.
- * @param {Function} props.refreshData - Function to refresh the cryptocurrency data.
- * @returns {JSX.Element} The rendered Sidebar component.
+ * @param {Object} props The component props.
+ * @param {Function} props.setCurrency Function to set the selected currency.
+ * @param {string} props.searchTerm The current search term for filtering cryptocurrencies.
+ * @param {Function} props.setSearchTerm Function to set the search term.
+ * @param {boolean} props.darkMode Flag indicating whether dark mode is enabled.
+ * @param {Function} props.toggleDarkMode Function to toggle dark mode.
+ * @param {Function} props.refreshData Function to refresh the cryptocurrency data.
+ * @returns {JSX.Element} Sidebar component.
  */
 const Sidebar = ({
   setCurrency,

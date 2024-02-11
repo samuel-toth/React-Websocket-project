@@ -77,7 +77,17 @@ export const generateRandomColor = () => {
 
 export const roundTimeToNearestTenSeconds = (date) => {
   const msPerTenSeconds = 10000;
-  const roundedTime =
-    Math.floor(date / msPerTenSeconds) * msPerTenSeconds;
+  const roundedTime = Math.floor(date / msPerTenSeconds) * msPerTenSeconds;
   return new Date(roundedTime);
+};
+
+export const changeOrToggleSortConfig = (sortConfig, key, title) => {
+  if (sortConfig.key === key) {
+    return {
+      key,
+      direction:
+        sortConfig.direction === "ascending" ? "descending" : "ascending",
+      title,
+    };
+  }
 };

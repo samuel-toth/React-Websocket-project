@@ -1,16 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { currencyOptions } from "../utils/helper";
 
+/**
+ * Context for the dashboard settings and state.
+ * @type {React.Context}
+ */
 const DashboardContext = createContext();
 
 /**
- * DashboardProvider provides a context for managing dashboard state and settings.
- * 
- * @param {Object} props - The component props.
- * @param {ReactNode} props.children - The child components.
- * @returns {ReactNode} The rendered component.
+ * Provider component providing context for managing dashboard state and settings.
+ *
+ * @param {object} props The component props.
+ * @param {React.ReactNode} props.children Child components that consume the context.
+ * @returns {React.ReactElement} The provider component.
  */
 export const DashboardProvider = ({ children }) => {
+  // Defines the limit for pagination.
   const LIMIT = 1000;
 
   const [page, setPage] = useState(1);
@@ -57,6 +62,11 @@ export const DashboardProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to consume the DashboardContext.
+ *
+ * @returns {Object} The context value, providing access to the dashboard state.
+ */
 export const useDashboard = () => {
   return useContext(DashboardContext);
 };

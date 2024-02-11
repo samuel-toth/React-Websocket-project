@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { sortCryptos } from "../utils/helper";
+import { sortCryptos, changeOrToggleSortConfig } from "../utils/helper";
 import {
   FaListCheck,
   FaBookmark,
@@ -10,36 +10,34 @@ import {
 } from "react-icons/fa6";
 
 /**
- * Table component for displaying cryptocurrency data. The table can be sorted by columns.
- * It also allows adding and removing cryptocurrencies from the watchlist and showing/hiding
- * them in the chart.
+ * Represents a table component for displaying cryptocurrency data. Features include
+ * sorting by various columns, adding or removing cryptocurrencies from a watchlist,
+ * and toggling their visibility on a chart.
  *
- * @param {Object} props - The component props.
- * @param {Array} props.cryptos - The array of cryptocurrencies to be displayed in the table.
- * @param {Object} props.config - The configuration object for the table.
- * @returns {JSX.Element} The rendered CryptoTable component.
+ * @component
+ * @param {Object} props The component props.
+ * @param {Array} props.cryptos An array of cryptocurrency objects to be displayed.
+ * @param {Object} props.config Configuration settings for the table, including functions for sorting, toggling selection, and formatting prices.
+ * @returns {JSX.Element} CryptoTable component.
  */
 const CryptoTable = ({ cryptos, config }) => {
+  // State for managing sort configuration with default set to rank in ascending order.
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
     title: "Rank",
   });
 
+  /**
+   * Updates the sort configuration state based on user interaction. It either toggles the
+   * direction of the current sort key or changes the sort key and resets the direction.
+   *
+   *
+   * @param {string} key The key to sort by (e.g., "rank", "price").
+   * @param {string} title The title of the sort key for display purposes.
+   */
   const changeSortConfig = (key, title) => {
-    if (sortConfig.key === key) {
-      setSortConfig({
-        ...sortConfig,
-        direction:
-          sortConfig.direction === "ascending" ? "descending" : "ascending",
-      });
-    } else {
-      setSortConfig({
-        key,
-        direction: "ascending",
-        title: title,
-      });
-    }
+    setSortConfig(changeOrToggleSortConfig(sortConfig, key, title));
   };
 
   return (
@@ -195,6 +193,7 @@ const CryptoTable = ({ cryptos, config }) => {
             </th>
           </tr>
         </thead>
+        {/* Table body */}
         <tbody>
           {sortCryptos(cryptos, sortConfig).map((crypto) => (
             <tr

@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 /**
- * Collapsible view component that can be used to hide and show content,
+ * A collapsible view component that can be used to hide and show content,
  * with a title and a toggle button.
  *
  * @component
- * @param {Object} props - The component props.
- * @param {string} props.title - The title of the collapsible view.
- * @param {ReactNode} props.children - The content to be displayed inside the collapsible view.
- * @returns {JSX.Element} The rendered CollapsibleView component.
+ * @param {Object} props The component props.
+ * @param {string} props.title The title for the collapsible view.
+ * @param {ReactNode} props.children The content to be displayed inside the collapsible view.
+ * @returns {JSX.Element} CollapsibleView component.
  */
 const CollapsibleView = ({ title, children }) => {
   const [isVisible, setIsVisible] = useState(true);

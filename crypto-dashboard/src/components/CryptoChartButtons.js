@@ -10,11 +10,11 @@ import { intervalOptions } from "../utils/helper";
 /**
  * Buttons for changing the interval of the chart and moving it forward or backward in time.
  *
- * @param {Object} props - The component props.
- * @param {string} props.interval - The current interval value.
- * @param {function} props.setInterval - The function to set the interval value.
- * @param {function} props.setIntervalOffset - The function to set the interval offset.
- * @returns {JSX.Element} The rendered CryptoChartButtons component.
+ * @param {Object} props The component props.
+ * @param {string} props.interval The current interval value.
+ * @param {function} props.setInterval The function to set the interval value.
+ * @param {function} props.setIntervalOffset The function to set the interval offset.
+ * @returns {JSX.Element} CryptoChartButtons component.
  */
 const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

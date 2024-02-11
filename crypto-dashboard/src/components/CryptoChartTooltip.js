@@ -4,11 +4,11 @@ import { formatDate } from "../utils/helper";
 /**
  * Tooltip component for a cryptocurrency chart with formatted data.
  *
- * @param {Object} props - The component props.
- * @param {boolean} props.active - Indicates if the tooltip is active.
- * @param {Array} props.payload - The data payload for the tooltip.
- * @param {string} props.label - The label for the tooltip.
- * @returns {JSX.Element|null} The rendered CryptoChartTooltip component or null if not active.
+ * @param {Object} props The component props.
+ * @param {boolean} props.active Indicates if the tooltip is active.
+ * @param {Array} props.payload The data payload for the tooltip.
+ * @param {string} props.label The label for the tooltip.
+ * @returns {JSX.Element|null} CryptoChartTooltip component or null if not active.
  */
 const CryptoChartTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
