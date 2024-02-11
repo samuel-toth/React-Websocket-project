@@ -195,7 +195,7 @@ const CryptoTable = ({ cryptos, config }) => {
             <tr
               key={crypto.id}
               id={config.isShowingWatchedCryptos ? crypto.id + "w" : crypto.id}
-              className="transition-colors sm:text-md lg:text-lg text-xs duration-300 bg-slate-100/30 backdrop-blur-md"
+              className="transition-colors sm:text-md lg:text-lg text-xs duration-500 bg-slate-100/30 backdrop-blur-md"
             >
               <td className="text-center sm:py-3 py-2">{crypto.rank}.</td>
               <td className="font-semibold">{crypto.name}</td>
@@ -234,7 +234,9 @@ const CryptoTable = ({ cryptos, config }) => {
                   {config.isShowingWatchedCryptos && (
                     <FaEye
                       className={`${
-                        crypto.isCharted ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400"
+                        crypto.isCharted
+                          ? "text-indigo-500 dark:text-indigo-400"
+                          : "text-slate-400"
                       } `}
                       role="button"
                       onClick={() => {

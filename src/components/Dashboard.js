@@ -38,7 +38,7 @@ const Dashboard = () => {
     <div className="">
       {/* Historical data section with collapsible chart view */}
       <CollapsibleView
-        title="Historical data"
+        title="Performance Over Time"
         children={<CryptoChart cryptos={watchedCryptos} />}
       />
       {/* Watchlist section with collapsible table view */}

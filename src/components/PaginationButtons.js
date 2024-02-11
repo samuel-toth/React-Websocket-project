@@ -10,10 +10,10 @@ import { PER_PAGE_OPTIONS } from "../utils/constants";
 /**
  * A component for managing pagination, including a dropdown to select the number of items per page
  * and buttons to navigate between pages.
- * 
+ *
  * Utilizes an external utility `perPageOptions` for dropdown options, allowing the user to select
  * how many items should be displayed per page. It also includes previous and next page buttons.
- * 
+ *
  * @component
  * @param {Object} props The component props.
  * @param {number} props.page The current page number.
@@ -21,7 +21,7 @@ import { PER_PAGE_OPTIONS } from "../utils/constants";
  * @param {Function} props.setPerPage Function to set the number of items displayed per page.
  * @returns {JSX.Element} The PaginationButtons component, comprising a dropdown for items per page selection
  * and navigation buttons for paging.
- * 
+ *
  */
 const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -61,7 +61,7 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
             {selectedPerPage}
             <div
               className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col 
-            items-center space-y-[-0.45rem] transition-transform duration-300 transform hover:scale-125"
+            items-center space-y-[-0.45rem] hover:scale-110"
             >
               <FaChevronUp />
               <FaChevronDown />
@@ -69,8 +69,8 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
           </button>
           {isDropdownOpen && (
             <div
-              className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
-              shadow-lg z-10 w-16 transform transition-all duration-500`}
+              className={`absolute bottom-full mb-4 bg-slate-300/30 dark:bg-slate-500/50 
+              backdrop-blur-md rounded-lg shadow-lg z-10 w-16`}
             >
               {PER_PAGE_OPTIONS.map((option) => (
                 <button
@@ -97,7 +97,7 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
         </span>
         <div className="bg-slate-300/30 backdrop-blur-md rounded-xl shadow-lg p-2 flex items-center">
           <button
-            className=" px-2 hover:scale-125"
+            className=" px-2 sm:hover:scale-125 hover:scale-110"
             onClick={() => changeCurrentPage(page - 1)}
             disabled={page === 1}
             aria-label="Go to previous page"

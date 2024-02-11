@@ -26,7 +26,6 @@ const CryptoGrid = ({ cryptos, config }) => {
    * Updates the sort configuration state based on user interaction. It either toggles the
    * direction of the current sort key or changes the sort key and resets the direction.
    *
-   *
    * @param {string} key The key to sort by (e.g., "rank", "price").
    * @param {string} title The title of the sort key for display purposes.
    */

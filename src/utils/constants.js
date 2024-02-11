@@ -17,11 +17,11 @@ export const SORT_OPTIONS = [
 export const INTERVAL_OPTIONS = [
   { id: "1m", name: "1m", millsecs: 60 * 1000, order: 1 },
   { id: "5m", name: "5m", millsecs: 5 * 60 * 1000, order: 2 },
-  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000, order: 3},
+  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000, order: 3 },
   { id: "60m", name: "1h", millsecs: 60 * 60 * 1000, order: 4 },
-  { id: "1d", name: "1d", millsecs: 24 * 60 * 60 * 1000, order: 5},
-  { id: "7d", name: "7d", millsecs: 7 * 24 * 60 * 60 * 1000, order: 6},
-  { id: "30d", name: "30d", millsecs: 30 * 24 * 60 * 60 * 1000, order: 7},
+  { id: "1d", name: "1d", millsecs: 24 * 60 * 60 * 1000, order: 5 },
+  { id: "7d", name: "7d", millsecs: 7 * 24 * 60 * 60 * 1000, order: 6 },
+  { id: "30d", name: "30d", millsecs: 30 * 24 * 60 * 60 * 1000, order: 7 },
 ];
 
 export const TW_CLASSES = Object.freeze({

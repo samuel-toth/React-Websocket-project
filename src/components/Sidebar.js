@@ -70,8 +70,7 @@ const Sidebar = ({
     regenerateColors();
     setIsChartShowed(true);
     setTimeout(() => setIsChartShowed(false), 1000);
-
-  }
+  };
 
   return (
     <div
@@ -84,7 +83,7 @@ const Sidebar = ({
     >
       {/* Pull tab */}
       <div
-        className="w-25 h-full bg-slate-300/30 dark:bg-slate-400/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
+        className="w-25 h-full bg-slate-300/30 dark:bg-slate-500/50 backdrop-blur-lg rounded-l-2xl shadow-lg flex flex-col justify-start 
         items-center "
       >
         <button
@@ -106,7 +105,7 @@ const Sidebar = ({
       </div>
 
       {/* Sidebar content */}
-      <div className="w-80 bg-slate-300/30 dark:bg-slate-400/30  backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
+      <div className="w-80 bg-slate-300/30 dark:bg-slate-500/50  backdrop-blur-lg shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
         <div className="mt-8">
           <div className="flex items-center bg-slate-500 rounded-lg overflow-hidden">
             <FaMagnifyingGlass className="text-xl text-indigo-300 ml-3" />
@@ -130,9 +129,9 @@ const Sidebar = ({
           >
             Currency{" "}
             {isCurrencyDropdownOpen ? (
-              <FaChevronUp className="text-slate-400 ml-2" />
+              <FaChevronUp className="text-indigo-400 ml-1" />
             ) : (
-              <FaChevronDown className="text-slate-400 ml-2" />
+              <FaChevronDown className="text-indigo-400 ml-1" />
             )}
           </button>
           <div
@@ -143,7 +142,7 @@ const Sidebar = ({
             {CURRENCY_OPTIONS.map((currency) => (
               <button
                 key={currency.name}
-                className="px-4 py-2 block text-left w-full hover:text-indigo-500"
+                className="px-4 py-2 block text-left w-full hover:text-indigo-500 dark:hover:text-indigo-300 focus:outline-none"
                 onClick={() => handleCurrencyChange(currency.id)}
                 title={`Show in ${currency.name}`}
                 aria-label={`Show cryptocurrency prices in ${currency.name}`}

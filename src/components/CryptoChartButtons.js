@@ -43,14 +43,14 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
       <div className="flex items-center space-x-2 text-sm sm:text-md ">
         <div className="bg-slate-300/30 backdrop-blur-md rounded-xl shadow-lg p-2 flex items-center">
           <button
-            className=" px-2 hover:scale-125"
+            className=" px-2 sm:hover:scale-125 hover:scale-110"
             onClick={() => setIntervalOffset(-1)}
             aria-label={`Move chart ${interval} back`}
             title={`Move chart ${interval} back`}
           >
             <FaChevronLeft />
           </button>
-          <div className="h-5 border-r-2 border-indigo-400  mx-2" />
+          <div className="h-5 border-r-2 border-indigo-400 mx-2" />
           <div className="relative" ref={dropdownRef}>
             <button
               className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
@@ -62,7 +62,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
               {selectedInterval.name}
               <div
                 className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col 
-            items-center space-y-[-0.45rem] transition-transform duration-300 transform hover:scale-125"
+            items-center space-y-[-0.45rem] hover:scale-110"
               >
                 <FaChevronUp />
                 <FaChevronDown />
@@ -70,14 +70,14 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
             </button>
             {isDropdownOpen && (
               <div
-                className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
-              shadow-lg z-10 w-16 transform transition-all duration-500`}
+                className={`absolute bottom-full mb-4 bg-slate-300/30 dark:bg-slate-500/50 backdrop-blur-md rounded-lg 
+              shadow-lg z-10 w-16`}
               >
                 {INTERVAL_OPTIONS.map((option) => (
                   <button
                     key={option.id}
                     className={`px-4 py-2  ${
-                      selectedInterval === option.id ? "font-bold" : ""
+                      selectedInterval.id === option.id ? "font-bold" : ""
                     } cursor-pointer`}
                     onClick={() => handleSelect(option)}
                     aria-label={`Select ${option.name} items per page`}

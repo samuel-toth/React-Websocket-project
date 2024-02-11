@@ -44,9 +44,9 @@ const CollapsibleView = ({ title, children }) => {
       >
         {title}
         {isVisible ? (
-          <FaChevronUp className="text-2xl drop-shadow-lg text-indigo-500 dark:text-indigo-400" />
+          <FaChevronUp className="text-2xl drop-shadow-lg text-indigo-500 dark:text-indigo-400 hover:scale-110" />
         ) : (
-          <FaChevronDown className="text-2xl drop-shadow-lg text-indigo-500 dark:text-indigo-400" />
+          <FaChevronDown className="text-2xl drop-shadow-lg text-indigo-500 dark:text-indigo-400 hover:scale-110" />
         )}
       </h2>
       <div

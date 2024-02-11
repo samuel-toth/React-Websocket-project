@@ -13,7 +13,10 @@ import { formatDate } from "../utils/helper";
 const CryptoChartTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className=" bg-slate-400/30 dark:bg-slate-200/30 rounded-lg shadow-lg backdrop-blur-md p-2 text-slate-700 dark:text-slate-300">
+      <div
+        className=" bg-slate-400/30dark:bg-slate-500/50 rounded-lg shadow-lg 
+      backdrop-blur-md p-2 text-slate-700 dark:text-slate-300"
+      >
         <p className="label font-semibold">{formatDate(label)}</p>
         {payload.map((crypto) => (
           <div key={crypto.dataKey} className="flex items-center">

@@ -33,13 +33,15 @@ const CryptoGridHeader = ({
   }, []);
 
   const handleSelect = (key, title) => {
-    changeSortConfig(key, title)
+    changeSortConfig(key, title);
     setIsDropdownOpen(false);
-  }
-
+  };
 
   return (
-    <div className="flex md:col-span-3 md:mt-8 m-6 sm:col-span-3 col-span-2 sm:text-xl text-lg justify-between select-none transition-none">
+    <div
+      className="flex md:col-span-3 md:mt-8 m-6 sm:col-span-3 col-span-2 sm:text-xl text-lg 
+    justify-between select-none transition-none"
+    >
       {/* Sorting button */}
       <div className=" bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md w-24 shadow-lg p-2">
         <div className="relative" ref={dropdownRef}>
