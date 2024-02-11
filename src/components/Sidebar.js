@@ -128,9 +128,9 @@ const Sidebar = ({
           >
             Currency{" "}
             {isCurrencyDropdownOpen ? (
-              <FaChevronUp className="text-indigo-400 ml-1" />
+              <FaChevronUp className="text-indigo-500 dark:text-indigo-400 ml-1" />
             ) : (
-              <FaChevronDown className="text-indigo-400 ml-1" />
+              <FaChevronDown className="text-indigo-500 dark:text-indigo-400 ml-1" />
             )}
           </button>
           <div
