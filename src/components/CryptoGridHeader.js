@@ -42,6 +42,16 @@ const CryptoGridHeader = ({
       className="flex md:col-span-3 md:mt-8 m-6 sm:col-span-3 col-span-2 sm:text-xl text-lg 
     justify-between select-none transition-none"
     >
+      {/* Select all button */}
+      <button className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center p-2">
+        <FaListCheck
+          className="text-md sm:text-lg mx-1 text-slate-500 dark:text-slate-400 cursor-pointer"
+          onClick={toggleAllCheckboxes}
+          title="Add/Remove all cryptocurrencies from watchlist"
+          aria-label="Button to add or remove all cryptocurrencies from watchlist"
+        />
+      </button>
+
       {/* Sorting button */}
       <div className=" bg-slate-300/30 backdrop-blur-sm rounded-xl text-sm sm:text-md w-24 shadow-lg p-2">
         <div className="relative" ref={dropdownRef}>
@@ -89,16 +99,6 @@ const CryptoGridHeader = ({
           )}
         </div>
       </div>
-
-      {/* Select all button */}
-      <button className="bg-slate-300/30 backdrop-blur-sm rounded-xl shadow-lg flex items-center p-2">
-        <FaListCheck
-          className="text-md sm:text-lg mx-1 text-slate-500 dark:text-slate-400 cursor-pointer"
-          onClick={toggleAllCheckboxes}
-          title="Add/Remove all cryptocurrencies from watchlist"
-          aria-label="Button to add or remove all cryptocurrencies from watchlist"
-        />
-      </button>
     </div>
   );
 };
