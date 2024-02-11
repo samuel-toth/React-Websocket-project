@@ -68,8 +68,7 @@ const Sidebar = ({
 
   const handleRegenerateColors = () => {
     regenerateColors();
-    setIsChartShowed(true);
-    setTimeout(() => setIsChartShowed(false), 1000);
+    setIsChartShowed(!isChartShowed);
   };
 
   return (

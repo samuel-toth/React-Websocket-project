@@ -213,7 +213,7 @@ const CryptoTable = ({ cryptos, config }) => {
                 {crypto.changePercent24Hr.toFixed(2)}%
               </td>
               <td className="text-center">
-                <div className="flex justify-center items-center space-x-2 px-2">
+                <div className="flex justify-center items-center space-x-3 px-2">
                   {crypto.isSelected ? (
                     <FaBookmark
                       className="text-indigo-400"
