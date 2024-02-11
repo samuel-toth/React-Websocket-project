@@ -8,15 +8,11 @@ import GridHeader from "./CryptoGridHeader";
  * cryptocurrencies from the watchlist.
  *
  * @param {Object} props - The component props.
- * @param {Array} props.displayedCryptos - The array of displayed cryptocurrencies.
+ * @param {Array} props.cryptos - The array of displayed cryptocurrencies.
+ * @param {Object} props.config - The configuration object for the grid.
  * @returns {JSX.Element} The rendered CryptoGrid component.
  */
-const CryptoGrid = ({
-  displayedCryptos,
-  toggleCryptoIsSelected,
-  toggleAllCheckboxes,
-  getCryptoPriceFormatted,
-}) => {
+const CryptoGrid = ({ cryptos, config }) => {
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
@@ -44,10 +40,10 @@ const CryptoGrid = ({
       <GridHeader
         sortConfig={sortConfig}
         changeSortConfig={changeSortConfig}
-        toggleAllCheckboxes={toggleAllCheckboxes}
+        toggleAllCheckboxes={config.toggleAllCheckboxes}
       />
       <div className="grid sm:gap-6 gap-2 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 mt-4">
-        {sortCryptos(displayedCryptos, sortConfig).map((crypto) => (
+        {sortCryptos(cryptos, sortConfig).map((crypto) => (
           <div
             key={crypto.id}
             className="rounded-xl p-3 shadow-md grid grid-cols-2 select-none bg-slate-100 dark:bg-slate-600"
@@ -56,7 +52,7 @@ const CryptoGrid = ({
               className="col-span-2 flex justify-end"
               aria-label="Add cryptocurrency to watchlist"
               title="Add to watchlist"
-              onClick={() => toggleCryptoIsSelected(crypto.id)}
+              onClick={() => config.toggleCryptoIsSelected(crypto.id)}
             >
               {crypto.isSelected ? (
                 <FaBookmark className="text-lg text-indigo-400" />
@@ -69,7 +65,7 @@ const CryptoGrid = ({
             </div>
             <div className="col-span-2 flex justify-end">
               <p className="text-xl font-bold truncate ml-2 ">
-                {getCryptoPriceFormatted(crypto, false)}
+                {config.getCryptoPriceFormatted(crypto, false)}
               </p>
             </div>
             <div className="col-span-2 flex justify-between">

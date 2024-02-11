@@ -266,6 +266,19 @@ export const CryptoDataProvider = ({ children }) => {
     }, 500);
   };
 
+  const WatchlistTableConfig = {
+    toggleCryptoIsSelected,
+    toggleWatchedCryptoIsCharted,
+    getCryptoPriceFormatted,
+    isShowingWatchedCryptos: true,
+  };
+
+  const BrowseTableConfig = {
+    toggleCryptoIsSelected,
+    toggleAllCheckboxes,
+    getCryptoPriceFormatted,
+  };
+
   return (
     <CryptoDataContext.Provider
       value={{
@@ -281,6 +294,8 @@ export const CryptoDataProvider = ({ children }) => {
         toggleWatchedCryptoIsCharted,
         addDataToCrypto,
         getCryptoPriceFormatted,
+        WatchlistTableConfig,
+        BrowseTableConfig,
       }}
     >
       {children}

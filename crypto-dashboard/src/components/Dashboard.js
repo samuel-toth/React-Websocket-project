@@ -12,17 +12,15 @@ const Dashboard = () => {
   const {
     watchedCryptos,
     displayedCryptos,
-    toggleCryptoIsSelected,
-    toggleAllCheckboxes,
-    getCryptoPriceFormatted,
-    toggleWatchedCryptoIsCharted,
+    WatchlistTableConfig,
+    BrowseTableConfig,
   } = useCryptoData();
 
   return (
     <div>
       <CollapsibleView
         title="Historical data"
-        children={<CryptoChart watchedCryptos={watchedCryptos} />}
+        children={<CryptoChart cryptos={watchedCryptos} />}
       />
       <CollapsibleView title="Your Watchlist">
         {watchedCryptos.length === 0 ? (
@@ -30,31 +28,18 @@ const Dashboard = () => {
             Nothing here, please add any cryptocurrency to watchlist.
           </p>
         ) : (
-          <CryptoTable
-            displayedCryptos={watchedCryptos}
-            isShowingWatchedCryptos={true}
-            toggleAllCheckboxes={toggleAllCheckboxes}
-            toggleCryptoIsSelected={toggleCryptoIsSelected}
-            getCryptoPriceFormatted={getCryptoPriceFormatted}
-            toggleWatchedCryptoIsCharted={toggleWatchedCryptoIsCharted}
+          <CryptoTable cryptos={watchedCryptos} config={WatchlistTableConfig}
           />
         )}
       </CollapsibleView>
       <CollapsibleView title="Browse Cryptocurrencies">
         <div className="hidden lg:visible md:visible md:flex sm:hidden">
-          <CryptoTable
-            displayedCryptos={displayedCryptos}
-            toggleAllCheckboxes={toggleAllCheckboxes}
-            toggleCryptoIsSelected={toggleCryptoIsSelected}
-            getCryptoPriceFormatted={getCryptoPriceFormatted}
+          <CryptoTable cryptos={displayedCryptos} config={BrowseTableConfig}
+
           />
         </div>
         <div className="lg:hidden md:hidden">
-          <CryptoGrid
-            displayedCryptos={displayedCryptos}
-            toggleAllCheckboxes={toggleAllCheckboxes}
-            toggleCryptoIsSelected={toggleCryptoIsSelected}
-            getCryptoPriceFormatted={getCryptoPriceFormatted}
+          <CryptoGrid cryptos={displayedCryptos} config={BrowseTableConfig}
           />
         </div>
         <PaginationFooter

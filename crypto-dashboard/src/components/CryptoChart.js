@@ -12,6 +12,7 @@ import {
   formatXAxisTick,
   intervalOptions,
   formatYAxisTick,
+  roundTimeToNearestTenSeconds,
 } from "../utils/helper";
 import ChartTooltip from "./CryptoChartTooltip";
 import CryptoChartButtons from "./CryptoChartButtons";
@@ -20,10 +21,10 @@ import CryptoChartButtons from "./CryptoChartButtons";
  * Chart component displaying watchlisted cryptocurrencies data over time.
  *
  * @param {Object} props - The component props.
- * @param {Array} props.watchedCryptos - The list of cryptocurrencies being watched.
+ * @param {Array} props.cryptos - The list of cryptocurrencies being watched.
  * @returns {JSX.Element} The rendered CryptoChart component.
  */
-const CryptoChart = ({ watchedCryptos }) => {
+const CryptoChart = ({ cryptos }) => {
   const [formattedData, setFormattedData] = useState([]);
   const [xAxisTicks, setXAxisTicks] = useState([]);
   const [yAxisDomain, setYAxisDomain] = useState([0, 100]);
@@ -54,11 +55,11 @@ const CryptoChart = ({ watchedCryptos }) => {
   }, [interval, intervalOffset]);
 
   useEffect(() => {
-    const newData = watchedCryptos.reduce((acc, crypto) => {
+    const newData = cryptos.reduce((acc, crypto) => {
       crypto.data.forEach((dataPoint) => {
-        const existingEntry = acc.find(
-          (entry) => entry.date === dataPoint.date
-        );
+        const roundedDate = roundTimeToNearestTenSeconds(dataPoint.date);
+
+        const existingEntry = acc.find((entry) => entry.date === roundedDate);
         if (existingEntry) {
           existingEntry[crypto.name] = dataPoint.percentageChange;
         } else {
@@ -72,7 +73,7 @@ const CryptoChart = ({ watchedCryptos }) => {
     }, []);
 
     setFormattedData(newData);
-  }, [watchedCryptos]);
+  }, [cryptos]);
 
   useEffect(() => {
     if (!formattedData.length || formattedData.length === 1) {
@@ -81,7 +82,7 @@ const CryptoChart = ({ watchedCryptos }) => {
       return;
     }
 
-    const allPercentageChanges = watchedCryptos.flatMap((crypto) =>
+    const allPercentageChanges = cryptos.flatMap((crypto) =>
       crypto.data.map((dataPoint) => dataPoint.percentageChange)
     );
 
@@ -139,7 +140,7 @@ const CryptoChart = ({ watchedCryptos }) => {
             />
             <Tooltip content={<ChartTooltip />} />
             <Legend />
-            {watchedCryptos
+            {cryptos
               .filter((crypto) => crypto.isCharted)
               .map((crypto) => (
                 <Line

@@ -36,7 +36,8 @@ const CollapsibleView = ({ title, children }) => {
   return (
     <div>
       <h2
-        className="sm:text-4xl text-2xl cursor-pointer mt-16 px-2 sm:px-8 font-extralight drop-shadow-lg flex justify-between"
+        className="sm:text-4xl text-2xl cursor-pointer mt-16 px-2 sm:px-8 font-extralight 
+        drop-shadow-lg flex justify-between items-center"
         onClick={toggleVisibility}
         aria-label="Show or hide content"
         title="Show/Hide content"
