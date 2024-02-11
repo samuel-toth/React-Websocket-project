@@ -23,12 +23,12 @@ const App = () => {
       <Toaster
         position="bottom-right"
         reverseOrder={false}
-        gutter={8}
+        gutter={10}
         duration={4000}
         toastOptions={{
           style: {
-            background: darkMode ? "#64748b" : "#94a3b8",
-            color: darkMode ? "#94a3b8" : "#f1f5f9",
+            background: darkMode ? "#64748b" : "#94a3b8", // Colors slate-500 and slate-400
+            color: darkMode ? "#94a3b8" : "#f1f5f9", // Colors slate-400 and slate-100
             fontSize: "0.9rem",
           },
         }}
