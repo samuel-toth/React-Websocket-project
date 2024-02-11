@@ -1,25 +1,25 @@
 export const perPageOptions = [10, 20, 50, 100];
 
-export const currencies = [
+export const currencyOptions = [
   { name: "US Dollar", symbol: "$", id: "usd" },
   { name: "Euro", symbol: "€", id: "euro" },
   { name: "Česká koruna", symbol: "Kč", id: "czech-republic-koruna" },
 ];
 
 export const sortOptions = [
-  { name: "Rank", key: "rank"},
-  { name: "Name", key: "name"},
-  { name: "Symbol", key: "symbol"},
-  { name: "Price", key: "price"},
-  { name: "Change", key: "changePercent24Hr"},
+  { name: "Rank", key: "rank" },
+  { name: "Name", key: "name" },
+  { name: "Symbol", key: "symbol" },
+  { name: "Price", key: "price" },
+  { name: "Change", key: "changePercent24Hr" },
 ];
 
 export const intervalOptions = [
-  { id: "1m", name: "1m", millsecs: 60 * 1000},
-  { id: "5m", name: "5m", milsecs: 5 * 60 * 1000},
-  { id: "15m", name: "15m", millsecs: 15 * 60 * 1000},
-  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000},
-  { id: "60m", name: "60m", millsecs: 60 * 60 * 1000},
+  { id: "1m", name: "1m", millsecs: 60 * 1000 },
+  { id: "5m", name: "5m", milsecs: 5 * 60 * 1000 },
+  { id: "15m", name: "15m", millsecs: 15 * 60 * 1000 },
+  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000 },
+  { id: "60m", name: "60m", millsecs: 60 * 60 * 1000 },
 ];
 
 export const sortCryptos = (cryptos, sortConfig) => {
@@ -35,25 +35,21 @@ export const sortCryptos = (cryptos, sortConfig) => {
   return sortedCryptos;
 };
 
-export const getCurrencySymbol = (currency) => {
-  switch (currency) {
-    case "usd":
-      return "$";
-    case "euro":
-      return "€";
-    case "czech-republic-koruna":
-      return "Kč";
-    default:
-      return "";
-  }
-};
-
-
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);
   return `${date.toLocaleDateString("sk-SK")} ${date.toLocaleTimeString(
     "sk-SK"
   )}`;
+};
+
+export const formatPrice = (price, rate, currency) => {
+  return (
+    (price * rate >= 1 || price * rate === 0
+      ? (price / rate).toFixed(2)
+      : (price / rate).toFixed(3)) +
+    " " +
+    currency
+  );
 };
 
 export const formatXAxisTick = (tick) => {
@@ -70,4 +66,9 @@ export const formatYAxisTick = (tick) => {
   } else {
     return tick.toFixed(3) + "%";
   }
+};
+
+export const generateRandomColor = () => {
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  return `#${"0".repeat(6 - randomColor.length)}${randomColor}`;
 };
