@@ -14,25 +14,28 @@ This is a simple cryptocurrency dashboard that displays the current price of var
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [React Hot Toast](https://react-hot-toast.com/)
 
+## Requirements
+
+- Node.js v18.13.0 or higher
+- npm 9.6.6 or higher
+
 ## Installation
 
-1. Clone the repository
-2. Run `npm install` to install the dependencies
-   
+Clone the repository and navigate to the project directory.
+
+### `npm install`
+
+Install the required packages.
 
 ## Available Scripts
 
-In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Run the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.
