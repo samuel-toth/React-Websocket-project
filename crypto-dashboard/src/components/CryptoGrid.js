@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { getCurrencySymbol, sortCryptos } from "../utils/helper";
-import { useDashboard } from "../contexts/DashboardContext";
+import { sortCryptos } from "../utils/helper";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
-import GridHeader from "./GridHeader";
+import GridHeader from "./CryptoGridHeader";
 
+/**
+ * Grid component for displaying cryptocurrency data. It allows adding and removing cryptocurrencies from the watchlist.
+ * 
+ * @param {Object} props - The component props.
+ * @param {Array} props.displayedCryptos - The array of displayed cryptocurrencies.
+ * @returns {JSX.Element} The rendered CryptoGrid component.
+ */
 const CryptoGrid = ({ displayedCryptos }) => {
-  const { currency, toggleDirection } = useDashboard();
-  const { toggleCryptoIsSelected, rate, toggleAllCheckboxes } = useCryptoData();
+  const { toggleCryptoIsSelected, toggleAllCheckboxes, getCryptoPriceFormatted } = useCryptoData();
 
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
@@ -37,8 +42,6 @@ const CryptoGrid = ({ displayedCryptos }) => {
         sortConfig={sortConfig}
         changeSortConfig={changeSortConfig}
         toggleAllCheckboxes={toggleAllCheckboxes}
-        allSelected={displayedCryptos.every((crypto) => crypto.isSelected)}
-        toggleDirection={toggleDirection}
       />
       <div className="grid sm:gap-6 gap-2 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 mt-4">
         {sortCryptos(displayedCryptos, sortConfig).map((crypto) => (
@@ -63,7 +66,7 @@ const CryptoGrid = ({ displayedCryptos }) => {
             </div>
             <div className="col-span-2 flex justify-end">
               <p className="text-xl font-bold truncate ml-2 ">
-                {getCurrencySymbol(currency)} {(crypto.price / rate).toFixed(2)}
+                {getCryptoPriceFormatted(crypto, false)}
               </p>
             </div>
             <div className="col-span-2 flex justify-between">

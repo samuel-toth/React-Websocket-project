@@ -3,8 +3,8 @@ import { FaCaretDown, FaCaretUp, FaListCheck } from "react-icons/fa6";
 import { sortOptions } from "../utils/helper";
 
 /**
- * Grid header component with sorting options and button to add
- * all shown cryptocurrencies to watchlist.
+ * Grid header component with sorting options and button to add or remove
+ * all cryptocurrencies from the watchlist.
  *
  * @param {Object} props - The component props.
  * @param {Object} props.sortConfig - The current sorting configuration.

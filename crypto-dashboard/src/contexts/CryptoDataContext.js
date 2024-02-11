@@ -6,24 +6,30 @@ import React, {
   useCallback,
 } from "react";
 import { useDashboard } from "./DashboardContext";
+import { generateRandomColor, formatPrice } from "../utils/helper";
 
 const CryptoDataContext = createContext();
 
+/**
+ * CryptoDataProvider provides a context for managing cryptocurrency data and watchlist.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {ReactNode} props.children - The child components.
+ * @returns {ReactNode} The rendered component.
+ */
 export const CryptoDataProvider = ({ children }) => {
-  const { currency, searchTerm, page, perPage, sortConfig } = useDashboard();
+  const { currency, searchTerm, page, perPage } = useDashboard();
 
   const [cryptos, setCryptos] = useState([]);
   const [displayedCryptos, setDisplayedCryptos] = useState([]);
   const [watchedCryptos, setWatchedCryptos] = useState([]);
-  const [chartData, setChartData] = useState([]);
   const [rate, setRate] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const fetchRateToUSD = useCallback(async () => {
-    if (currency !== "usd") {
+    if (currency.id !== "usd") {
       const response = await fetch(
-        `https://api.coincap.io/v2/rates/${currency}`
+        `https://api.coincap.io/v2/rates/${currency.id}`
       );
       const data = await response.json();
       setRate(data.data["rateUsd"]);
@@ -31,6 +37,21 @@ export const CryptoDataProvider = ({ children }) => {
       setRate(1);
     }
   }, [currency]);
+
+  const getCryptoPriceFormatted = (crypto, isOnWatchlist) => {
+    if (isOnWatchlist) {
+      return formatPrice(
+        watchedCryptos.find((c) => c.id === crypto.id).price,
+        rate,
+        currency.symbol
+      );
+    }
+    return formatPrice(
+      cryptos.find((c) => c.id === crypto.id).price,
+      rate,
+      currency.symbol
+    );
+  };
 
   const fetchCryptos = useCallback(async () => {
     const response = await fetch(
@@ -47,24 +68,41 @@ export const CryptoDataProvider = ({ children }) => {
       supply: parseFloat(asset.supply),
       marketCapUsd: parseFloat(asset.marketCapUsd),
       isSelected: watchedCryptos.some((crypto) => crypto.id === asset.id),
-      color: generateRandomColor(),
     }));
 
     setCryptos(assets);
   }, [page, perPage]);
 
-  const generateRandomColor = () => {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return `#${"0".repeat(6 - randomColor.length)}${randomColor}`;
-  };
+  useEffect(() => {
+    if (searchTerm === "") {
+      setDisplayedCryptos(cryptos);
+    } else {
+      const filtered = cryptos.filter((crypto) =>
+        crypto.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setDisplayedCryptos(filtered);
+    }
+  }, [cryptos, searchTerm]);
+
+  useEffect(() => {
+    fetchRateToUSD();
+    fetchCryptos();
+  }, [currency, page, perPage]);
 
   const refreshData = () => {
     fetchCryptos();
     fetchRateToUSD();
   };
 
-  const addToChartData = (data) => {
-    setChartData((prevChartData) => [...prevChartData, data]);
+  const addDataToCrypto = (crypto, data) => {
+    setWatchedCryptos((prevWatchedCryptos) =>
+      prevWatchedCryptos.map((watchedCrypto) => {
+        if (watchedCrypto.id === crypto) {
+          watchedCrypto.data.push(data);
+        }
+        return watchedCrypto;
+      })
+    );
   };
 
   const addCryptoToWatchlist = (crypto) => {
@@ -76,8 +114,9 @@ export const CryptoDataProvider = ({ children }) => {
       symbol: crypto.symbol,
       isSelected: true,
       isCharted: false,
-      color: crypto.color,
+      color: generateRandomColor(),
       changePercent24Hr: crypto.changePercent24Hr,
+      data: [],
     };
 
     setWatchedCryptos((prevWatchedCryptos) => [
@@ -98,10 +137,6 @@ export const CryptoDataProvider = ({ children }) => {
         }
         return crypto;
       })
-    );
-
-    setChartData((prevChartData) =>
-      prevChartData.filter((crypto) => crypto.id !== id)
     );
   };
 
@@ -147,39 +182,21 @@ export const CryptoDataProvider = ({ children }) => {
     setWatchedCryptos(updatedWatchedCryptos);
   };
 
-  useEffect(() => {
-    if (searchTerm === "") {
-      setDisplayedCryptos(cryptos);
-    } else {
-      const filtered = cryptos.filter((crypto) =>
-        crypto.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setDisplayedCryptos(filtered);
-    }
-  }, [cryptos, searchTerm]);
-
-  useEffect(() => {
-    fetchRateToUSD();
-    fetchCryptos();
-  }, [currency, page, perPage]);
-
   return (
     <CryptoDataContext.Provider
       value={{
         cryptos,
         setCryptos,
         displayedCryptos,
-        chartData,
         rate,
-        loading,
-        error,
         toggleAllCheckboxes,
         toggleCryptoIsSelected,
-        addToChartData,
         refreshData,
         watchedCryptos,
         setWatchedCryptos,
         toggleWatchedCryptoIsCharted,
+        addDataToCrypto,
+        getCryptoPriceFormatted,
       }}
     >
       {children}

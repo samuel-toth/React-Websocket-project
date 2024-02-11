@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { getCurrencySymbol, sortCryptos } from "../utils/helper";
-import { useDashboard } from "../contexts/DashboardContext";
+import { sortCryptos } from "../utils/helper";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   FaListCheck,
@@ -11,13 +10,22 @@ import {
   FaCaretUp,
 } from "react-icons/fa6";
 
+/**
+ * Table component for displaying cryptocurrency data. The table can be sorted by columns.
+ * It also allows adding and removing cryptocurrencies from the watchlist and showing/hiding
+ * them in the chart.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.displayedCryptos - The array of cryptocurrencies to be displayed in the table.
+ * @param {boolean} props.isShowingWatchedCryptos - Indicates whether the table is showing watched cryptocurrencies.
+ * @returns {JSX.Element} The rendered CryptoTable component.
+ */
 const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
-  const { currency } = useDashboard();
   const {
-    rate,
     toggleAllCheckboxes,
     toggleCryptoIsSelected,
     toggleWatchedCryptoIsCharted,
+    getCryptoPriceFormatted,
   } = useCryptoData();
 
   const [sortConfig, setSortConfig] = useState({
@@ -206,7 +214,7 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
               <td className="font-semibold">{crypto.name}</td>
               <td className="hidden sm:table-cell">{crypto.symbol}</td>
               <td className="text-right">
-                {(crypto.price / rate).toFixed(2)} {getCurrencySymbol(currency)}
+                {getCryptoPriceFormatted(crypto, false)}
               </td>
               <td
                 className={`text-right ${
@@ -219,36 +227,36 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
               </td>
               <td className="text-center">
                 <div className="flex justify-center items-center space-x-2 px-2">
-                {crypto.isSelected ? (
-                  <FaBookmark
-                    className="text-indigo-400"
-                    role="button"
-                    onClick={() => toggleCryptoIsSelected(crypto.id)}
-                    title={`Remove ${crypto.name} from watchlist`}
-                    aria-label={`Remove ${crypto.name} from watchlist`}
-                  />
-                ) : (
-                  <FaRegBookmark
-                    className="text-slate-400"
-                    role="button"
-                    onClick={() => toggleCryptoIsSelected(crypto.id)}
-                    title={`Add ${crypto.name} to watchlist`}
-                    aria-label={`Add ${crypto.name} to watchlist`}
-                  />
-                )}
-                {isShowingWatchedCryptos && (
-                  <FaEye
-                    className={`${
-                      crypto.isCharted ? "text-indigo-500" : "text-slate-400"
-                    } `}
-                    role="button"
-                    onClick={() => {
-                      toggleWatchedCryptoIsCharted(crypto.id);
-                    }}
-                    title={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
-                    aria-label={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
-                  />
-                )}
+                  {crypto.isSelected ? (
+                    <FaBookmark
+                      className="text-indigo-400"
+                      role="button"
+                      onClick={() => toggleCryptoIsSelected(crypto.id)}
+                      title={`Remove ${crypto.name} from watchlist`}
+                      aria-label={`Remove ${crypto.name} from watchlist`}
+                    />
+                  ) : (
+                    <FaRegBookmark
+                      className="text-slate-400"
+                      role="button"
+                      onClick={() => toggleCryptoIsSelected(crypto.id)}
+                      title={`Add ${crypto.name} to watchlist`}
+                      aria-label={`Add ${crypto.name} to watchlist`}
+                    />
+                  )}
+                  {isShowingWatchedCryptos && (
+                    <FaEye
+                      className={`${
+                        crypto.isCharted ? "text-indigo-500" : "text-slate-400"
+                      } `}
+                      role="button"
+                      onClick={() => {
+                        toggleWatchedCryptoIsCharted(crypto.id);
+                      }}
+                      title={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
+                      aria-label={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
+                    />
+                  )}
                 </div>
               </td>
             </tr>

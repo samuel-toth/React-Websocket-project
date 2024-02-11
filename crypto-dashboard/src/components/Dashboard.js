@@ -2,24 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDashboard } from "../contexts/DashboardContext";
 import { useCryptoData } from "../contexts/CryptoDataContext";
 import CryptoTable from "./CryptoTable";
-import PaginationFooter from "./PaginationFooter";
+import PaginationFooter from "./PaginationButtons";
 import CryptoGrid from "./CryptoGrid";
 import CryptoChart from "./CryptoChart";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import CollapsibleView from "./CollapsibleView";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
-  const { showChart, currency, page, changeCurrentPage, setPerPage } =
-    useDashboard();
+  const { page, changeCurrentPage, setPerPage } = useDashboard();
   const {
     watchedCryptos,
     displayedCryptos,
     setWatchedCryptos,
     rate,
-    addToChartData,
+    addDataToCrypto,
   } = useCryptoData();
   const websocketRef = useRef(null);
-  const [isTableVisible, setIsTableVisible] = useState(true);
 
   useEffect(() => {
     if (!watchedCryptos.length) return;
@@ -46,14 +44,17 @@ const Dashboard = () => {
             const priceIncreased = newPrice > oldPrice;
 
             const newChartData = {
-              id: crypto.id,
-              name: crypto.name,
               date: Date.now(),
               percentageChange: ((newPrice - oldPrice) / oldPrice) * 100,
+              price: newPrice,
             };
-            addToChartData(newChartData);
+            addDataToCrypto(crypto.id, newChartData);
 
             crypto.price = newPrice;
+            crypto.formattedPrice = new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(crypto.price * rate);
             changeRowColor(crypto, priceIncreased);
           }
           return crypto;
@@ -94,66 +95,37 @@ const Dashboard = () => {
     }, 500);
   };
 
-  const toggleTableVisibility = () => {
-    setIsTableVisible(!isTableVisible);
-  };
-
   return (
     <div>
-      <div className={`chart-container ${showChart ? "chart-visible" : ""}`}>
-        <CryptoChart />
-      </div>
-      <h2 className="sm:text-4xl text-2xl sm:mt-10 mt-8 px-2 sm:px-8  font-extralight drop-shadow-lg">
-        Your Watchlist
-      </h2>
-      {watchedCryptos.length === 0 ? (
-        <p className="text-lg px-2 sm:px-8 font-extralight drop-shadow-lg">
-          Nothing here, please add any cryptocurrency to watchlist.
-        </p>
-      ) : (
-        <CryptoTable
-          displayedCryptos={watchedCryptos}
-          currency={currency}
-          rate={rate}
-          isShowingWatchedCryptos={true}
-        />
-      )}
-      <h2 className="sm:text-4xl text-2xl mt-16 px-2 sm:px-8 font-extralight drop-shadow-lg flex justify-between">
-        Browse Cryptocurrencies
-        <button
-          onClick={toggleTableVisibility}
-          className="cursor-pointer drop-shadow-lg"
-          aria-label="Show or hide cryptocurrencies table"
-          title="Show/Hide cryptocurrencies"
-        >
-          {isTableVisible ? <FaChevronUp className="text-2xl"/> : <FaChevronDown className="text-2xl"/>}
-        </button>
-      </h2>
-      <div
-        className={`table-container ${
-          isTableVisible ? "table-visible" : "table-hidden"
-        }`}
-      >
-        <div className="hidden lg:visible md:visible md:flex sm:hidden">
+      <CollapsibleView
+        title="Historical data"
+        children={<CryptoChart watchedCryptos={watchedCryptos} />}
+      />
+      <CollapsibleView title="Your Watchlist">
+        {watchedCryptos.length === 0 ? (
+          <p className="text-lg px-2 sm:px-8 font-extralight drop-shadow-lg">
+            Nothing here, please add any cryptocurrency to watchlist.
+          </p>
+        ) : (
           <CryptoTable
-            displayedCryptos={displayedCryptos}
-            currency={currency}
-            rate={rate}
+            displayedCryptos={watchedCryptos}
+            isShowingWatchedCryptos={true}
           />
+        )}
+      </CollapsibleView>
+      <CollapsibleView title="Browse Cryptocurrencies">
+        <div className="hidden lg:visible md:visible md:flex sm:hidden">
+          <CryptoTable displayedCryptos={displayedCryptos} />
         </div>
         <div className="lg:hidden md:hidden">
-          <CryptoGrid
-            currency={currency}
-            rate={rate}
-            displayedCryptos={displayedCryptos}
-          />
+          <CryptoGrid displayedCryptos={displayedCryptos} />
         </div>
         <PaginationFooter
           page={page}
           changeCurrentPage={changeCurrentPage}
           setPerPage={setPerPage}
         />
-      </div>
+      </CollapsibleView>
     </div>
   );
 };
