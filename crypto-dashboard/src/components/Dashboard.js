@@ -6,6 +6,7 @@ import PaginationFooter from "./PaginationButtons";
 import CryptoGrid from "./CryptoGrid";
 import CryptoChart from "./CryptoChart";
 import CollapsibleView from "./CollapsibleView";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [websocket, setWebsocket] = useState(null);
@@ -60,7 +61,9 @@ const Dashboard = () => {
 
         setWatchedCryptos(updatedCryptos);
       } catch (error) {
-        console.error("Error: ", error);
+        toast.error(
+          "Failed to load latest prices, please check your internet connection or try later"
+        );
       }
     };
 

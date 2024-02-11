@@ -12,6 +12,7 @@ This is a simple cryptocurrency dashboard that displays the current price of var
 - [Recharts](https://recharts.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Icons](https://react-icons.github.io/react-icons/)
+- [React Hot Toast](https://react-hot-toast.com/)
 
 ## Installation
 

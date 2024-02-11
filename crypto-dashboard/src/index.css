@@ -59,6 +59,7 @@ code {
     transform: translate(10px, -10px) rotate(45deg);
   }
 }
+
 .chart-container {
   transition: max-height 0.3s linear;
   overflow: hidden;

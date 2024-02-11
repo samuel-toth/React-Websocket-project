@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useDashboard } from "./DashboardContext";
 import { generateRandomColor, formatPrice } from "../utils/helper";
+import toast from "react-hot-toast";
 
 const CryptoDataContext = createContext();
 
@@ -27,44 +28,47 @@ export const CryptoDataProvider = ({ children }) => {
   const [rate, setRate] = useState(1);
 
   const fetchRateToUSD = useCallback(async () => {
-    if (currency.id !== "usd") {
-      const response = await fetch(
-        `https://api.coincap.io/v2/rates/${currency.id}`
+    try {
+      if (currency.id !== "usd") {
+        const response = await fetch(
+          `https://api.coincap.io/v2/rates/${currency.id}`
+        );
+        const data = await response.json();
+        setRate(data.data["rateUsd"]);
+      } else {
+        setRate(1);
+      }
+    } catch (error) {
+      toast.error(
+        "Failed to load currency rate, please check your internet connection or try later"
       );
-      const data = await response.json();
-      setRate(data.data["rateUsd"]);
-    } else {
-      setRate(1);
     }
   }, [currency]);
 
-  const getCryptoPriceFormatted = (crypto, isOnWatchlist) => {
-    if (isOnWatchlist) {
-      crypto = watchedCryptos.find((c) => c.id === crypto.id);
-      return crypto ? formatPrice(crypto.price, rate, currency.symbol) : "";
-    } else {
-      return formatPrice(crypto.price, rate, currency.symbol);
-    }
-  };
-
   const fetchCryptos = useCallback(async () => {
-    const response = await fetch(
-      `https://api.coincap.io/v2/assets?limit=${perPage}&offset=${
-        (page - 1) * perPage
-      }`
-    );
-    const data = await response.json();
-    const assets = data.data.map((asset) => ({
-      ...asset,
-      rank: parseInt(asset.rank),
-      price: parseFloat(asset.priceUsd),
-      changePercent24Hr: parseFloat(asset.changePercent24Hr),
-      supply: parseFloat(asset.supply),
-      marketCapUsd: parseFloat(asset.marketCapUsd),
-      isSelected: watchedCryptos.some((crypto) => crypto.id === asset.id),
-    }));
+    try {
+      const response = await fetch(
+        `https://api.coincap.io/v2/assets?limit=${perPage}&offset=${
+          (page - 1) * perPage
+        }`
+      );
+      const data = await response.json();
+      const assets = data.data.map((asset) => ({
+        ...asset,
+        rank: parseInt(asset.rank),
+        price: parseFloat(asset.priceUsd),
+        changePercent24Hr: parseFloat(asset.changePercent24Hr),
+        supply: parseFloat(asset.supply),
+        marketCapUsd: parseFloat(asset.marketCapUsd),
+        isSelected: watchedCryptos.some((crypto) => crypto.id === asset.id),
+      }));
 
-    setCryptos(assets);
+      setCryptos(assets);
+    } catch (error) {
+      toast.error(
+        "Failed to load cryptocurrencies, please check your internet connection or try later"
+      );
+    }
   }, [page, perPage]);
 
   useEffect(() => {
@@ -175,6 +179,15 @@ export const CryptoDataProvider = ({ children }) => {
       return crypto;
     });
     setWatchedCryptos(updatedWatchedCryptos);
+  };
+
+  const getCryptoPriceFormatted = (crypto, isOnWatchlist) => {
+    if (isOnWatchlist) {
+      crypto = watchedCryptos.find((c) => c.id === crypto.id);
+      return crypto ? formatPrice(crypto.price, rate, currency.symbol) : "";
+    } else {
+      return formatPrice(crypto.price, rate, currency.symbol);
+    }
   };
 
   return (
