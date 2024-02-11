@@ -5,7 +5,7 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa6";
-import { perPageOptions } from "../utils/helper";
+import { PER_PAGE_OPTIONS } from "../utils/constants";
 
 /**
  * A component for managing pagination, including a dropdown to select the number of items per page
@@ -72,7 +72,7 @@ const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
               className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
               shadow-lg z-10 w-16 transform transition-all duration-500`}
             >
-              {perPageOptions.map((option) => (
+              {PER_PAGE_OPTIONS.map((option) => (
                 <button
                   key={option}
                   className={`px-4 py-2  ${

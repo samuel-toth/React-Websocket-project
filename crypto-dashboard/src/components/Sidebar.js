@@ -7,7 +7,7 @@ import {
   FaChevronUp,
   FaArrowsRotate,
 } from "react-icons/fa6";
-import { currencyOptions } from "../utils/helper";
+import { CURRENCY_OPTIONS } from "../utils/constants";
 
 /**
  * Sidebar component for the crypto dashboard with searchbar, dropdown for currency selection,
@@ -33,6 +33,7 @@ const Sidebar = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [rotateReload, setRotateReload] = useState(false);
+  const [isChartShowed, setIsChartShowed] = useState(false);
   const sidebarRef = useRef(null);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Sidebar = ({
   }, []);
 
   const handleCurrencyChange = (currency) => {
-    setCurrency(currencyOptions.find((c) => c.id === currency));
+    setCurrency(CURRENCY_OPTIONS.find((c) => c.id === currency));
     setIsSidebarOpen(false);
   };
 
@@ -130,7 +131,7 @@ const Sidebar = ({
               isCurrencyDropdownOpen ? "max-h-96" : "max-h-0"
             } overflow-hidden`}
           >
-            {currencyOptions.map((currency) => (
+            {CURRENCY_OPTIONS.map((currency) => (
               <button
                 key={currency.name}
                 className="px-4 py-2 block text-left w-full hover:text-indigo-500"
@@ -148,6 +149,7 @@ const Sidebar = ({
                 className=" text-3xl hover:scale-110 transition-all duration-200"
                 title="Show/Hide Chart"
                 aria-label="Show or Hide Chart with data for watched cryptocurrencies"
+                onClick={() => setIsChartShowed(!isChartShowed)}
               >
                 <svg
                   width="30"
@@ -191,7 +193,7 @@ const Sidebar = ({
                     strokeLinejoin="round"
                     strokeLinecap="round"
                     className={`text-indigo-800 dark:text-indigo-300 ${
-                      true ? "show-chart-line" : "hide-chart-line"
+                      isChartShowed ? "show-chart-line" : "hide-chart-line"
                     }`}
                     strokeWidth="3"
                   />

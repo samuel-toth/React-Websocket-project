@@ -36,8 +36,8 @@ const CryptoTable = ({ cryptos, config }) => {
    * @param {string} key The key to sort by (e.g., "rank", "price").
    * @param {string} title The title of the sort key for display purposes.
    */
-  const changeSortConfig = (key, title) => {
-    setSortConfig(changeOrToggleSortConfig(sortConfig, key, title));
+  const changeSortConfig = (key, name) => {
+    setSortConfig(changeOrToggleSortConfig(sortConfig, key, name));
   };
 
   return (
@@ -50,7 +50,7 @@ const CryptoTable = ({ cryptos, config }) => {
           <tr>
             <th
               className="text-left lg:p-4 sm:p-3 p-2 cursor-pointer w-1/12"
-              onClick={() => changeSortConfig("rank")}
+              onClick={() => changeSortConfig("rank", "Rank")}
               aria-label="Sort by rank"
               role="button"
               title="Sort by rank"
@@ -72,7 +72,7 @@ const CryptoTable = ({ cryptos, config }) => {
             </th>
             <th
               className="text-left cursor-pointer w-4/12"
-              onClick={() => changeSortConfig("name")}
+              onClick={() => changeSortConfig("name", "Name")}
               aria-label="Sort by name"
               role="button"
               title="Sort by name"
@@ -96,7 +96,7 @@ const CryptoTable = ({ cryptos, config }) => {
             </th>
             <th
               className="text-left cursor-pointer w-2/12 hidden sm:table-cell"
-              onClick={() => changeSortConfig("symbol")}
+              onClick={() => changeSortConfig("symbol", "Symbol")}
               aria-label="Sort by symbol"
               role="button"
               title="Sort by symbol"
@@ -122,7 +122,7 @@ const CryptoTable = ({ cryptos, config }) => {
             </th>
             <th
               className="text-right cursor-pointer sm:w-2/12 w-3/12"
-              onClick={() => changeSortConfig("price")}
+              onClick={() => changeSortConfig("price", "Price")}
               aria-label="Sort by price"
               role="button"
               title="Sort by price"
@@ -146,7 +146,7 @@ const CryptoTable = ({ cryptos, config }) => {
             </th>
             <th
               className="text-right cursor-pointer w-2/12"
-              onClick={() => changeSortConfig("changePercent24Hr")}
+              onClick={() => changeSortConfig("changePercent24Hr", "Change")}
               aria-label="Sort by 24h change"
               role="button"
               title="Sort by 24h change"

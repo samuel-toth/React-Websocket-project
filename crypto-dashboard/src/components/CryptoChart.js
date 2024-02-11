@@ -10,10 +10,10 @@ import {
 } from "recharts";
 import {
   formatXAxisTick,
-  intervalOptions,
   formatYAxisTick,
   roundTimeToNearestTenSeconds,
 } from "../utils/helper";
+import { INTERVAL_OPTIONS } from "../utils/constants";
 import ChartTooltip from "./CryptoChartTooltip";
 import CryptoChartButtons from "./CryptoChartButtons";
 
@@ -33,11 +33,11 @@ const CryptoChart = ({ cryptos }) => {
   const [intervalOffset, setIntervalOffset] = useState(0);
 
   useEffect(() => {
-    let selectedOption = intervalOptions.find(
+    let selectedOption = INTERVAL_OPTIONS.find(
       (option) => option.id === interval.id
     );
     if (!selectedOption) {
-      selectedOption = intervalOptions[0];
+      selectedOption = INTERVAL_OPTIONS[0];
     }
 
     const nTicks = 5;

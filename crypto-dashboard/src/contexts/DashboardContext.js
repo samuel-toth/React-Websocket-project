@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { currencyOptions } from "../utils/helper";
+import { CURRENCY_OPTIONS, TW_CLASSES } from "../utils/constants";
 
 /**
  * Context for the dashboard settings and state.
@@ -20,15 +20,15 @@ export const DashboardProvider = ({ children }) => {
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
-  const [currency, setCurrency] = useState(currencyOptions[0]);
+  const [currency, setCurrency] = useState(CURRENCY_OPTIONS[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
-      document.body.classList.add("dark");
+      document.body.classList.add(TW_CLASSES.DARK_MODE);
     } else {
-      document.body.classList.remove("dark");
+      document.body.classList.remove(TW_CLASSES.DARK_MODE);
     }
   }, [darkMode]);
 

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { useDashboard } from "./DashboardContext";
 import { generateRandomColor, formatPrice } from "../utils/helper";
+import { TW_CLASSES } from "../utils/constants";
 import toast from "react-hot-toast";
 
 /**
@@ -261,16 +262,16 @@ export const CryptoDataProvider = ({ children }) => {
 
   const changeRowColor = (crypto, priceIncreased) => {
     const rowElement = document.getElementById(crypto.id + "w");
-    rowElement.classList.add(priceIncreased ? "bg-green-200" : "bg-red-200");
-    rowElement.classList.remove("bg-slate-100/30");
+    rowElement.classList.add(priceIncreased ? TW_CLASSES.GREEN_BG : TW_CLASSES.RED_BG);
+    rowElement.classList.remove(TW_CLASSES.SLATE_BG);
 
     setTimeout(() => {
       rowElement.classList.remove(
-        "bg-green-200",
-        "bg-red-200",
-        "animate-highlight"
+        TW_CLASSES.GREEN_BG,
+        TW_CLASSES.RED_BG,
+        TW_CLASSES.ANIMATE_HIGHLIGHT
       );
-      rowElement.classList.add("bg-slate-100/30");
+      rowElement.classList.add(TW_CLASSES.SLATE_BG);
     }, 500);
   };
 

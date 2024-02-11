@@ -5,7 +5,7 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa6";
-import { intervalOptions } from "../utils/helper";
+import { INTERVAL_OPTIONS } from "../utils/constants";
 
 /**
  * Buttons for changing the interval of the chart and moving it forward or backward in time.
@@ -18,7 +18,7 @@ import { intervalOptions } from "../utils/helper";
  */
 const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedInterval, setSelectedInterval] = useState(intervalOptions[0]);
+  const [selectedInterval, setSelectedInterval] = useState(INTERVAL_OPTIONS[0]);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
                 className={`absolute bottom-full mb-4 bg-slate-300/30 backdrop-blur-md rounded-lg 
               shadow-lg z-10 w-16 transform transition-all duration-500`}
               >
-                {intervalOptions.map((option) => (
+                {INTERVAL_OPTIONS.map((option) => (
                   <button
                     key={option.id}
                     className={`px-4 py-2  ${

@@ -1,28 +1,5 @@
-export const perPageOptions = [10, 25, 50, 100];
 
-export const currencyOptions = [
-  { name: "US Dollar", symbol: "$", id: "usd" },
-  { name: "Euro", symbol: "€", id: "euro" },
-  { name: "Česká koruna", symbol: "Kč", id: "czech-republic-koruna" },
-];
 
-export const sortOptions = [
-  { name: "Rank", key: "rank" },
-  { name: "Name", key: "name" },
-  { name: "Symbol", key: "symbol" },
-  { name: "Price", key: "price" },
-  { name: "Change", key: "changePercent24Hr" },
-];
-
-export const intervalOptions = [
-  { id: "1m", name: "1m", millsecs: 60 * 1000 },
-  { id: "5m", name: "5m", millsecs: 5 * 60 * 1000 },
-  { id: "30m", name: "30m", millsecs: 30 * 60 * 1000 },
-  { id: "60m", name: "1h", millsecs: 60 * 60 * 1000 },
-  { id: "1d", name: "1d", millsecs: 24 * 60 * 60 * 1000 },
-  { id: "7d", name: "7d", millsecs: 7 * 24 * 60 * 60 * 1000 },
-  { id: "30d", name: "30d", millsecs: 30 * 24 * 60 * 60 * 1000 },
-];
 
 export const sortCryptos = (cryptos, sortConfig) => {
   const sortedCryptos = [...cryptos].sort((a, b) => {
@@ -87,6 +64,12 @@ export const changeOrToggleSortConfig = (sortConfig, key, title) => {
       key,
       direction:
         sortConfig.direction === "ascending" ? "descending" : "ascending",
+      title,
+    };
+  } else {
+    return {
+      key,
+      direction: "ascending",
       title,
     };
   }
