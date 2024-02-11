@@ -40,17 +40,11 @@ export const CryptoDataProvider = ({ children }) => {
 
   const getCryptoPriceFormatted = (crypto, isOnWatchlist) => {
     if (isOnWatchlist) {
-      return formatPrice(
-        watchedCryptos.find((c) => c.id === crypto.id).price,
-        rate,
-        currency.symbol
-      );
+      crypto = watchedCryptos.find((c) => c.id === crypto.id);
+      return crypto ? formatPrice(crypto.price, rate, currency.symbol) : "";
+    } else {
+      return formatPrice(crypto.price, rate, currency.symbol);
     }
-    return formatPrice(
-      cryptos.find((c) => c.id === crypto.id).price,
-      rate,
-      currency.symbol
-    );
   };
 
   const fetchCryptos = useCallback(async () => {
@@ -140,21 +134,22 @@ export const CryptoDataProvider = ({ children }) => {
     );
   };
 
-  const toggleAllCheckboxes = (state) => {
-    const updatedCryptos = cryptos.map((crypto) => {
-      crypto.isSelected = state;
-      if (state) {
-        setWatchedCryptos(cryptos);
+  const toggleAllCheckboxes = () => {
+    const updatedCryptos = displayedCryptos.map((crypto) => {
+      const updatedCrypto = { ...crypto };
+      updatedCrypto.isSelected = !updatedCrypto.isSelected;
+      if (updatedCrypto.isSelected) {
+        addCryptoToWatchlist(updatedCrypto);
       } else {
-        setWatchedCryptos([]);
+        removeCryptoFromWatchlist(updatedCrypto.id);
       }
-      return crypto;
+      return updatedCrypto;
     });
     setCryptos(updatedCryptos);
   };
 
   const toggleCryptoIsSelected = (id) => {
-    const updatedCryptos = cryptos.map((crypto) => {
+    const updatedCryptos = displayedCryptos.map((crypto) => {
       if (crypto.id === id) {
         const updatedCrypto = { ...crypto };
         updatedCrypto.isSelected = !updatedCrypto.isSelected;

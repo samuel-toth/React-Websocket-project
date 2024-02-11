@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { sortCryptos } from "../utils/helper";
-import { useCryptoData } from "../contexts/CryptoDataContext";
 import {
   FaListCheck,
   FaBookmark,
@@ -20,14 +19,14 @@ import {
  * @param {boolean} props.isShowingWatchedCryptos - Indicates whether the table is showing watched cryptocurrencies.
  * @returns {JSX.Element} The rendered CryptoTable component.
  */
-const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
-  const {
-    toggleAllCheckboxes,
-    toggleCryptoIsSelected,
-    toggleWatchedCryptoIsCharted,
-    getCryptoPriceFormatted,
-  } = useCryptoData();
-
+const CryptoTable = ({
+  displayedCryptos,
+  isShowingWatchedCryptos,
+  toggleAllCheckboxes,
+  toggleCryptoIsSelected,
+  toggleWatchedCryptoIsCharted,
+  getCryptoPriceFormatted,
+}) => {
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
@@ -253,8 +252,8 @@ const CryptoTable = ({ displayedCryptos, isShowingWatchedCryptos }) => {
                       onClick={() => {
                         toggleWatchedCryptoIsCharted(crypto.id);
                       }}
-                      title={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
-                      aria-label={`{crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
+                      title={`${crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
+                      aria-label={`${crypto.isCharted ? "Hide" : "Show"} ${crypto.name} in chart`}
                     />
                   )}
                 </div>

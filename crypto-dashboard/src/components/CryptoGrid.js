@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { sortCryptos } from "../utils/helper";
-import { useCryptoData } from "../contexts/CryptoDataContext";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
 import GridHeader from "./CryptoGridHeader";
 
 /**
- * Grid component for displaying cryptocurrency data. It allows adding and removing cryptocurrencies from the watchlist.
- * 
+ * Grid component for displaying cryptocurrency data. It allows adding and removing
+ * cryptocurrencies from the watchlist.
+ *
  * @param {Object} props - The component props.
  * @param {Array} props.displayedCryptos - The array of displayed cryptocurrencies.
  * @returns {JSX.Element} The rendered CryptoGrid component.
  */
-const CryptoGrid = ({ displayedCryptos }) => {
-  const { toggleCryptoIsSelected, toggleAllCheckboxes, getCryptoPriceFormatted } = useCryptoData();
-
+const CryptoGrid = ({
+  displayedCryptos,
+  toggleCryptoIsSelected,
+  toggleAllCheckboxes,
+  getCryptoPriceFormatted,
+}) => {
   const [sortConfig, setSortConfig] = useState({
     key: "rank",
     direction: "ascending",
@@ -47,7 +50,7 @@ const CryptoGrid = ({ displayedCryptos }) => {
         {sortCryptos(displayedCryptos, sortConfig).map((crypto) => (
           <div
             key={crypto.id}
-            className={`${crypto.animationClass} rounded-xl p-3 shadow-md grid grid-cols-2 select-none`}
+            className="rounded-xl p-3 shadow-md grid grid-cols-2 select-none bg-slate-100 dark:bg-slate-600"
           >
             <button
               className="col-span-2 flex justify-end"

@@ -14,8 +14,11 @@ const Dashboard = () => {
     watchedCryptos,
     displayedCryptos,
     setWatchedCryptos,
-    rate,
     addDataToCrypto,
+    toggleCryptoIsSelected,
+    toggleAllCheckboxes,
+    getCryptoPriceFormatted,
+    toggleWatchedCryptoIsCharted,
   } = useCryptoData();
   const websocketRef = useRef(null);
 
@@ -49,12 +52,7 @@ const Dashboard = () => {
               price: newPrice,
             };
             addDataToCrypto(crypto.id, newChartData);
-
             crypto.price = newPrice;
-            crypto.formattedPrice = new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(crypto.price * rate);
             changeRowColor(crypto, priceIncreased);
           }
           return crypto;
@@ -110,15 +108,29 @@ const Dashboard = () => {
           <CryptoTable
             displayedCryptos={watchedCryptos}
             isShowingWatchedCryptos={true}
+            toggleAllCheckboxes={toggleAllCheckboxes}
+            toggleCryptoIsSelected={toggleCryptoIsSelected}
+            getCryptoPriceFormatted={getCryptoPriceFormatted}
+            toggleWatchedCryptoIsCharted={toggleWatchedCryptoIsCharted}
           />
         )}
       </CollapsibleView>
       <CollapsibleView title="Browse Cryptocurrencies">
         <div className="hidden lg:visible md:visible md:flex sm:hidden">
-          <CryptoTable displayedCryptos={displayedCryptos} />
+          <CryptoTable
+            displayedCryptos={displayedCryptos}
+            toggleAllCheckboxes={toggleAllCheckboxes}
+            toggleCryptoIsSelected={toggleCryptoIsSelected}
+            getCryptoPriceFormatted={getCryptoPriceFormatted}
+          />
         </div>
         <div className="lg:hidden md:hidden">
-          <CryptoGrid displayedCryptos={displayedCryptos} />
+          <CryptoGrid
+            displayedCryptos={displayedCryptos}
+            toggleAllCheckboxes={toggleAllCheckboxes}
+            toggleCryptoIsSelected={toggleCryptoIsSelected}
+            getCryptoPriceFormatted={getCryptoPriceFormatted}
+          />
         </div>
         <PaginationFooter
           page={page}
