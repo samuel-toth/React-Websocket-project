@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 const App = () => {
   const { setCurrency, searchTerm, setSearchTerm, darkMode, toggleDarkMode } =
     useDashboard();
-  const { refreshData } = useCryptoData();
+  const { refreshData, regenerateAllColors } = useCryptoData();
 
   return (
     <>
@@ -18,6 +18,7 @@ const App = () => {
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
         refreshData={refreshData}
+        regenerateColors={regenerateAllColors}
       />
       <Dashboard />
       <Toaster

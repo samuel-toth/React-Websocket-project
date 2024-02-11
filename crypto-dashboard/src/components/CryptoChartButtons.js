@@ -50,7 +50,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
           >
             <FaChevronLeft />
           </button>
-          <div className="h-5 border-r-2 border-slate-400 mx-2" />
+          <div className="h-5 border-r-2 border-indigo-400  mx-2" />
           <div className="relative" ref={dropdownRef}>
             <button
               className="bg-transparent pl-2 pr-9 cursor-pointer select-none flex 
@@ -89,7 +89,7 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
               </div>
             )}
           </div>
-          <div className="h-5 border-r-2 border-slate-400 mx-2" />
+          <div className="h-5 border-r-2 border-indigo-400  mx-2" />
           <button
             className="px-2 sm:hover:scale-125 hover:scale-110"
             onClick={() => setIntervalOffset(1)}

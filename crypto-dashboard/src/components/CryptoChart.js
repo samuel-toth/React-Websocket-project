@@ -29,7 +29,7 @@ const CryptoChart = ({ cryptos }) => {
   const [xAxisTicks, setXAxisTicks] = useState([]);
   const [yAxisDomain, setYAxisDomain] = useState([0, 100]);
   const [yAxisTicks, setYAxisTicks] = useState([]);
-  const [interval, setInterval] = useState("1m");
+  const [interval, setInterval] = useState(INTERVAL_OPTIONS[0]);
   const [intervalOffset, setIntervalOffset] = useState(0);
 
   useEffect(() => {
@@ -118,14 +118,14 @@ const CryptoChart = ({ cryptos }) => {
         <ResponsiveContainer
           width="100%"
           height="100%"
-          className="dark:text-slate-400 text-slate-500"
+          className="dark:text-slate-400 text-slate-500 m-1"
         >
           <LineChart data={formattedData} margin={{ top: 30 }}>
             <XAxis
               dataKey="date"
               domain={["dataMin", "dataMax"]}
               type="number"
-              tickFormatter={formatXAxisTick}
+              tickFormatter={(tick, date) => formatXAxisTick(tick, interval)}
               scale="time"
               ticks={xAxisTicks}
               stroke="currentColor"

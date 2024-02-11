@@ -20,6 +20,7 @@ import { CURRENCY_OPTIONS } from "../utils/constants";
  * @param {boolean} props.darkMode Flag indicating whether dark mode is enabled.
  * @param {Function} props.toggleDarkMode Function to toggle dark mode.
  * @param {Function} props.refreshData Function to refresh the cryptocurrency data.
+ * @param {Function} props.regenerateColors Function to regenerate the colors for the cryptocurrencies.
  * @returns {JSX.Element} Sidebar component.
  */
 const Sidebar = ({
@@ -29,6 +30,7 @@ const Sidebar = ({
   darkMode,
   toggleDarkMode,
   refreshData,
+  regenerateColors,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
@@ -64,6 +66,13 @@ const Sidebar = ({
     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen);
   };
 
+  const handleRegenerateColors = () => {
+    regenerateColors();
+    setIsChartShowed(true);
+    setTimeout(() => setIsChartShowed(false), 1000);
+
+  }
+
   return (
     <div
       ref={sidebarRef}
@@ -75,7 +84,7 @@ const Sidebar = ({
     >
       {/* Pull tab */}
       <div
-        className="w-25 h-full bg-slate-300/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
+        className="w-25 h-full bg-slate-300/30 dark:bg-slate-400/30 backdrop-blur-md rounded-l-2xl shadow-lg flex flex-col justify-start 
         items-center "
       >
         <button
@@ -85,7 +94,7 @@ const Sidebar = ({
           aria-label="Open or close sidebar"
         >
           <img
-            src="/logo.svg"
+            src={darkMode ? "/logo-dark.svg" : "/logo.svg"}
             alt="Crypta Logo"
             className="h-16 w-16 p-1"
             style={{
@@ -97,7 +106,7 @@ const Sidebar = ({
       </div>
 
       {/* Sidebar content */}
-      <div className="w-80 bg-slate-300/30 backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
+      <div className="w-80 bg-slate-300/30 dark:bg-slate-400/30  backdrop-blur-md shadow-lg p-4 rounded-b-2xl rounded-r-2xl overflow-auto">
         <div className="mt-8">
           <div className="flex items-center bg-slate-500 rounded-lg overflow-hidden">
             <FaMagnifyingGlass className="text-xl text-indigo-300 ml-3" />
@@ -149,12 +158,12 @@ const Sidebar = ({
                 className=" text-3xl hover:scale-110 transition-all duration-200"
                 title="Show/Hide Chart"
                 aria-label="Show or Hide Chart with data for watched cryptocurrencies"
-                onClick={() => setIsChartShowed(!isChartShowed)}
+                onClick={handleRegenerateColors}
               >
                 <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 30px 30px"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <line
@@ -164,7 +173,7 @@ const Sidebar = ({
                     y2="28"
                     stroke="currentColor"
                     strokeLinecap="round"
-                    className="text-indigo-500"
+                    className="text-indigo-500 dark:text-indigo-400"
                     strokeWidth="4"
                   />
                   <line
@@ -174,7 +183,7 @@ const Sidebar = ({
                     y2="2"
                     stroke="currentColor"
                     strokeLinecap="round"
-                    className="text-indigo-500"
+                    className="text-indigo-500 dark:text-indigo-400"
                     strokeWidth="4"
                   />
                   <path
@@ -192,7 +201,7 @@ const Sidebar = ({
                     stroke="currentColor"
                     strokeLinejoin="round"
                     strokeLinecap="round"
-                    className={`text-indigo-800 dark:text-indigo-300 ${
+                    className={`text-indigo-700 dark:text-indigo-400 ${
                       isChartShowed ? "show-chart-line" : "hide-chart-line"
                     }`}
                     strokeWidth="3"
@@ -201,7 +210,7 @@ const Sidebar = ({
               </button>
               <button
                 onClick={handleReload}
-                className={`text-3xl mx-3 text-indigo-500 transform hover:scale-110 ${
+                className={`text-3xl mx-3 text-indigo-500 dark:text-indigo-400 transform hover:scale-110 ${
                   rotateReload
                     ? " transform rotate-full transition-all duration-1000"
                     : ""

@@ -1,6 +1,3 @@
-
-
-
 export const sortCryptos = (cryptos, sortConfig) => {
   const sortedCryptos = [...cryptos].sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
@@ -33,9 +30,10 @@ export const formatPrice = (price, rate, currency) => {
 
 export const formatXAxisTick = (tick) => {
   return new Date(tick).toLocaleTimeString([], {
+    day: "2-digit",
+    month: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
   });
 };
 

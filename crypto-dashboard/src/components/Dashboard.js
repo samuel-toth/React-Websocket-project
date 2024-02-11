@@ -35,7 +35,7 @@ const Dashboard = () => {
   } = useCryptoData();
 
   return (
-    <div>
+    <div className="">
       {/* Historical data section with collapsible chart view */}
       <CollapsibleView
         title="Historical data"

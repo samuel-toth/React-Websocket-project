@@ -260,16 +260,32 @@ export const CryptoDataProvider = ({ children }) => {
     }
   };
 
+  const regenerateAllColors = () => {
+    setWatchedCryptos((prevWatchedCryptos) =>
+      prevWatchedCryptos.map((crypto) => ({
+        ...crypto,
+        color: generateRandomColor(),
+      }))
+    );
+  };
+
   const changeRowColor = (crypto, priceIncreased) => {
     const rowElement = document.getElementById(crypto.id + "w");
-    rowElement.classList.add(priceIncreased ? TW_CLASSES.GREEN_BG : TW_CLASSES.RED_BG);
+
+    rowElement.classList.add(
+      priceIncreased ? TW_CLASSES.GREEN_BG : TW_CLASSES.RED_BG
+    );
+    rowElement.classList.add(
+      priceIncreased ? TW_CLASSES.DARK_GREEN_BG : TW_CLASSES.DARK_RED_BG
+    );
     rowElement.classList.remove(TW_CLASSES.SLATE_BG);
 
     setTimeout(() => {
       rowElement.classList.remove(
         TW_CLASSES.GREEN_BG,
+        TW_CLASSES.DARK_GREEN_BG,
         TW_CLASSES.RED_BG,
-        TW_CLASSES.ANIMATE_HIGHLIGHT
+        TW_CLASSES.DARK_RED_BG
       );
       rowElement.classList.add(TW_CLASSES.SLATE_BG);
     }, 500);
@@ -305,6 +321,7 @@ export const CryptoDataProvider = ({ children }) => {
         getCryptoPriceFormatted,
         WatchlistTableConfig,
         BrowseTableConfig,
+        regenerateAllColors,
       }}
     >
       {children}
