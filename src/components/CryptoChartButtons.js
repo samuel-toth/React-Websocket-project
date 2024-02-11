@@ -70,8 +70,8 @@ const CryptoChartButtons = ({ interval, setInterval, setIntervalOffset }) => {
             </button>
             {isDropdownOpen && (
               <div
-                className={`absolute bottom-full mb-4 bg-slate-300/30 dark:bg-slate-500/50 backdrop-blur-md rounded-lg 
-              shadow-lg z-10 w-16`}
+                className="absolute bottom-full mb-4 bg-slate-300/30 dark:bg-slate-500/50 backdrop-blur-md rounded-lg 
+              shadow-lg z-10 w-16"
               >
                 {INTERVAL_OPTIONS.map((option) => (
                   <button

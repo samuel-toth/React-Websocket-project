@@ -57,7 +57,7 @@ const CryptoGridHeader = ({
         <div className="relative" ref={dropdownRef}>
           <button
             className="bg-transparent pl-1 pr-8 cursor-pointer select-none 
-            justify-between items-center"
+            justify-between items-center text-slate-500 dark:text-slate-400"
             title="Show/Hide sorting options"
             aria-label="Show or hide dropdown menu with sorting options"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}

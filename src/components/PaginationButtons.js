@@ -24,7 +24,7 @@ import { PER_PAGE_OPTIONS } from "../utils/constants";
  */
 const PaginationButtons = ({ page, changeCurrentPage, setPerPage }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedPerPage, setSelectedPerPage] = useState("20");
+  const [selectedPerPage, setSelectedPerPage] = useState(10);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
